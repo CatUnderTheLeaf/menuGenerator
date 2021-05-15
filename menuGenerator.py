@@ -1,40 +1,47 @@
-import random
 import pickle
-from classRecipe import Recipe
+from classRecipeList import RecipeList
 
-with open('menuItems') as f:
-    menuList = [line.rstrip() for line in f]
-print("------------menuList is read from file")
-print(menuList)
-# add recipe objects to a list
-recipeList = []
-for item in menuList:
-    new_recipe = Recipe(title=item)
-    recipeList.append(new_recipe)
+#-------------helper code 
+# with open('menuItems') as f:
+#     menuList = [line.rstrip() for line in f]
+# print("------------menuList is read from file")
+# print(menuList)
+# # add recipe objects to a list
+# recipeList = []
+# for item in menuList:
+#     new_recipe = Recipe(title=item)
+#     recipeList.append(new_recipe)
 # dump list in a file
 # with open('recipe.list', 'wb') as file:
 #   pickle.dump(recipeList, file)
+# with open('category') as f:
+#     cats = [line.rstrip() for line in f]
+# print("------------cat is read from file")
+# print(cats)
+#-------------end of helper code 
+
+
 # read from file
 with open('recipe.list', 'rb') as file:
-    recipes = pickle.load(file)
-for recipe in recipes:
-    print(recipe.title)
+    recipeList = RecipeList(pickle.load(file))
+
+print("------------from recipeList object")
+for recipe in recipeList.list:
+    print(recipe)
 
 # when you can't afford to have duplicates while sampling your data.
-# subList = random.sample(menuList, 7)
-# print("------------subList")
-# print(subList)
-# print("------------menuList is unchanged")
-# print(menuList)
+print(recipeList)
+subList = recipeList.sampleN(3)
+print("------------subList")
+print(subList)
 
-# # when you can afford to have duplicates in your sampling
-# choices = random.choices(menuList, k=7)
-# print("------------choices")
-# print(choices)
-# print("------------menuList after choices")
-# print(menuList)
+# when you can afford to have duplicates in your sampling
+choices = recipeList.choicesN(3)
+print("------------choices")
+print(choices)
 
-# random.shuffle(menuList)
-# print("------------menuList changes, shuffle in place")
-# print(menuList)
-
+# sample with category, eg "breakfast"
+subList = recipeList.sampleN(3, "breakfast")
+subList = recipeList.sampleN(3, "dinner")
+print("------------subList with filter")
+print(subList)
