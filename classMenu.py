@@ -4,11 +4,13 @@ a class that represent a list of recipes,
 has a bunch of useful filtering and randomizing functions
 
 list - list of Recipe objects
+mpd - meals per day, default value is 3
  """
 
-class RecipeList:
-    def __init__(self, list):        
+class Menu:
+    def __init__(self, list, mpd=3):        
         self.list = list
+        self.mpd = mpd
 
     def __repr__(self):
        return repr(self.list)

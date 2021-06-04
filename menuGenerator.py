@@ -1,5 +1,5 @@
 import pickle
-from classRecipeList import RecipeList
+from classMenu import Menu
 
 #-------------helper code 
 # with open('menuItems') as f:
@@ -23,9 +23,9 @@ from classRecipeList import RecipeList
 
 # read from file
 with open('recipe.list', 'rb') as file:
-    recipeList = RecipeList(pickle.load(file))
+    recipeList = Menu(pickle.load(file))
 
-print("------------from recipeList object")
+print("------------from Menu object")
 for recipe in recipeList.list:
     print(recipe)
 
