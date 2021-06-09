@@ -39,8 +39,8 @@ from classMenu import Menu
 # Create Menu object
 menu = Menu()
 
-# generate menu for one day applying rules
-menu.generateDailyMenu()
+# generate menu for n days applying rules
+menu.generateDailyMenu(7)
 
 
 

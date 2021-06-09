@@ -27,13 +27,13 @@ class Menu:
     def __str__(self):
        return str(self.recipeList)
     
-    def generateDailyMenu(self):
+    def generateDailyMenu(self, n=1):
         print("!!!-----------------generating menu for one day----------------!!!")
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by category for this type of meal
             cat=self.rules.filterByCat(meal)            
-            recipe = self.sampleN(1, cat)
+            recipe = self.choicesN(n, cat)
             print(meal)
             print(recipe)
 
