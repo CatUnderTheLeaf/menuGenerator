@@ -7,13 +7,13 @@ from classMenu import Menu
 # print("------------menuList is read from file")
 # print(menuList)
 # # add recipe objects to a list
-# recipeList = []
+# menu = []
 # for item in menuList:
 #     new_recipe = Recipe(title=item)
-#     recipeList.append(new_recipe)
+#     menu.append(new_recipe)
 # dump list in a file
 # with open('recipe.list', 'wb') as file:
-#   pickle.dump(recipeList, file)
+#   pickle.dump(menu, file)
 # with open('category') as f:
 #     cats = [line.rstrip() for line in f]
 # print("------------cat is read from file")
@@ -36,32 +36,35 @@ from classMenu import Menu
 #-------------end of helper code 
 
 
+# Create Menu object
+menu = Menu()
 
-# read from file
-with open('recipe.list', 'rb') as file:
-    recipeList = Menu(pickle.load(file))
+# generate menu for one day applying rules
+menu.generateDailyMenu()
 
-print("------------from Menu object")
-for recipe in recipeList.list:
-    print(recipe)
 
-with open('products.list', 'rb') as file:
-    products = pickle.load(file)
-    print(products)
+
+# print("------------from Menu object")
+# for recipe in menu.recipeList:
+#     print(recipe)
+# print(menu.products)
+# with open('products.list', 'rb') as file:
+#     products = pickle.load(file)
+    # print(products)
 
 # # when you can't afford to have duplicates while sampling your data.
-# print(recipeList)
-# subList = recipeList.sampleN(3)
+# print(menu)
+# subList = menu.sampleN(3)
 # print("------------subList")
 # print(subList)
 
 # # when you can afford to have duplicates in your sampling
-# choices = recipeList.choicesN(3)
+# choices = menu.choicesN(3)
 # print("------------choices")
 # print(choices)
 
 # # sample with category, eg "breakfast"
-# subList = recipeList.sampleN(3, "breakfast")
-# subList = recipeList.sampleN(3, "dinner")
+# subList = menu.sampleN(3, "breakfast")
+# subList = menu.sampleN(3, "dinner")
 # print("------------subList with filter")
 # print(subList)
