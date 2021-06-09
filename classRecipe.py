@@ -19,7 +19,7 @@ class Recipe:
         self.category = category
         
     def __repr__(self):
-       return (f'{self.title!r}  -  {self.category!r}')
+       return (f'{self.title!r}  -  {self.category!r} - {self.ingridients!r}')
 
     def __str__(self):
         return f'{self.title}  -  {self.category}'

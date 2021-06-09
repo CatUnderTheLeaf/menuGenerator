@@ -18,8 +18,20 @@ from classMenu import Menu
 #     cats = [line.rstrip() for line in f]
 # print("------------cat is read from file")
 # print(cats)
-#-------------end of helper code 
 
+# with open('recipe.list', 'rb') as file:
+#     recipeList = pickle.load(file)
+# with open('ingridients') as f:
+#     ingridients = [line.rstrip() for line in f]
+#     print(ingridients)
+# for (recipe, ingr) in zip(recipeList, ingridients):
+#     recipe.ingridients = ingr
+    # print(recipe.title)
+    # print(recipe.category)
+    # print(recipe.ingridients)
+# with open('recipe.list', 'wb') as file:
+#     pickle.dump(recipeList, file)
+# print(recipeList[0].ingridients)
 # make products dictionary
 # from pathlib import Path
 
