@@ -9,11 +9,14 @@ category - breakfast/dinner
  """
 
 class Recipe:
-    def __init__(self, title="", ingridients=[], prepareTime="short", text="", category="breakfast"):        
+
+    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", category="breakfast"):        
         self.title = title
         # TODO later implement, now it is not so important
         # self.img = img
         self.ingridients = ingridients
+        self.food_class = food_class
+        self.nutrients = nutrients
         self.prepareTime = prepareTime
         self.description = text
         self.category = category

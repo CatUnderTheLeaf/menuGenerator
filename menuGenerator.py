@@ -42,41 +42,20 @@ from classMenu import Menu
 #         products[p.name] = menuList
 # print(products)
 # # dump products dict in a file
-# with open('products.list', 'wb') as file:
+# with open('class_products.list', 'wb') as file:
 #   pickle.dump(products, file)
 
 #-------------end of helper code 
+
+
+
+
 
 
 # Create Menu object
 menu = Menu()
 
 # generate menu for n days applying rules
-menu.generateDailyMenu(7)
+# menu.generateDailyMenu(7)
 
 
-
-# print("------------from Menu object")
-# for recipe in menu.recipeList:
-#     print(recipe)
-# print(menu.products)
-# with open('products.list', 'rb') as file:
-#     products = pickle.load(file)
-    # print(products)
-
-# # when you can't afford to have duplicates while sampling your data.
-# print(menu)
-# subList = menu.sampleN(3)
-# print("------------subList")
-# print(subList)
-
-# # when you can afford to have duplicates in your sampling
-# choices = menu.choicesN(3)
-# print("------------choices")
-# print(choices)
-
-# # sample with category, eg "breakfast"
-# subList = menu.sampleN(3, "breakfast")
-# subList = menu.sampleN(3, "dinner")
-# print("------------subList with filter")
-# print(subList)

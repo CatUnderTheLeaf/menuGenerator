@@ -1,1 +1,10 @@
 At Breakfast serve only breakfast
+cereals_grains_pasta_bread_vegan is carb
+dried_beans is carb
+fat_nuts is fat
+fruits is carb
+high_carb_veggies is carb
+low_carb_veggies is carb
+meat_fish_cheese_eggs is protein
+milk is carb and protein
+other_seasoning is free
