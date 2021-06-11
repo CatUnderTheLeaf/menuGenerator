@@ -1,23 +1,26 @@
 """ 
 A class that represent rules for generating menu
 
-rules - list of Rules
-
 rules can be written in such patterns:
     "At breakfast serve only breakfast"
     (meal time                  Category)    
     "Vegetable is carb and fiber"
     (type           nutrients)
-    "At breakfast serve only carbs"
-    (meal time                nutrient category)
+    "For Breakfast use carb"
+    (meal time    nutrient category)
 
  """
 
 class Rules:
-    # list of categories per meal
+    """ 
+    meal_cat: list of categories per meal
+    class_nutrient: list of correspondence of food class to nutrient type
+    meal_nutrient: list of nutrients per meal
+     """
+
     meal_cat = []
-    # list of correspondence of food class to nutrient type
     class_nutrient = []
+    meal_nutrient = []
 
     def __init__(self):
         print("load rules")
@@ -29,19 +32,30 @@ class Rules:
                     # remove prefix 'At'
                     self.meal_cat.append((meal[len('At '):], cat))                
                 elif ' is ' in rule:
-                    product_class, nutrient = rule.split(' is ')
-                    if ' and ' in nutrient:
-                        nutrient1, nutrient2 = nutrient.split(' and ')
-                        self.class_nutrient.append((product_class, nutrient1))
-                        self.class_nutrient.append((product_class, nutrient2))
+                    product_class, nutrients = rule.split(' is ')
+                    if ' and ' in nutrients:
+                        nutrients_list = nutrients.split(' and ')
+                        for nutrient in nutrients_list:
+                            self.class_nutrient.append((product_class, nutrient))  
                     else:
-                        self.class_nutrient.append((product_class, nutrient))
+                        self.class_nutrient.append((product_class, nutrients))
+                elif ' use ' in rule:
+                    product_class, nutrients = rule.split(' use ')
+                    product_class = product_class[len('For '):]
+                    if ' and ' in nutrients:
+                        nutrients_list = nutrients.split(' and ')
+                        for nutrient in nutrients_list:
+                            self.meal_nutrient.append((product_class, nutrient))                       
+                    else:
+                        self.meal_nutrient.append((product_class, nutrients))
                 print(rule)
         print(self.meal_cat)
         print(self.class_nutrient)
+        print(self.meal_nutrient)
 
     """
-     check if there are rules for this meal type,
+     check and filter recipes if there are 
+     rules for this meal type and category,
      useful if user wants to eat for breakfast only 'breakfast' food
 
      :param meal_type: 'Breakfast', 'Lunch', 'Dinner', etc
@@ -56,6 +70,29 @@ class Rules:
                 print("there is no such rule in Rules")
                 return None
     
+    """
+     check and filter recipes if there are 
+     rules for this meal and nutrient types,
+     useful if user wants to eat for breakfast only 'carb' food
+
+     :param meal_type: 'Breakfast', 'Lunch', 'Dinner', etc
+     :return: None or category of meals for this meal_type
+    """
+    def filterByNutrient(self, meal_type):
+        nutrient_list = []
+        for (meal, nutrient) in self.meal_nutrient:
+            if meal == meal_type:
+                # print("apply rule from Rules")
+                nutrient_list.append(nutrient)
+            # else:
+            #     print("there is no such rule in Rules")
+                
+        if not nutrient_list:
+            return None
+        else:
+            print("Nutrients apply rule from Rules")
+            return nutrient_list
+
     """ 
     from recipe food classes identify 
     to which nutrient type belongs recipe

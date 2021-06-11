@@ -6,6 +6,7 @@ Primarly I thought it was a problem like generating a schedule. To solve such pr
 I decided to have some set of rules for generating menu. There are python [knowledge bases or expert systems](https://stackoverflow.com/questions/53421492/python-rule-based-engine). Article ["Wizards and warriors"](https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/) and post on [Stackoverflow](https://stackoverflow.com/questions/55226942/python-how-to-to-make-set-of-rules-for-each-class-in-a-game) inspired me. I will try to make some rules DB and use DSL to retrieve them.
 - Step 5:
   - load anew when there are changes in products lists
+  - make difference between low and high carbs
 
 - Step 4:
   - add products to recipes
