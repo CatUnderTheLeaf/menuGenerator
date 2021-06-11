@@ -7,11 +7,23 @@ I decided to have some set of rules for generating menu. There are python [knowl
 - Step 5:
   - load anew when there are changes in products lists
   - make difference between low and high carbs
+  - why pancakes are not whole carb?
 
 - Step 4:
   - add products to recipes
   - add rules for categorizing recipes (carbs, protein, fats)
   - add new menu rules and generate menu
+> Breakfast
+> ['carb', 'fat', 'free']
+> ['oat porridge', 'musli', 'fruit salad', 'oat porridge', 'fruit salad', 'musli', 'oat porridge']
+> 
+> Lunch
+> ['carb', 'protein', 'fat', 'free']
+> ['cake', 'ragout', 'ragout', 'cous-cous', 'fried fish', 'fried fish', 'salad']
+> 
+> Dinner
+> ['protein', 'fat', 'free']
+> ['vienne steak', 'eggs with mayo', 'omelette', 'meat balls', 'eggs with mayo', 'chicken wings', 'vienne steak']
 
 - Step 3:
   - rename class RecipeList to Menu
