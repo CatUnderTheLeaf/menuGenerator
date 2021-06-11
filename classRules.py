@@ -22,9 +22,12 @@ class Rules:
     class_nutrient = []
     meal_nutrient = []
 
-    def __init__(self):
+    """ 
+    :param db_rules: path to db file
+     """
+    def __init__(self, db_rules):
         print("load rules")
-        with open('rules', 'r') as file:
+        with open(db_rules, 'r') as file:
             for line in file:
                 rule = line.strip()
                 if ' serve only ' in rule:
