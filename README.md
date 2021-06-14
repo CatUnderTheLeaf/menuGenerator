@@ -7,6 +7,7 @@ I decided to have some set of rules for generating menu. There are python [knowl
 - Step 5:
   - load anew when there are changes in products lists
   - make difference between low and high carbs
+  - rename category to tags
   - why pancakes are not whole carb?
 
 - Step 4:
@@ -31,7 +32,7 @@ I decided to have some set of rules for generating menu. There are python [knowl
   - generate simple menu
 
 - Step 2:
-  - add category to the class (breakfast, dinner, etc.)
+  - add tags to the class (breakfast, dinner, etc.)
   - add a RecipeList class with filter functions
   - choose 7/14/21... items with criteria
 

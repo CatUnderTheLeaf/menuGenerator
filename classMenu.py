@@ -14,7 +14,7 @@ DB_PRODUCTS = 'db/class_products.list'
 DB_RULES = 'db/rules'
 PRODUCT_DIR = 'products'
 HELPER_ITEM = 'recipe_helpers/menuItems'
-HELPER_CATEGORY = 'recipe_helpers/category'
+HELPER_TAGS = 'recipe_helpers/tags'
 HELPER_INGRIDIENTS = 'recipe_helpers/ingridients'
 
 class Menu:
@@ -74,7 +74,7 @@ class Menu:
     :return: list of unique nutrient types (carb, protein, fat or free)    
      """
     def identifyNutrients(self, recipe):            
-        nutrients = self.rules.identifyNutrient(recipe.food_class)
+        nutrients = self.rules.identifyNutrient(recipe.food_class, recipe.tags)
                
         return nutrients
 
@@ -88,10 +88,10 @@ class Menu:
         print("!!!-----------------generating menu----------------!!!")
         for meal in self.mpd:
             # Check if recipes should be filtered 
-            # by category for this type of meal
-            cat=self.rules.filterByCat(meal)   
+            # by tags for this type of meal
+            tag=self.rules.filterByTag(meal)   
             nutr = self.rules.filterByNutrient(meal)         
-            recipe = self.choicesN(n, cat, nutr)
+            recipe = self.choicesN(n, tag, nutr)
             print(meal)
             print(nutr)
             print(recipe)
@@ -106,14 +106,14 @@ class Menu:
     choose n recipes without duplicates
 
     :param n: number of recipes, cannot be bigger then amount of recipes
-    :param cat: category of recipe ('breakfast', etc)
+    :param tag: tags of recipe ('breakfast', etc)
     :return: a subset of recipes
     """
-    def sampleN(self, n=1, cat=None):
+    def sampleN(self, n=1, tag=None):
         sublist = self.recipeList
-        if cat is not None:
-            print("filter with category")
-            sublist = self.filter(cat)
+        if tag is not None:
+            print("filter with tags")
+            sublist = self.filter(tag)
         newList = random.sample(sublist, n)
         return newList
 
@@ -121,33 +121,33 @@ class Menu:
     choose n recipes with duplicates
 
     :param n: number of recipes, can be bigger then amount of recipes
-    :param cat: category of recipe ('breakfast', etc)
+    :param tag: tags of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
     :return: n recipes
     """
-    def choicesN(self, n=1, cat=None, nutr=None):
+    def choicesN(self, n=1, tag=None, nutr=None):
         sublist = self.recipeList
-        if cat is not None or nutr is not None:
-            print("filter with category or nutrients")
-            sublist = self.filter(cat, nutr)
+        if tag is not None or nutr is not None:
+            print("filter with tags or nutrients")
+            sublist = self.filter(tag, nutr)
         newList = random.choices(sublist, k=n)
         return newList
 
     """ 
-    filter recipes by category or nutrients
+    filter recipes by tags or nutrients
 
-    :param cat: category of recipe ('breakfast', etc)
+    :param tag: tags of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
     :return: a subset of recipes
     """
-    def filter(self, cat=None, nutr=None):
+    def filter(self, tag=None, nutr=None):
         sublist = []
         for recipe in self.recipeList:
-            has_category = (recipe.category==cat) if (cat is not None) else True
+            has_tags = (recipe.tags==tag) if (tag is not None) else True
             is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
-            if has_category and is_subset:
+            if has_tags and is_subset:
                 sublist.append(recipe)
-        # sublist = [x for x in self.recipeList if (cat is not None and x.category==cat)]
+        # sublist = [x for x in self.recipeList if (tag is not None and x.tags==tag)]
         return sublist
 
     """ 
@@ -173,15 +173,15 @@ class Menu:
     def reloadRecipes(self):
         with open(HELPER_ITEM) as f:
             menuList = [line.rstrip() for line in f]
-        with open(HELPER_CATEGORY) as f:
-            cats = [line.rstrip() for line in f]
+        with open(HELPER_TAGS) as f:
+            tags = [line.rstrip().split(', ') for line in f]
         with open(HELPER_INGRIDIENTS) as f:
             ingridients = [line.rstrip().split(', ') for line in f]
         
         # add recipe objects to a list
         menu = []
-        for (item, cat, ingr) in zip(menuList, cats, ingridients):
-            new_recipe = Recipe(title=item, category=cat, ingridients=ingr)
+        for (item, tag, ingr) in zip(menuList, tags, ingridients):
+            new_recipe = Recipe(title=item, tags=tag, ingridients=ingr)
             new_recipe.food_class = self.identifyFoodClass(new_recipe)
             new_recipe.nutrients = self.identifyNutrients(new_recipe)
             menu.append(new_recipe)

@@ -10,9 +10,9 @@ class Recipe:
     nutrients: list of nutrients, 'carb', 'protein', etc
     prepareTime: short/middle/long
     description: recipe instructions
-    category: breakfast/dinner
+    tags: breakfast/dinner, dough food, etc
      """
-    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", category="breakfast"):        
+    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[]):        
         self.title = title
         # TODO later implement, now it is not so important
         # self.img = img
@@ -21,11 +21,11 @@ class Recipe:
         self.nutrients = nutrients
         self.prepareTime = prepareTime
         self.description = text
-        self.category = category
+        self.tags = tags
         
     def __repr__(self):
-       return (f'{self.title!r}  -  {self.category!r} - {self.ingridients!r} - {self.food_class!r} - {self.nutrients!r}')
+       return (f'{self.title!r}  -  {self.tags!r} - {self.ingridients!r} - {self.food_class!r} - {self.nutrients!r}')
 
     def __str__(self):
-        return f'{self.title}  -  {self.category}'
+        return f'{self.title}  -  {self.tags}'
         

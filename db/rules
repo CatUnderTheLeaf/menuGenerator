@@ -1,4 +1,5 @@
 At Breakfast serve only breakfast
+For dough food ignore protein
 cereals_grains_pasta_bread_vegan is high_carb
 dried_beans is high_carb
 fat_nuts is fat
@@ -6,8 +7,8 @@ fruits is high_carb
 high_carb_veggies is high_carb
 low_carb_veggies is low_carb
 meat_fish_cheese_eggs is protein
-dairy is low_carb and protein and fat
+dairy is low_carb, protein, fat
 other_seasoning is free
-For Breakfast use low_carb and high_carb and fat and free
-For Lunch use low_carb and high_carb and protein and fat and free
-For Dinner use protein and fat and free and low_carb
+For Breakfast use low_carb, high_carb, fat, free
+For Lunch use low_carb, high_carb, protein, fat, free
+For Dinner use protein, fat, free, low_carb
