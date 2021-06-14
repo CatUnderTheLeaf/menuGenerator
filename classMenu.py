@@ -113,7 +113,7 @@ class Menu:
         sublist = self.recipeList
         if cat is not None:
             print("filter with category")
-            sublist = self.filterCategory(cat)
+            sublist = self.filter(cat)
         newList = random.sample(sublist, n)
         return newList
 
@@ -128,19 +128,19 @@ class Menu:
     def choicesN(self, n=1, cat=None, nutr=None):
         sublist = self.recipeList
         if cat is not None or nutr is not None:
-            print("filter with category or nutrints")
-            sublist = self.filterCategory(cat, nutr)
+            print("filter with category or nutrients")
+            sublist = self.filter(cat, nutr)
         newList = random.choices(sublist, k=n)
         return newList
 
     """ 
-    filter recipes by category
+    filter recipes by category or nutrients
 
     :param cat: category of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
     :return: a subset of recipes
     """
-    def filterCategory(self, cat=None, nutr=None):
+    def filter(self, cat=None, nutr=None):
         sublist = []
         for recipe in self.recipeList:
             has_category = (recipe.category==cat) if (cat is not None) else True

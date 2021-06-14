@@ -1,13 +1,13 @@
 At Breakfast serve only breakfast
-cereals_grains_pasta_bread_vegan is carb
-dried_beans is carb
+cereals_grains_pasta_bread_vegan is high_carb
+dried_beans is high_carb
 fat_nuts is fat
-fruits is carb
-high_carb_veggies is carb
-low_carb_veggies is carb
+fruits is high_carb
+high_carb_veggies is high_carb
+low_carb_veggies is low_carb
 meat_fish_cheese_eggs is protein
-milk is carb and protein
+dairy is low_carb and protein and fat
 other_seasoning is free
-For Breakfast use carb and fat and free
-For Lunch use carb and protein and fat and free
-For Dinner use protein and fat and free
+For Breakfast use low_carb and high_carb and fat and free
+For Lunch use low_carb and high_carb and protein and fat and free
+For Dinner use protein and fat and free and low_carb
