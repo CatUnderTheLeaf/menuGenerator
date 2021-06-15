@@ -113,12 +113,13 @@ class Rules:
     :return: nutrient type
     """
     def identifyNutrient(self, food_classes, tags):
-        nutrients = []
+        nutrients = set()
         for food in food_classes:
-            nutrients.append(self.class_nutrient[food])
-            # for (food_class, nutrient) in self.class_nutrient:
-            #     if food_class==food:
-            #         nutrients.append(nutrient)
-        
-        return list(set(nutrients))
+            nutrients.update(self.class_nutrient[food])
+        common_tags = set(tags).intersection(set(self.tag_nutrient))
+        if common_tags:
+            for tags in list(common_tags):
+                for tag in self.tag_nutrient[tags]:
+                    nutrients.discard(tag)
+        return list(nutrients)
         

@@ -143,7 +143,7 @@ class Menu:
     def filter(self, tag=None, nutr=None):
         sublist = []
         for recipe in self.recipeList:
-            has_tags = (recipe.tags==tag) if (tag is not None) else True
+            has_tags = (tag in recipe.tags) if (tag is not None) else True
             is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
             if has_tags and is_subset:
                 sublist.append(recipe)
