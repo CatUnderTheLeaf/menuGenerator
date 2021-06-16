@@ -4,4 +4,5 @@ from classMenu import Menu
 menu = Menu()
 
 # generate menu for n days applying rules
-menu.generateDailyMenu(1)
+menu.generateDailyMenu(7)
+print(menu)

@@ -10,6 +10,43 @@ I decided to have some set of rules for generating menu. There are python [knowl
   - on Sunday I eat pancakes and order food from cafe
   - in recipe I want to use "Capsicum" along "Red Capsicum" or "Green Capsicum"
   - Avocado is fat and low_carb
+>   !!!-----------------generated menu----------------!!!
+> 
+> Wednesday:
+> Breakfast - oat porridge  -  ['breakfast']
+> Lunch - sandwich  -  ['dinner']
+> Dinner - eggs with mayo  -  ['dinner']
+> 
+> Thursday:
+> Breakfast - pancakes  -  ['breakfast', 'dough food']
+> Lunch - salad  -  ['dinner']
+> Dinner - meat balls  -  ['dinner']
+> 
+> Friday:
+> Breakfast - pancakes  -  ['breakfast', 'dough food']
+> Lunch - pizza  -  ['dinner']
+> Dinner - omelette  -  ['dinner']
+> 
+> Saturday:
+> Breakfast - pancakes  -  ['breakfast', 'dough food']
+> Lunch - youghurt  -  ['breakfast']
+> Dinner - eggs with mayo  -  ['dinner']
+> 
+> Sunday:
+> Breakfast - pancakes  -  ['breakfast', 'dough food']
+> Lunch - fruit salad  -  ['breakfast']
+> Dinner - vienne steak  -  ['dinner']
+> 
+> Monday:
+> Breakfast - fruit salad  -  ['breakfast']
+> Lunch - pancakes  -  ['breakfast', 'dough food']
+> Dinner - youghurt  -  ['breakfast']
+> 
+> Tuesday:
+> Breakfast - musli  -  ['breakfast']
+> Lunch - fruit salad  -  ['breakfast']
+> Dinner - eggs with mayo  -  ['dinner']
+
 - Step 5:
   - load anew when there are changes in products lists
   - make difference between low and high carbs

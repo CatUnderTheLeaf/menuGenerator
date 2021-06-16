@@ -1,6 +1,7 @@
 import random
 import pickle
 from pathlib import Path
+from datetime import date, timedelta
 
 from classRules import Rules
 from classRecipe import Recipe
@@ -18,17 +19,20 @@ HELPER_TAGS = 'recipe_helpers/tags'
 HELPER_INGRIDIENTS = 'recipe_helpers/ingridients'
 
 class Menu:
+    menu = {}
     """ 
     recipeList: list of all recipes
     class_products: dictionary of food_class:[products]
     products_class: dictionary of product:food_class
     rules: object type Rules with all rules for generating menu
     mpd: meals per day
+    n: number of days
     
     """    
     def __init__(self):                 
         self.rules = Rules(DB_RULES)
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
+        self.n = 1
 
         # if there are changes in product files reload them
         # self.reloadProducts()
@@ -55,7 +59,15 @@ class Menu:
        return repr(self.recipeList)
 
     def __str__(self):
-       return str(self.recipeList)
+        menu = []
+        menu.append("!!!-----------------generated menu----------------!!!")
+        sdate = date.today()
+        for i in range(self.n):
+            day = sdate + timedelta(days=i)
+            menu.append("\n{}:".format(day.strftime("%A")))
+            for meal in self.menu:
+                menu.append("{} - {}".format(meal, self.menu[meal][i]))
+        return "\n".join(menu)
     
     """ 
     identify to which food class 
@@ -91,16 +103,13 @@ class Menu:
     
      """
     def generateDailyMenu(self, n=1):
-        print("!!!-----------------generating menu----------------!!!")
+        self.n = n        
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by tags for this type of meal
-            tag=self.rules.filterByTag(meal)   
-            nutr = self.rules.filterByNutrient(meal)         
-            recipe = self.choicesN(n, tag, nutr)
-            print(meal)
-            print(nutr)
-            print(recipe)
+            tag, nutr = self.rules.filterByMeal(meal)
+            recipes = self.choicesN(n, tag, nutr)
+            self.menu[meal] = recipes
         return
 
     # shuffle recipe list
@@ -134,7 +143,7 @@ class Menu:
     def choicesN(self, n=1, tag=None, nutr=None):
         sublist = self.recipeList
         if tag is not None or nutr is not None:
-            print("filter with tags or nutrients")
+            # print("filter with tags or nutrients")
             sublist = self.filter(tag, nutr)
         newList = random.choices(sublist, k=n)
         return newList
@@ -153,7 +162,6 @@ class Menu:
             is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
             if has_tags and is_subset:
                 sublist.append(recipe)
-        # sublist = [x for x in self.recipeList if (tag is not None and x.tags==tag)]
         return sublist
 
     """ 

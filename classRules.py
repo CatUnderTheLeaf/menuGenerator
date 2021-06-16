@@ -51,6 +51,18 @@ class Rules:
 
     """
      check and filter recipes if there are 
+     rules for this meal type
+
+     :param meal_type: 'Breakfast', 'Lunch', 'Dinner', etc
+     :return: tuple of tags and nutrients
+    """
+    def filterByMeal(self, meal_type):
+        tag = self.filterByTag(meal_type)
+        nutr = self.filterByNutrient(meal_type)
+
+        return tag, nutr
+    """
+     check and filter recipes if there are 
      rules for this meal type and tags,
      useful if user wants to eat for breakfast only 'breakfast' food
 
@@ -59,10 +71,10 @@ class Rules:
     """
     def filterByTag(self, meal_type):
         if meal_type in self.meal_tag:
-            print("apply filter by tag from Rules")
+            # print("apply filter by tag from Rules")
             return self.meal_tag[meal_type]
         else:
-            print("there is no such rule in Rules to filter by tag")
+            # print("there is no such rule in Rules to filter by tag")
             return None
     
     """
@@ -75,10 +87,10 @@ class Rules:
     """
     def filterByNutrient(self, meal_type):
         if meal_type in self.meal_nutrient:
-            print("Nutrients apply rule from Rules")
+            # print("Nutrients apply rule from Rules")
             return self.meal_nutrient[meal_type]
         else:
-            print("there is no such rule in Rules")
+            # print("there is no such rule in Rules")
             return None
 
     """ 
