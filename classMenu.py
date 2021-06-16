@@ -36,8 +36,14 @@ class Menu:
         with open(DB_PRODUCTS, 'rb') as file:
             self.class_products = pickle.load(file)   
             print("load class_products dictionary")
-            self.products_class = {v: k for k, values in self.class_products.items() for v in values}            
-        
+            self.products_class = {}
+            for k, values in self.class_products.items():
+                for v in values:
+                    if v in self.products_class:
+                        self.products_class[v].append(k)
+                    else:
+                        self.products_class[v] = [k]
+        # print(self.products_class)
         # if there are changes in recipe files reload them
         # self.reloadRecipes()        
 
@@ -59,10 +65,10 @@ class Menu:
     :return: list of unique food classes    
      """
     def identifyFoodClass(self, recipe):            
-        foodClass = []
+        foodClass = set()
         for ingridient in recipe.ingridients:
-            foodClass.append(self.products_class[ingridient])
-        foodClass = list(set(foodClass))
+            foodClass.update(self.products_class[ingridient])
+        foodClass = list(foodClass)
                
         return foodClass
 

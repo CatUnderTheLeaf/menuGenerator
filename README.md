@@ -9,6 +9,7 @@ I decided to have some set of rules for generating menu. There are python [knowl
   - add dates to generating
   - on Sunday I eat pancakes and order food from cafe
   - in recipe I want to use "Capsicum" along "Red Capsicum" or "Green Capsicum"
+  - Avocado is fat and low_carb
 - Step 5:
   - load anew when there are changes in products lists
   - make difference between low and high carbs

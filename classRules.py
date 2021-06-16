@@ -43,11 +43,11 @@ class Rules:
                 elif ' ignore ' in rule:
                     tag, nutrients = rule.split(' ignore ')
                     self.tag_nutrient[tag[len('For '):]] = nutrients.split(', ')
-                print(rule)
-        print(self.meal_tag)
-        print(self.class_nutrient)
-        print(self.meal_nutrient)
-        print(self.tag_nutrient)
+        #         print(rule)
+        # print(self.meal_tag)
+        # print(self.class_nutrient)
+        # print(self.meal_nutrient)
+        # print(self.tag_nutrient)
 
     """
      check and filter recipes if there are 
@@ -59,20 +59,11 @@ class Rules:
     """
     def filterByTag(self, meal_type):
         if meal_type in self.meal_tag:
-            print("apply rule from Rules")
+            print("apply filter by tag from Rules")
             return self.meal_tag[meal_type]
         else:
-            print("there is no such rule in Rules")
+            print("there is no such rule in Rules to filter by tag")
             return None
-
-
-        # for (meal, tag) in self.meal_tag:
-        #     if meal == meal_type:
-        #         print("apply rule from Rules")
-        #         return tag
-        #     else:
-        #         print("there is no such rule in Rules")
-        #         return None
     
     """
      check and filter recipes if there are 
@@ -89,20 +80,6 @@ class Rules:
         else:
             print("there is no such rule in Rules")
             return None
-
-        # nutrient_list = []
-        # for (meal, nutrient) in self.meal_nutrient:
-        #     if meal == meal_type:
-        #         # print("apply rule from Rules")
-        #         nutrient_list.append(nutrient)
-        #     # else:
-        #     #     print("there is no such rule in Rules")
-                
-        # if not nutrient_list:
-        #     return None
-        # else:
-        #     print("Nutrients apply rule from Rules")
-        #     return nutrient_list
 
     """ 
     from recipe food classes identify 
