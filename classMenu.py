@@ -17,6 +17,7 @@ PRODUCT_DIR = 'products'
 HELPER_ITEM = 'recipe_helpers/menuItems'
 HELPER_TAGS = 'recipe_helpers/tags'
 HELPER_INGRIDIENTS = 'recipe_helpers/ingridients'
+HELPER_TIME = 'recipe_helpers/prepareTime'
 
 class Menu:
     menu = {}
@@ -47,7 +48,6 @@ class Menu:
                         self.products_class[v].append(k)
                     else:
                         self.products_class[v] = [k]
-        # print(self.products_class)
         # if there are changes in recipe files reload them
         # self.reloadRecipes()        
 
@@ -64,7 +64,7 @@ class Menu:
         sdate = date.today()
         for i in range(self.n):
             day = sdate + timedelta(days=i)
-            menu.append("\n{}:".format(day.strftime("%A")))
+            menu.append("\n{}:".format(day.strftime("%a")))
             for meal in self.menu:
                 menu.append("{} - {}".format(meal, self.menu[meal][i]))
         return "\n".join(menu)
@@ -102,8 +102,9 @@ class Menu:
     :param n: number of days
     
      """
-    def generateDailyMenu(self, n=1):
-        self.n = n        
+    def generateDailyMenu(self, sdate=date.today(), edate=date.today()):
+        n = (edate - sdate).days + 1
+        self.n = n
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by tags for this type of meal
@@ -191,15 +192,17 @@ class Menu:
             tags = [line.rstrip().split(', ') for line in f]
         with open(HELPER_INGRIDIENTS) as f:
             ingridients = [line.rstrip().split(', ') for line in f]
+        with open(HELPER_TIME) as f:
+            prepTime = [line.rstrip() for line in f]
         
         # add recipe objects to a list
         menu = []
-        for (item, tag, ingr) in zip(menuList, tags, ingridients):
-            new_recipe = Recipe(title=item, tags=tag, ingridients=ingr)
+        for (item, tag, ingr, prep) in zip(menuList, tags, ingridients, prepTime):
+            new_recipe = Recipe(title=item, tags=tag, ingridients=ingr, prepareTime=prep)
             new_recipe.food_class = self.identifyFoodClass(new_recipe)
             new_recipe.nutrients = self.identifyNutrients(new_recipe)
             menu.append(new_recipe)
-        print(menu)
+        
         # dump list in a file
         with open(DB_RECIPE, 'wb') as file:
             pickle.dump(menu, file)

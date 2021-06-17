@@ -1,8 +1,13 @@
+from datetime import date, timedelta
+
 from classMenu import Menu
 
 # Create Menu object
 menu = Menu()
 
-# generate menu for n days applying rules
-menu.generateDailyMenu(7)
+# generate menu for n+1 days applying rules
+n = 6
+sdate = date.today()
+edate = sdate + timedelta(days=n)
+menu.generateDailyMenu(sdate, edate)
 print(menu)
