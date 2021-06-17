@@ -25,6 +25,7 @@ class Recipe:
         
     def __repr__(self):
        return (f'{self.title!r}  -  {self.tags!r} - {self.ingridients!r} - {self.food_class!r} - {self.nutrients!r}')
+    #    return (f'{self.title!r}')
 
     def __str__(self):
         return f'{self.title}  -  {self.tags} - {self.prepareTime}'

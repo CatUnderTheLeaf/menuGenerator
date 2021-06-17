@@ -8,6 +8,10 @@ rules can be written in such patterns:
     (type           nutrients)
     "For Breakfast use carb"
     (meal time    nutrient category)
+    "For dough food ignore protein"
+    (Tag                 nutrient)
+    "medium, long prepareTime on Sat, Sun"
+    (preparation time          day of week)
 
  """
 
@@ -16,12 +20,15 @@ class Rules:
     meal_tag: list of tags per meal
     class_nutrient: list of correspondence of food class to nutrient type
     meal_nutrient: list of nutrients per meal
+    tag_nutrient: list of ignored nutrients for tags
+    day_time: list of preparation times for weekdays
      """
 
     meal_tag = {}
     class_nutrient = {}
     meal_nutrient = {}
     tag_nutrient = {}
+    day_time = {}
 
     """ 
     :param db_rules: path to db file
@@ -43,11 +50,16 @@ class Rules:
                 elif ' ignore ' in rule:
                     tag, nutrients = rule.split(' ignore ')
                     self.tag_nutrient[tag[len('For '):]] = nutrients.split(', ')
+                elif ' prepareTime on ' in rule:
+                    times, days = rule.split(' prepareTime on ')
+                    for day in days.split(', '):
+                        self.day_time[day] = times.split(', ')
         #         print(rule)
         # print(self.meal_tag)
         # print(self.class_nutrient)
         # print(self.meal_nutrient)
         # print(self.tag_nutrient)
+        # print(self.day_time)
 
     """
      check and filter recipes if there are 
@@ -93,6 +105,29 @@ class Rules:
             # print("there is no such rule in Rules")
             return None
 
+    """ 
+    filter by day of week and its prepare time
+
+    :param days: list of days
+    :return: list of tuples (prepareTime, n concequent days)
+     """
+    def filterByDay(self, days):
+        prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
+        # TODO look for better solution
+        groups = []
+        prev = prepForDay[0]
+        count = 1
+        for prep in prepForDay[1:]:
+            if prep==prev:
+                count = count + 1
+            else:
+                groups.append((prev, count))
+                prev = prep
+                count = 1
+        groups.append((prev, count))
+        
+        return groups
+    
     """ 
     from recipe food classes identify 
     to which nutrient type belongs recipe

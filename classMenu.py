@@ -20,16 +20,18 @@ HELPER_INGRIDIENTS = 'recipe_helpers/ingridients'
 HELPER_TIME = 'recipe_helpers/prepareTime'
 
 class Menu:
-    menu = {}
     """ 
     recipeList: list of all recipes
     class_products: dictionary of food_class:[products]
     products_class: dictionary of product:food_class
     rules: object type Rules with all rules for generating menu
     mpd: meals per day
+    menu: dict of recipes per meals
     n: number of days
     
-    """    
+    """
+    menu = {}
+        
     def __init__(self):                 
         self.rules = Rules(DB_RULES)
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
@@ -99,18 +101,29 @@ class Menu:
     """ 
     generate Menu for n days
 
-    :param n: number of days
+    :param sdate: start date
+    :param edate: end date
     
      """
     def generateDailyMenu(self, sdate=date.today(), edate=date.today()):
         n = (edate - sdate).days + 1
+        days = []
         self.n = n
+        for i in range(self.n):
+            day = sdate + timedelta(days=i)
+            days.append(day.strftime("%a"))
+        group_days = self.rules.filterByDay(days)
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by tags for this type of meal
             tag, nutr = self.rules.filterByMeal(meal)
-            recipes = self.choicesN(n, tag, nutr)
-            self.menu[meal] = recipes
+            for (prep, count) in group_days:
+                recipes = self.choicesN(count, tag, nutr, prep)                
+                if meal in self.menu:
+                    self.menu[meal].extend(recipes)
+                else:
+                    self.menu[meal] = recipes
+                
         return
 
     # shuffle recipe list
@@ -139,13 +152,14 @@ class Menu:
     :param n: number of recipes, can be bigger then amount of recipes
     :param tag: tags of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
+    :param prep: list of preparation times
     :return: n recipes
     """
-    def choicesN(self, n=1, tag=None, nutr=None):
+    def choicesN(self, n=1, tag=None, nutr=None, prep=None):
         sublist = self.recipeList
         if tag is not None or nutr is not None:
             # print("filter with tags or nutrients")
-            sublist = self.filter(tag, nutr)
+            sublist = self.filter(tag, nutr, prep)
         newList = random.choices(sublist, k=n)
         return newList
 
@@ -154,14 +168,16 @@ class Menu:
 
     :param tag: tags of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
+    :param prep: list of preparation times
     :return: a subset of recipes
     """
-    def filter(self, tag=None, nutr=None):
+    def filter(self, tag=None, nutr=None, prep=None):
         sublist = []
         for recipe in self.recipeList:
+            good_time = (recipe.prepareTime in prep) if ((prep is not None) and prep!=[]) else True
             has_tags = (tag in recipe.tags) if (tag is not None) else True
             is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
-            if has_tags and is_subset:
+            if has_tags and is_subset and good_time:
                 sublist.append(recipe)
         return sublist
 

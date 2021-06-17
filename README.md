@@ -8,6 +8,7 @@ I decided to have some set of rules for generating menu. There are python [knowl
 - Step 6:
   - add dates to generating
   - add prepareTime to recipes
+  - add new rules for days of week
   - on Sunday I eat pancakes and order food from cafe
   - in recipe I want to use "Capsicum" along "Red Capsicum" or "Green Capsicum"
   - Avocado is fat and low_carb
