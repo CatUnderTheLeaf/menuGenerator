@@ -1,3 +1,4 @@
+from itertools import groupby
 """ 
 A class that represent rules for generating menu
 
@@ -113,19 +114,7 @@ class Rules:
      """
     def filterByDay(self, days):
         prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
-        # TODO look for better solution
-        groups = []
-        prev = prepForDay[0]
-        count = 1
-        for prep in prepForDay[1:]:
-            if prep==prev:
-                count = count + 1
-            else:
-                groups.append((prev, count))
-                prev = prep
-                count = 1
-        groups.append((prev, count))
-        
+        groups = [(k, len(list(g))) for k, g in groupby(prepForDay)]
         return groups
     
     """ 
