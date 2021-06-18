@@ -44,6 +44,7 @@ class Menu:
             self.class_products = pickle.load(file)   
             print("load class_products dictionary")
             self.products_class = {}
+            # make product dictionary for easy access
             for k, values in self.class_products.items():
                 for v in values:
                     if v in self.products_class:
@@ -123,7 +124,21 @@ class Menu:
                     self.menu[meal].extend(recipes)
                 else:
                     self.menu[meal] = recipes
-                
+        self.discardMeals(days)
+        return
+
+    """ 
+    discard unused meals if there are such in Rules
+    TODO: change later if food should be prepared for 2 days
+
+    :param days: list of days
+
+     """
+    def discardMeals(self, days):
+        days_meals = self.rules.filterDiscardedMeals(days)
+        for (ind, meals) in days_meals:
+            for meal in meals:
+                self.menu[meal][ind] = []
         return
 
     # shuffle recipe list
