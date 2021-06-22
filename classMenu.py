@@ -36,6 +36,7 @@ class Menu:
         self.rules = Rules(DB_RULES)
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
         self.n = 1
+        self.repeatDishes = True
 
         # if there are changes in product files reload them
         # self.reloadProducts()
@@ -114,6 +115,7 @@ class Menu:
             day = sdate + timedelta(days=i)
             days.append(day.strftime("%a"))
         group_days = self.rules.filterByDay(days)
+        print(group_days)
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by tags for this type of meal
@@ -147,22 +149,7 @@ class Menu:
         return self.recipeList
 
     """ 
-    choose n recipes without duplicates
-
-    :param n: number of recipes, cannot be bigger then amount of recipes
-    :param tag: tags of recipe ('breakfast', etc)
-    :return: a subset of recipes
-    """
-    def sampleN(self, n=1, tag=None):
-        sublist = self.recipeList
-        if tag is not None:
-            print("filter with tags")
-            sublist = self.filter(tag)
-        newList = random.sample(sublist, n)
-        return newList
-
-    """ 
-    choose n recipes with duplicates
+    choose n recipes with or without duplicates
 
     :param n: number of recipes, can be bigger then amount of recipes
     :param tag: tags of recipe ('breakfast', etc)
@@ -175,7 +162,12 @@ class Menu:
         if tag is not None or nutr is not None:
             # print("filter with tags or nutrients")
             sublist = self.filter(tag, nutr, prep)
-        newList = random.choices(sublist, k=n)
+        if len(sublist)<n:
+            print("with duplicates")
+            newList = random.choices(sublist, k=n)
+        else:
+            print("without duplicates")
+            newList = random.sample(sublist, n)
         return newList
 
     """ 

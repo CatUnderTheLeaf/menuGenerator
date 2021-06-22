@@ -1,8 +1,6 @@
 # menuGenerator
 A script to generate menu for n days.
 
-There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm.
-
 When I plan a menu I have a bunch of rules:
 - on Working days I don't have much time for cooking
 - at weekend I can prepare dishes with long cooking time
@@ -15,13 +13,18 @@ When I plan a menu I have a bunch of rules:
 - I can eat same main dish for several days with different sidedishes
 - often I need to cook several sidedishes because not all family members eat the same
 
+There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm.
+
 I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/) and post on [Stackoverflow](https://stackoverflow.com/questions/55226942/python-how-to-to-make-set-of-rules-for-each-class-in-a-game). It helped me, because primarly I intended to make class hierarchies and express rules by writing code inside methods. In the article author described a system, where rules are data, not code, and finds it to be more flexible. So I decided to give it a try.
 
 - Step ? (for future):
   - [ ] there are main dishes and multiple sidedishes
+  - [ ] maybe add vegan/vegetarian, fasting , etc
+  - [ ] I can prepare a big load of meat balls, freeze them and use it
+  - [ ] lunch is only for me, but dinner is for the whole family
 
 - Step 7:
-  - [ ] I can eat one dish today at dinner and tomorrow at lunch   
+  - [ ] I can eat one dish today at dinner and tomorrow at lunch
 
 - Step 6:
   - [x] add day names to generating
