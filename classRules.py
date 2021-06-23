@@ -123,6 +123,7 @@ class Rules:
     :return: list of tuples (prepareTime, n concequent days)
      """
     def filterByDay(self, days):
+        days = [day.strftime("%a") for day in days]
         prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
         groups = [(k, len(list(g))) for k, g in groupby(prepForDay)]
         return groups
@@ -132,9 +133,10 @@ class Rules:
     rules for this day of week and meal type
 
     :param days: list of days
+    :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
-        indices = [(i, self.day_discard_meal[x]) for i, x in enumerate(days) if x in self.day_discard_meal]
+        indices = [(x.isoformat(), self.day_discard_meal[x.strftime("%a")]) for x in days if x.strftime("%a") in self.day_discard_meal]
         return indices
 
     """ 

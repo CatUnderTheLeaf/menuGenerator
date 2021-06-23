@@ -36,7 +36,7 @@ class Menu:
         self.rules = Rules(DB_RULES)
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
         self.n = 1
-        self.repeatDishes = True
+        self.repeatDishes = False
 
         # if there are changes in product files reload them
         # self.reloadProducts()
@@ -65,12 +65,10 @@ class Menu:
     def __str__(self):
         menu = []
         menu.append("!!!-----------------generated menu----------------!!!")
-        sdate = date.today()
-        for i in range(self.n):
-            day = sdate + timedelta(days=i)
-            menu.append("\n{}:".format(day.strftime("%a")))
-            for meal in self.menu:
-                menu.append("{} - {}".format(meal, self.menu[meal][i]))
+        for day in self.menu:
+            menu.append("\n{}:".format(day))
+            for meal in self.menu[day]:
+                menu.append("{} - {}".format(meal, self.menu[day][meal]))
         return "\n".join(menu)
     
     """ 
@@ -108,39 +106,62 @@ class Menu:
     
      """
     def generateDailyMenu(self, sdate=date.today(), edate=date.today()):
-        n = (edate - sdate).days + 1
-        days = []
-        self.n = n
-        for i in range(self.n):
-            day = sdate + timedelta(days=i)
-            days.append(day.strftime("%a"))
+        self.n = (edate - sdate).days + 1
+        days = [sdate + timedelta(days=i) for i in range(self.n)]
         group_days = self.rules.filterByDay(days)
-        print(group_days)
+        menu = self.getMenuDraft(group_days)
+        self.correctMenu(menu, days)
+    
+        return
+
+    """ 
+    generate a draft of menu
+    without duplicates if possible
+    should be edited later to apply "day" or "repeat" rules
+
+    :param group_days: list of tuples (prepare times, number of days)
+    :return: a draft menu
+     """
+    def getMenuDraft(self, group_days):
+        menu = {}
         for meal in self.mpd:
             # Check if recipes should be filtered 
             # by tags for this type of meal
             tag, nutr = self.rules.filterByMeal(meal)
             for (prep, count) in group_days:
                 recipes = self.choicesN(count, tag, nutr, prep)                
-                if meal in self.menu:
-                    self.menu[meal].extend(recipes)
+                if meal in menu:
+                    menu[meal][0].extend(recipes)
                 else:
-                    self.menu[meal] = recipes
-        self.discardMeals(days)
-        return
+                    menu[meal] = [recipes, tag, nutr]
+        return menu
+        
 
     """ 
     discard unused meals if there are such in Rules
-    TODO: change later if food should be prepared for 2 days
+    correct menu if option to repeat dishes is turned on
 
+    :param menu: generated draft of menu without duplicates, if possible
     :param days: list of days
 
      """
-    def discardMeals(self, days):
+    def correctMenu(self, menu, days):
+        group_days = self.rules.filterByDay(days)
         days_meals = self.rules.filterDiscardedMeals(days)
-        for (ind, meals) in days_meals:
+        correctedMenu = {day.isoformat(): {meal:'' for meal in self.mpd} for day in days}
+        
+        for (day, meals) in days_meals:
             for meal in meals:
-                self.menu[meal][ind] = []
+                correctedMenu[day][meal] = None
+        if self.repeatDishes:
+            print("repeat dishes/////////////////////")
+        else:
+            for i, k in enumerate(correctedMenu.keys()):
+                for meal in self.mpd:
+                    if correctedMenu[k][meal] is not None:
+                        correctedMenu[k][meal] = menu[meal][0][i]
+        print(correctedMenu)
+        self.menu = correctedMenu
         return
 
     # shuffle recipe list
@@ -163,10 +184,8 @@ class Menu:
             # print("filter with tags or nutrients")
             sublist = self.filter(tag, nutr, prep)
         if len(sublist)<n:
-            print("with duplicates")
             newList = random.choices(sublist, k=n)
         else:
-            print("without duplicates")
             newList = random.sample(sublist, n)
         return newList
 
