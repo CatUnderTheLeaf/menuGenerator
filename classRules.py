@@ -123,11 +123,21 @@ class Rules:
     :return: list of tuples (prepareTime, n concequent days)
      """
     def filterByDay(self, days):
-        days = [day.strftime("%a") for day in days]
-        prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
+        prepForDay = self.getRulesByDay(days)
         groups = [(k, len(list(g))) for k, g in groupby(prepForDay)]
         return groups
     
+    """ 
+    get prepare time for days of week if there are such rules
+
+    :param days: list of days
+    :return: list of prepareTimes
+     """
+    def getRulesByDay(self, days):
+        days = [day.strftime("%a") for day in days]
+        prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
+        return prepForDay
+
     """ 
     check if there are 
     rules for this day of week and meal type

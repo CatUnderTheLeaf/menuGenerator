@@ -11,8 +11,9 @@ class Recipe:
     prepareTime: short/middle/long
     description: recipe instructions
     tags: breakfast/dinner, dough food, etc
+    oneTime: True/False, if a dish can be prepared for more than one day
      """
-    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[]):        
+    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], oneTime=True):        
         self.title = title
         # TODO later implement, now it is not so important
         # self.img = img
@@ -22,10 +23,11 @@ class Recipe:
         self.prepareTime = prepareTime
         self.description = text
         self.tags = tags
+        self.oneTime = oneTime
         
     def __repr__(self):
-       return (f'{self.title!r}  -  {self.tags!r} - {self.ingridients!r} - {self.food_class!r} - {self.nutrients!r}')
-    #    return (f'{self.title!r}')
+    #    return (f'{self.title!r}  -  {self.tags!r} - {self.ingridients!r} - {self.food_class!r} - {self.nutrients!r}')
+       return (f'{self.title!r}')
 
     def __str__(self):
         return f'{self.title}  -  {self.tags} - {self.prepareTime}'

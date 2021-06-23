@@ -28,6 +28,7 @@ class Menu:
     mpd: meals per day
     menu: dict of recipes per meals
     n: number of days
+    repeatDishes: if dishes can be eaten on more than one day
     
     """
     menu = {}
@@ -36,7 +37,7 @@ class Menu:
         self.rules = Rules(DB_RULES)
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
         self.n = 1
-        self.repeatDishes = False
+        self.repeatDishes = True
 
         # if there are changes in product files reload them
         # self.reloadProducts()
@@ -57,7 +58,7 @@ class Menu:
 
         with open(DB_RECIPE, 'rb') as file:
             self.recipeList = pickle.load(file)            
-            print("load recipes")
+            print("load recipes")        
                 
     def __repr__(self):
        return repr(self.recipeList)
@@ -141,27 +142,59 @@ class Menu:
     discard unused meals if there are such in Rules
     correct menu if option to repeat dishes is turned on
 
-    :param menu: generated draft of menu without duplicates, if possible
+    :param draftMenu: generated draft of menu without duplicates, if possible
     :param days: list of days
 
      """
-    def correctMenu(self, menu, days):
-        group_days = self.rules.filterByDay(days)
+    def correctMenu(self, draftMenu, days):
+        timeByDay = self.rules.getRulesByDay(days)
         days_meals = self.rules.filterDiscardedMeals(days)
-        correctedMenu = {day.isoformat(): {meal:'' for meal in self.mpd} for day in days}
+        self.menu = {day.isoformat(): {meal:'' for meal in self.mpd} for day in days}
         
+        # discard meals if there are rules
         for (day, meals) in days_meals:
             for meal in meals:
-                correctedMenu[day][meal] = None
+                self.menu[day][meal] = None
         if self.repeatDishes:
-            print("repeat dishes/////////////////////")
-        else:
-            for i, k in enumerate(correctedMenu.keys()):
+            for i, k in enumerate(self.menu.keys()):
                 for meal in self.mpd:
-                    if correctedMenu[k][meal] is not None:
-                        correctedMenu[k][meal] = menu[meal][0][i]
-        print(correctedMenu)
-        self.menu = correctedMenu
+                    # if meal for chosen day is still empty - fill it with the dish
+                    if self.menu[k][meal] == '':
+                        self.menu[k][meal] = draftMenu[meal][0][i]
+                        # if the dish can be prepared for more than one time
+                        # search for available next meal and fill it
+                        if not draftMenu[meal][0][i].oneTime:
+                            availableDay = self.findAvailableDay(draftMenu, timeByDay, draftMenu[meal][0][i], i)
+                            if availableDay:
+                                nextDay, nextMeal = availableDay
+                                self.menu[nextDay][nextMeal] = draftMenu[meal][0][i]
+        # if dishes are not repeated - just reorganize the draftmenu
+        else:
+            for i, k in enumerate(self.menu.keys()):
+                for meal in self.mpd:
+                    if self.menu[k][meal] is not None:
+                        self.menu[k][meal] = draftMenu[meal][0][i]
+        return
+
+    """ 
+    find next available slot in the menu for a dish
+    which can be eaten more than one time
+
+    :param draftMenu: generated draft of menu without duplicates, if possible
+    :param timeByDay: list of prepareTimes
+    :param recipe: a recipe of the dish
+    :param i: index (day) of recipe in draftMenu
+    :return: tuple (day, meal) if slot is available
+    """
+    def findAvailableDay(self, draftMenu, timeByDay, recipe, i):        
+        days = list(self.menu.keys())
+        for ind in range(i+1, len(days)):
+            day = self.menu[days[ind]]
+            for meal in day:
+                if day[meal] == '':
+                    check = self.checkRecipe(recipe, draftMenu[meal][1], draftMenu[meal][2], timeByDay[ind])
+                    if check:
+                        return (days[ind], meal)
         return
 
     # shuffle recipe list
@@ -172,7 +205,7 @@ class Menu:
     """ 
     choose n recipes with or without duplicates
 
-    :param n: number of recipes, can be bigger then amount of recipes
+    :param n: number of recipes, can be bigger than amount of recipes
     :param tag: tags of recipe ('breakfast', etc)
     :param nutr: list of 'carb', 'protein' or 'fat'
     :param prep: list of preparation times
@@ -200,12 +233,16 @@ class Menu:
     def filter(self, tag=None, nutr=None, prep=None):
         sublist = []
         for recipe in self.recipeList:
-            good_time = (recipe.prepareTime in prep) if ((prep is not None) and prep!=[]) else True
-            has_tags = (tag in recipe.tags) if (tag is not None) else True
-            is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
-            if has_tags and is_subset and good_time:
+            if self.checkRecipe(recipe, tag, nutr, prep):
                 sublist.append(recipe)
         return sublist
+
+    def checkRecipe(self, recipe, tag=None, nutr=None, prep=None):
+        good_time = (recipe.prepareTime in prep) if ((prep is not None) and prep!=[]) else True
+        has_tags = (tag in recipe.tags) if (tag is not None) else True
+        is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
+
+        return has_tags and is_subset and good_time
 
     """ 
     Reload product list if there are changes in files
@@ -243,10 +280,16 @@ class Menu:
             new_recipe = Recipe(title=item, tags=tag, ingridients=ingr, prepareTime=prep)
             new_recipe.food_class = self.identifyFoodClass(new_recipe)
             new_recipe.nutrients = self.identifyNutrients(new_recipe)
+            new_recipe.oneTime = True
             menu.append(new_recipe)
-        
+        # print(menu)
+        # menu[5].oneTime = False
+        # menu[6].oneTime = False
+        # menu[11].oneTime = False
+        # menu[13].oneTime = False
         # dump list in a file
         with open(DB_RECIPE, 'wb') as file:
+            print("dump in db file")
             pickle.dump(menu, file)
         
         return
