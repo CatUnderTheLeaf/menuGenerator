@@ -13,7 +13,7 @@ When I plan a menu I have a bunch of rules:
 - I can eat same main dish for several days with different sidedishes
 - often I need to cook several sidedishes because not all family members eat the same
 
-There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm.
+There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm. See articles about PuLP [one](https://towardsdatascience.com/roster-optimization-using-python-85b26d58e806) and [two](https://www.pythonstart.com/solving-linear-programming-problems-in-python-with-pulp)
 
 I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/) and post on [Stackoverflow](https://stackoverflow.com/questions/55226942/python-how-to-to-make-set-of-rules-for-each-class-in-a-game). It helped me, because primarly I intended to make class hierarchies and express rules by writing code inside methods. In the article author described a system, where rules are data, not code, and finds it to be more flexible. So I decided to give it a try.
 
@@ -24,7 +24,7 @@ I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com
   - [ ] lunch is only for me, but dinner is for the whole family
 
 - Step 7:
-  - [ ] I can eat one dish today at dinner and tomorrow at lunch
+  - [x] I can eat one dish today at dinner and tomorrow at lunch
   - [ ] no same dishes in one day
 
 - Step 6:
