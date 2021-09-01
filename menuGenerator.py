@@ -6,8 +6,9 @@ from classMenu import Menu
 menu = Menu()
 
 # generate menu for n+1 days applying rules
-n = 6
+n = 10
 sdate = date.today()
 edate = sdate + timedelta(days=n)
 menu.generateDailyMenu(sdate, edate)
-print(menu)
+# print(menu)
+# print(menu.menu)

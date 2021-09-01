@@ -27,11 +27,13 @@ class Menu:
     rules: object type Rules with all rules for generating menu
     mpd: meals per day
     menu: dict of recipes per meals
+    subsets: dict of recipes grouped by prep time and meal
     n: number of days
     repeatDishes: if dishes can be eaten on more than one day
     
     """
     menu = {}
+    subsets = {}
         
     def __init__(self):                 
         self.rules = Rules(DB_RULES)
@@ -58,7 +60,22 @@ class Menu:
 
         with open(DB_RECIPE, 'rb') as file:
             self.recipeList = pickle.load(file)            
-            print("load recipes")        
+            print("load recipes")
+
+        # make subsets of recipes grouped by prep time and meal type
+        times_list = [self.rules.day_time[key] for key in self.rules.day_time]
+        times_groups = set(tuple(times) for times in times_list)
+        for meal in self.mpd:
+            self.subsets[meal] = {}
+            for prep in times_groups:
+                # Check if recipes should be filtered 
+                # by tags for this type of meal
+                tag, nutr = self.rules.filterByMeal(meal)
+                if tag is not None or nutr is not None:
+                    # print("filter with tags or nutrients")
+                    sublist = self.filter(tag, nutr, prep)
+                    self.subsets[meal][prep] = set(sublist)
+        print(self.subsets)
                 
     def __repr__(self):
        return repr(self.recipeList)
@@ -135,6 +152,8 @@ class Menu:
                     menu[meal][0].extend(recipes)
                 else:
                     menu[meal] = [recipes, tag, nutr]
+        
+        # print(menu)
         return menu
         
 

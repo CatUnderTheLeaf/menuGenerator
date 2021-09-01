@@ -125,6 +125,7 @@ class Rules:
     def filterByDay(self, days):
         prepForDay = self.getRulesByDay(days)
         groups = [(k, len(list(g))) for k, g in groupby(prepForDay)]
+        # print(groups)
         return groups
     
     """ 
