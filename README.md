@@ -25,7 +25,7 @@ I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com
 
 - Step 7:
   - [x] I can eat one dish today at dinner and tomorrow at lunch
-  - [ ] no same dishes in one day
+  - [x] no same dishes in one day
 
 - Step 6:
   - [x] add day names to generating

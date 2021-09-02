@@ -58,7 +58,7 @@ class Rules:
                 elif ' prepareTime on ' in rule:
                     times, days = rule.split(' prepareTime on ')
                     for day in days.split(', '):
-                        self.day_time[day] = times.split(', ')
+                        self.day_time[day] = tuple(times.split(', '))
                 elif ' discard ' in rule:
                     days, meal = rule.split(' discard ')
                     for day in days[len('On '):].split(', '):
@@ -114,29 +114,16 @@ class Rules:
         else:
             # print("there is no such rule in Rules")
             return None
-
-    """ 
-    check if there are 
-    rules for this day of week and its prepare time
-
-    :param days: list of days
-    :return: list of tuples (prepareTime, n concequent days)
-     """
-    def filterByDay(self, days):
-        prepForDay = self.getRulesByDay(days)
-        groups = [(k, len(list(g))) for k, g in groupby(prepForDay)]
-        # print(groups)
-        return groups
     
     """ 
     get prepare time for days of week if there are such rules
 
     :param days: list of days
-    :return: list of prepareTimes
+    :return: dict of prepareTimes per date
      """
-    def getRulesByDay(self, days):
-        days = [day.strftime("%a") for day in days]
-        prepForDay = [self.day_time[k] if k in self.day_time else [] for k in days]
+    def getPrepTimes(self, dates):
+        days = [day.strftime("%a") for day in dates]
+        prepForDay = {date: self.day_time[day] if day in self.day_time else [] for (day,date) in zip(days, dates)}
         return prepForDay
 
     """ 
@@ -147,7 +134,8 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
-        indices = [(x.isoformat(), self.day_discard_meal[x.strftime("%a")]) for x in days if x.strftime("%a") in self.day_discard_meal]
+        indices = [(x, self.day_discard_meal[x.strftime("%a")]) for x in days if x.strftime("%a") in self.day_discard_meal]
+        
         return indices
 
     """ 

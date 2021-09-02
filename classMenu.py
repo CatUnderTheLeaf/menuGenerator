@@ -67,6 +67,7 @@ class Menu:
         times_groups = set(tuple(times) for times in times_list)
         for meal in self.mpd:
             self.subsets[meal] = {}
+            self.subsets[meal]['recipes'] = {}
             for prep in times_groups:
                 # Check if recipes should be filtered 
                 # by tags for this type of meal
@@ -74,8 +75,9 @@ class Menu:
                 if tag is not None or nutr is not None:
                     # print("filter with tags or nutrients")
                     sublist = self.filter(tag, nutr, prep)
-                    self.subsets[meal][prep] = set(sublist)
-        print(self.subsets)
+                    self.subsets[meal]['recipes'][prep] = set(sublist)
+                    self.subsets[meal]['tag'] = tag
+                    self.subsets[meal]['nutr'] = nutr
                 
     def __repr__(self):
        return repr(self.recipeList)
@@ -84,8 +86,8 @@ class Menu:
         menu = []
         menu.append("!!!-----------------generated menu----------------!!!")
         for day in self.menu:
-            menu.append("\n{}:".format(day))
-            for meal in self.menu[day]:
+            menu.append("\n{}, {}:".format(day, day.strftime("%a")))
+            for meal in self.mpd:
                 menu.append("{} - {}".format(meal, self.menu[day][meal]))
         return "\n".join(menu)
     
@@ -126,120 +128,107 @@ class Menu:
     def generateDailyMenu(self, sdate=date.today(), edate=date.today()):
         self.n = (edate - sdate).days + 1
         days = [sdate + timedelta(days=i) for i in range(self.n)]
-        group_days = self.rules.filterByDay(days)
-        menu = self.getMenuDraft(group_days)
-        self.correctMenu(menu, days)
-    
+
+        self.getEmptyMenu(days)
+        self.discardMeals()
+        self.fillMenu()
+        
         return
 
     """ 
-    generate a draft of menu
-    without duplicates if possible
-    should be edited later to apply "day" or "repeat" rules
+    generate empty menu with corresponding prep times
 
-    :param group_days: list of tuples (prepare times, number of days)
-    :return: a draft menu
+    :param days: calendar dates
+    
      """
-    def getMenuDraft(self, group_days):
-        menu = {}
-        for meal in self.mpd:
-            # Check if recipes should be filtered 
-            # by tags for this type of meal
-            tag, nutr = self.rules.filterByMeal(meal)
-            for (prep, count) in group_days:
-                recipes = self.choicesN(count, tag, nutr, prep)                
-                if meal in menu:
-                    menu[meal][0].extend(recipes)
-                else:
-                    menu[meal] = [recipes, tag, nutr]
-        
-        # print(menu)
-        return menu
-        
+    def getEmptyMenu(self, days):
+        prepTimes = self.rules.getPrepTimes(days)
+        self.menu = {day: {'prepTime': prepTimes[day]} for day in days}   
+        return
 
     """ 
-    discard unused meals if there are such in Rules
-    correct menu if option to repeat dishes is turned on
-
-    :param draftMenu: generated draft of menu without duplicates, if possible
-    :param days: list of days
-
+    fill in the menu with discarded meals
+    
      """
-    def correctMenu(self, draftMenu, days):
-        timeByDay = self.rules.getRulesByDay(days)
+    def discardMeals(self):
+        days = self.menu.keys()
         days_meals = self.rules.filterDiscardedMeals(days)
-        self.menu = {day.isoformat(): {meal:'' for meal in self.mpd} for day in days}
         
         # discard meals if there are rules
         for (day, meals) in days_meals:
             for meal in meals:
                 self.menu[day][meal] = None
-        if self.repeatDishes:
-            for i, k in enumerate(self.menu.keys()):
-                for meal in self.mpd:
-                    # if meal for chosen day is still empty - fill it with the dish
-                    if self.menu[k][meal] == '':
-                        self.menu[k][meal] = draftMenu[meal][0][i]
-                        # if the dish can be prepared for more than one time
-                        # search for available next meal and fill it
-                        if not draftMenu[meal][0][i].oneTime:
-                            availableDay = self.findAvailableDay(draftMenu, timeByDay, draftMenu[meal][0][i], i)
-                            if availableDay:
-                                nextDay, nextMeal = availableDay
-                                self.menu[nextDay][nextMeal] = draftMenu[meal][0][i]
-        # if dishes are not repeated - just reorganize the draftmenu
-        else:
-            for i, k in enumerate(self.menu.keys()):
-                for meal in self.mpd:
-                    if self.menu[k][meal] is not None:
-                        self.menu[k][meal] = draftMenu[meal][0][i]
+        return
+
+    """ 
+    fill in the menu
+    
+     """
+    def fillMenu(self):        
+        # for each meal/day get recipe from the corresponding subset
+        for date in self.menu:
+            for meal in self.mpd:
+                if meal not in self.menu[date]:                    
+                    cur_recipe = self.chooseRecipe(meal, self.menu[date]['prepTime'])
+                    self.menu[date][meal] = cur_recipe
+                    # if dishes can be repeated search for next available day and meal
+                    if self.repeatDishes and not cur_recipe.oneTime:
+                        availableDay = self.findAvailableDay(date, cur_recipe)
+                        if availableDay:
+                            nextDate, nextMeal = availableDay
+                            self.menu[nextDate][nextMeal] = cur_recipe
+        return
+
+    """ 
+    randomly choose recipe from the recipe subsets
+    and delete it, so there will be no same dishes in one day
+
+    :param meal: 'Breakfast', 'Lunch' or 'Dinner'
+    :param prepTime: preparation time
+    :return: recipe
+    
+     """
+    def chooseRecipe(self, meal, prepTime):
+        recipe = random.sample(self.subsets[meal]['recipes'][prepTime], 1)[0]
+        # delete this recipe from all sets
+        self.deleteRecipeFromSets(recipe)
+        return recipe
+
+    """ 
+    delete recipe from subsets, so there will be no same dishes in one day
+
+    :param recipe: recipe to delete from subsets
+    
+     """
+    def deleteRecipeFromSets(self, recipe):        
+        for meal in self.subsets:
+            for prepTime in self.subsets[meal]['recipes']:
+                self.subsets[meal]['recipes'][prepTime].discard(recipe)
+                # if subset is empty get it anew
+                if len(self.subsets[meal]['recipes'][prepTime]) < 1:
+                    sublist = self.filter(self.subsets[meal]['tag'], self.subsets[meal]['nutr'], prepTime)
+                    self.subsets[meal]['recipes'][prepTime] = set(sublist)
         return
 
     """ 
     find next available slot in the menu for a dish
     which can be eaten more than one time
 
-    :param draftMenu: generated draft of menu without duplicates, if possible
-    :param timeByDay: list of prepareTimes
+    :param old_date: day of recipe in Menu
     :param recipe: a recipe of the dish
-    :param i: index (day) of recipe in draftMenu
     :return: tuple (day, meal) if slot is available
     """
-    def findAvailableDay(self, draftMenu, timeByDay, recipe, i):        
-        days = list(self.menu.keys())
-        for ind in range(i+1, len(days)):
-            day = self.menu[days[ind]]
-            for meal in day:
-                if day[meal] == '':
-                    check = self.checkRecipe(recipe, draftMenu[meal][1], draftMenu[meal][2], timeByDay[ind])
+    def findAvailableDay(self, old_date, recipe):
+        dates = sorted(self.menu.keys())
+        s_ind = dates.index(old_date)
+        new_dates = dates[s_ind+1:]
+        for date in new_dates:
+            for meal in self.mpd:
+                if meal not in self.menu[date]:                    
+                    check = self.checkRecipe(recipe, self.subsets[meal]['tag'], self.subsets[meal]['nutr'], self.menu[date]['prepTime'])
                     if check:
-                        return (days[ind], meal)
+                        return (date, meal)       
         return
-
-    # shuffle recipe list
-    def shuffle(self):
-        random.shuffle(self.recipeList)
-        return self.recipeList
-
-    """ 
-    choose n recipes with or without duplicates
-
-    :param n: number of recipes, can be bigger than amount of recipes
-    :param tag: tags of recipe ('breakfast', etc)
-    :param nutr: list of 'carb', 'protein' or 'fat'
-    :param prep: list of preparation times
-    :return: n recipes
-    """
-    def choicesN(self, n=1, tag=None, nutr=None, prep=None):
-        sublist = self.recipeList
-        if tag is not None or nutr is not None:
-            # print("filter with tags or nutrients")
-            sublist = self.filter(tag, nutr, prep)
-        if len(sublist)<n:
-            newList = random.choices(sublist, k=n)
-        else:
-            newList = random.sample(sublist, n)
-        return newList
 
     """ 
     filter recipes by tags or nutrients
@@ -256,7 +245,16 @@ class Menu:
                 sublist.append(recipe)
         return sublist
 
-    def checkRecipe(self, recipe, tag=None, nutr=None, prep=None):
+    """ 
+    check if recipe suits criterias
+
+    :param recipe: a recipe
+    :param tag: tags of recipe ('breakfast', etc)
+    :param nutr: list of 'carb', 'protein' or 'fat'
+    :param prep: list of preparation times
+    :return: True or False
+    """
+    def checkRecipe(self, recipe, tag=None, nutr=None, prep=None):        
         good_time = (recipe.prepareTime in prep) if ((prep is not None) and prep!=[]) else True
         has_tags = (tag in recipe.tags) if (tag is not None) else True
         is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True

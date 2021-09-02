@@ -10,5 +10,4 @@ n = 10
 sdate = date.today()
 edate = sdate + timedelta(days=n)
 menu.generateDailyMenu(sdate, edate)
-# print(menu)
-# print(menu.menu)
+print(menu)
