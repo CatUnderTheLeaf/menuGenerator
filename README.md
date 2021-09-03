@@ -1,23 +1,24 @@
 # menuGenerator
 A script to generate menu for n days.
 
-When I plan a menu I have a bunch of rules:
-- on Working days I don't have much time for cooking
-- at weekend I can prepare dishes with long cooking time
-- only at breakfast I eat 'breakfast' dishes
-- at breakfast I eat low- or no-protein food
-- at lunch I eat all
-- at dinner I eat low- or no-carb food
-- on Sunday at breakfast I eat thin or thick pancakes
-- on Sunday at lunch I order food at the restaurant
-- I can eat same main dish for several days with different sidedishes
-- often I need to cook several sidedishes because not all family members eat the same
+When I plan a menu I have a bunch of rules ([ ] are not implemented):
+- [x] on Working days I don't have much time for cooking
+- [x] at weekend I can prepare dishes with long cooking time
+- [x] only at breakfast I eat 'breakfast' dishes
+- [x] at breakfast I eat low- or no-protein food
+- [x] at lunch I eat all
+- [x] at dinner I eat low- or no-carb food
+- [x] on Sunday at breakfast I eat thin or thick pancakes
+- [x] on Sunday at lunch I order food at the restaurant
+- [x] I can eat same main dish for several days
+- [x] no same dishes in one day
+- [ ] I can eat one main dish with different sidedishes
+- [ ] often I need to cook several sidedishes because not all family members eat the same
 
-There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm. See articles about PuLP [one](https://towardsdatascience.com/roster-optimization-using-python-85b26d58e806) and [two](https://www.pythonstart.com/solving-linear-programming-problems-in-python-with-pulp)
+03.09.2021
+The most important features are implemented, so now I will make a branch to work on an application for Android. I'm going to try [Kivy](https://kivy.org/). Also I plan to write some tests.
 
-I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/) and post on [Stackoverflow](https://stackoverflow.com/questions/55226942/python-how-to-to-make-set-of-rules-for-each-class-in-a-game). It helped me, because primarly I intended to make class hierarchies and express rules by writing code inside methods. In the article author described a system, where rules are data, not code, and finds it to be more flexible. So I decided to give it a try.
-
-- Step ? (for future):
+- Step ? (ideas for future):
   - [ ] there are main dishes and multiple sidedishes
   - [ ] maybe add vegan/vegetarian, fasting , etc
   - [ ] I can prepare a big load of meat balls, freeze them and use it
@@ -111,3 +112,7 @@ I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com
   - [x] read menu items from file
   - [x] randomize
   - [x] choose 7/14/21... items
+
+There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm. See articles about PuLP [one](https://towardsdatascience.com/roster-optimization-using-python-85b26d58e806) and [two](https://www.pythonstart.com/solving-linear-programming-problems-in-python-with-pulp)
+
+I have read a wonderful article ["Wizards and warriors"](https://ericlippert.com/2015/04/27/wizards-and-warriors-part-one/) and post on [Stackoverflow](https://stackoverflow.com/questions/55226942/python-how-to-to-make-set-of-rules-for-each-class-in-a-game). It helped me, because primarly I intended to make class hierarchies and express rules by writing code inside methods. In the article author described a system, where rules are data, not code, and finds it to be more flexible. So I decided to give it a try.
