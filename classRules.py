@@ -1,4 +1,3 @@
-from itertools import groupby
 """ 
 A class that represent rules for generating menu
 
@@ -38,31 +37,40 @@ class Rules:
     """ 
     :param db_rules: path to db file
      """
-    def __init__(self, db_rules):
+    def __init__(self, db_rules=''):
         print("load rules")
-        with open(db_rules, 'r') as file:
-            for line in file:
-                rule = line.strip()
-                if ' serve only ' in rule:
-                    meal, tag = rule.split(' serve only ')
-                    self.meal_tag[meal[len('At '):]] = tag
-                elif ' is ' in rule:
-                    product_class, nutrients = rule.split(' is ')
-                    self.class_nutrient[product_class] = nutrients.split(', ')
-                elif ' use ' in rule:
-                    product_class, nutrients = rule.split(' use ')
-                    self.meal_nutrient[product_class[len('For '):]] = nutrients.split(', ')                    
-                elif ' ignore ' in rule:
-                    tag, nutrients = rule.split(' ignore ')
-                    self.tag_ignore_nutrient[tag[len('For '):]] = nutrients.split(', ')
-                elif ' prepareTime on ' in rule:
-                    times, days = rule.split(' prepareTime on ')
-                    for day in days.split(', '):
-                        self.day_time[day] = tuple(times.split(', '))
-                elif ' discard ' in rule:
-                    days, meal = rule.split(' discard ')
-                    for day in days[len('On '):].split(', '):
-                        self.day_discard_meal[day] = meal.split(', ')
+        if not db_rules=='':
+            with open(db_rules, 'r') as file:
+                for line in file:
+                    self.readRules(line)
+        else:
+            print('path to DB is empty')
+                
+    """ 
+    :param line: string line from file
+     """
+    def readRules(self, line):
+        rule = line.strip()
+        if ' serve only ' in rule:
+            meal, tag = rule.split(' serve only ')
+            self.meal_tag[meal[len('At '):]] = tag
+        elif ' is ' in rule:
+            product_class, nutrients = rule.split(' is ')
+            self.class_nutrient[product_class] = nutrients.split(', ')
+        elif ' use ' in rule:
+            product_class, nutrients = rule.split(' use ')
+            self.meal_nutrient[product_class[len('For '):]] = nutrients.split(', ')                    
+        elif ' ignore ' in rule:
+            tag, nutrients = rule.split(' ignore ')
+            self.tag_ignore_nutrient[tag[len('For '):]] = nutrients.split(', ')
+        elif ' prepareTime on ' in rule:
+            times, days = rule.split(' prepareTime on ')
+            for day in days.split(', '):
+                self.day_time[day] = tuple(times.split(', '))
+        elif ' discard ' in rule:
+            days, meal = rule.split(' discard ')
+            for day in days[len('On '):].split(', '):
+                self.day_discard_meal[day] = meal.split(', ')
         #         print(rule)
         # print(self.meal_tag)
         # print(self.class_nutrient)
