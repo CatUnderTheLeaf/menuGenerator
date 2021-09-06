@@ -19,20 +19,16 @@ rules can be written in such patterns:
 
 class Rules:
     """ 
-    rules['meal_tag']: dict of tags per meal
-    rules['class_nutrient']: dict of correspondence of food class to nutrient type
-    rules['meal_nutrient']: dict of nutrients per meal
-    rules['tag_ignore_nutrient']: dict of ignored nutrients for tags
-    rules['day_time']: dict of preparation times for weekdays
-    rules['day_discard_meal']: dict of discarded meals for specified weekdays
-     """
-    
-    
-
-    """ 
     :param db_rules: path to db file
      """
     def __init__(self, db_rules=''):
+        # rules['meal_tag']: dict of tags per meal
+        # rules['class_nutrient']: dict of correspondence of food class to nutrient type
+        # rules['meal_nutrient']: dict of nutrients per meal
+        # rules['tag_ignore_nutrient']: dict of ignored nutrients for tags
+        # rules['day_time']: dict of preparation times for weekdays
+        # rules['day_discard_meal']: dict of discarded meals for specified weekdays
+          
         self.rules = {}
         self.rules['meal_tag'] = {}
         self.rules['class_nutrient'] = {}
@@ -41,14 +37,18 @@ class Rules:
         self.rules['day_time'] = {}
         self.rules['day_discard_meal'] = {}
         print("load rules")
+
         if not db_rules=='':
             with open(db_rules, 'r') as file:
                 for line in file:
                     self.readRules(line)
         else:
             print('path to DB is empty')
+        # print(self.rules)
                 
     """ 
+    Read a line and add it to rules dictionary
+
     :param line: string line from file
      """
     def readRules(self, line):
@@ -73,13 +73,7 @@ class Rules:
             days, meal = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
                 self.rules['day_discard_meal'][day] = meal.split(', ')
-        #         print(rule)
-        print(self.rules)
-        # print(self.rules['class_nutrient'])
-        # print(self.rules['meal_nutrient'])
-        # print(self.rules['tag_ignore_nutrient'])
-        # print(self.rules['day_time'])
-        # print(self.rules['day_discard_meal'])
+    
 
     """
      check if there are 
@@ -125,18 +119,27 @@ class Rules:
             # print("there is no such rule in Rules")
             return None
     
-    def getDayTimes(self):
-        return [self.rules['day_time'][key] for key in self.rules['day_time']]
-
     """ 
     get prepare time for days of week if there are such rules
 
-    :param days: list of days
+    :return: array of prepareTimes per date
+     """
+    def getDayTimes(self):
+        times_list = [self.rules['day_time'][key] for key in self.rules['day_time']]
+        times_groups = set(tuple(times) for times in times_list)
+        print(times_groups)
+        return times_groups
+
+    """ 
+    get prepare time for all dates
+
+    :param days: list of dates
     :return: dict of prepareTimes per date
      """
     def getPrepTimes(self, dates):
         days = [day.strftime("%a") for day in dates]
         prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else [] for (day,date) in zip(days, dates)}
+        # print(prepForDay)
         return prepForDay
 
     """ 

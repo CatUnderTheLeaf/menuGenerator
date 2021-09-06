@@ -20,10 +20,36 @@ lines = [
     ("cereals_grains_pasta_bread_vegan is high_carb", 'class_nutrient', {'cereals_grains_pasta_bread_vegan': ['high_carb']}),
     ("dairy is low_carb, protein, fat", 'class_nutrient', {'dairy': ['low_carb', 'protein', 'fat']}),
     ("For Breakfast use low_carb, high_carb, fat, free", 'meal_nutrient', {'Breakfast': ['low_carb', 'high_carb', 'fat', 'free']}),
-    ("On Sun discard Lunch", 'day_discard_meal', {'Sun': ['Lunch']})
+    ("On Sun discard Lunch", 'day_discard_meal', {'Sun': ['Lunch']}),
+    pytest.param("On Sun discarding Lunch", 'day_discard_meal', {'Sun': ['Lunch']}, marks=pytest.mark.xfail)
 ]
 @pytest.mark.parametrize("line,key,res", lines)
-def test_atRules(line, key, res):
+def test_readRules(line, key, res):
     r = Rules()
     r.readRules(line)
     assert r.rules[key] == res
+
+meal_tags = [("At Breakfast serve only breakfast", 'Breakfast', 'breakfast'),
+            ("At Breakfast serve only breakfast", 'Lunch', None)]
+@pytest.mark.parametrize("line,key,res", meal_tags)
+def test_filterByTag(line, key, res):
+    r = Rules()
+    r.readRules(line)
+    assert r.filterByTag(key) == res
+
+meal_nutrients = [("For Breakfast use low_carb, high_carb, fat, free", 'Breakfast', ['low_carb', 'high_carb', 'fat', 'free']),
+                ("For Breakfast use low_carb, high_carb, fat, free", 'Lunch', None)]
+@pytest.mark.parametrize("line,key,res", meal_nutrients)
+def test_filterByNutrient(line, key, res):
+    r = Rules()
+    r.readRules(line)
+    assert r.filterByNutrient(key) == res
+
+days_times = [(["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], {('short', 'medium')}),
+            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], {('short', 'medium'), ('medium', 'long')})]
+@pytest.mark.parametrize("lines,res", days_times)
+def test_getDayTimes(lines, res):
+    r = Rules()
+    for line in lines:
+        r.readRules(line)
+    assert r.getDayTimes() == res
