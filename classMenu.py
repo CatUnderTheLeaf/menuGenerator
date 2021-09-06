@@ -63,7 +63,7 @@ class Menu:
             print("load recipes")
 
         # make subsets of recipes grouped by prep time and meal type
-        times_list = [self.rules.day_time[key] for key in self.rules.day_time]
+        times_list = self.rules.getDayTimes()
         times_groups = set(tuple(times) for times in times_list)
         for meal in self.mpd:
             self.subsets[meal] = {}

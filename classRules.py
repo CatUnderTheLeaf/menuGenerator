@@ -19,25 +19,27 @@ rules can be written in such patterns:
 
 class Rules:
     """ 
-    meal_tag: dict of tags per meal
-    class_nutrient: dict of correspondence of food class to nutrient type
-    meal_nutrient: dict of nutrients per meal
-    tag_ignore_nutrient: dict of ignored nutrients for tags
-    day_time: dict of preparation times for weekdays
-    day_discard_meal: dict of discarded meals for specified weekdays
+    rules['meal_tag']: dict of tags per meal
+    rules['class_nutrient']: dict of correspondence of food class to nutrient type
+    rules['meal_nutrient']: dict of nutrients per meal
+    rules['tag_ignore_nutrient']: dict of ignored nutrients for tags
+    rules['day_time']: dict of preparation times for weekdays
+    rules['day_discard_meal']: dict of discarded meals for specified weekdays
      """
-
-    meal_tag = {}
-    class_nutrient = {}
-    meal_nutrient = {}
-    tag_ignore_nutrient = {}
-    day_time = {}
-    day_discard_meal = {}
+    
+    
 
     """ 
     :param db_rules: path to db file
      """
     def __init__(self, db_rules=''):
+        self.rules = {}
+        self.rules['meal_tag'] = {}
+        self.rules['class_nutrient'] = {}
+        self.rules['meal_nutrient'] = {}
+        self.rules['tag_ignore_nutrient'] = {}
+        self.rules['day_time'] = {}
+        self.rules['day_discard_meal'] = {}
         print("load rules")
         if not db_rules=='':
             with open(db_rules, 'r') as file:
@@ -53,31 +55,31 @@ class Rules:
         rule = line.strip()
         if ' serve only ' in rule:
             meal, tag = rule.split(' serve only ')
-            self.meal_tag[meal[len('At '):]] = tag
+            self.rules['meal_tag'][meal[len('At '):]] = tag
         elif ' is ' in rule:
             product_class, nutrients = rule.split(' is ')
-            self.class_nutrient[product_class] = nutrients.split(', ')
+            self.rules['class_nutrient'][product_class] = nutrients.split(', ')
         elif ' use ' in rule:
             product_class, nutrients = rule.split(' use ')
-            self.meal_nutrient[product_class[len('For '):]] = nutrients.split(', ')                    
+            self.rules['meal_nutrient'][product_class[len('For '):]] = nutrients.split(', ')                    
         elif ' ignore ' in rule:
             tag, nutrients = rule.split(' ignore ')
-            self.tag_ignore_nutrient[tag[len('For '):]] = nutrients.split(', ')
+            self.rules['tag_ignore_nutrient'][tag[len('For '):]] = nutrients.split(', ')
         elif ' prepareTime on ' in rule:
             times, days = rule.split(' prepareTime on ')
             for day in days.split(', '):
-                self.day_time[day] = tuple(times.split(', '))
+                self.rules['day_time'][day] = tuple(times.split(', '))
         elif ' discard ' in rule:
             days, meal = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
-                self.day_discard_meal[day] = meal.split(', ')
+                self.rules['day_discard_meal'][day] = meal.split(', ')
         #         print(rule)
-        # print(self.meal_tag)
-        # print(self.class_nutrient)
-        # print(self.meal_nutrient)
-        # print(self.tag_ignore_nutrient)
-        # print(self.day_time)
-        # print(self.day_discard_meal)
+        print(self.rules)
+        # print(self.rules['class_nutrient'])
+        # print(self.rules['meal_nutrient'])
+        # print(self.rules['tag_ignore_nutrient'])
+        # print(self.rules['day_time'])
+        # print(self.rules['day_discard_meal'])
 
     """
      check if there are 
@@ -100,9 +102,9 @@ class Rules:
      :return: None or tags of meals for this meal_type
     """
     def filterByTag(self, meal_type):
-        if meal_type in self.meal_tag:
+        if meal_type in self.rules['meal_tag']:
             # print("apply filter by tag from Rules")
-            return self.meal_tag[meal_type]
+            return self.rules['meal_tag'][meal_type]
         else:
             # print("there is no such rule in Rules to filter by tag")
             return None
@@ -116,13 +118,16 @@ class Rules:
      :return: None or tags of meals for this meal_type
     """
     def filterByNutrient(self, meal_type):
-        if meal_type in self.meal_nutrient:
+        if meal_type in self.rules['meal_nutrient']:
             # print("Nutrients apply rule from Rules")
-            return self.meal_nutrient[meal_type]
+            return self.rules['meal_nutrient'][meal_type]
         else:
             # print("there is no such rule in Rules")
             return None
     
+    def getDayTimes(self):
+        return [self.rules['day_time'][key] for key in self.rules['day_time']]
+
     """ 
     get prepare time for days of week if there are such rules
 
@@ -131,7 +136,7 @@ class Rules:
      """
     def getPrepTimes(self, dates):
         days = [day.strftime("%a") for day in dates]
-        prepForDay = {date: self.day_time[day] if day in self.day_time else [] for (day,date) in zip(days, dates)}
+        prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else [] for (day,date) in zip(days, dates)}
         return prepForDay
 
     """ 
@@ -142,7 +147,7 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
-        indices = [(x, self.day_discard_meal[x.strftime("%a")]) for x in days if x.strftime("%a") in self.day_discard_meal]
+        indices = [(x, self.rules['day_discard_meal'][x.strftime("%a")]) for x in days if x.strftime("%a") in self.rules['day_discard_meal']]
         
         return indices
 
@@ -157,11 +162,11 @@ class Rules:
     def identifyNutrient(self, food_classes, tags):
         nutrients = set()
         for food in food_classes:
-            nutrients.update(self.class_nutrient[food])
-        common_tags = set(tags).intersection(set(self.tag_ignore_nutrient))
+            nutrients.update(self.rules['class_nutrient'][food])
+        common_tags = set(tags).intersection(set(self.rules['tag_ignore_nutrient']))
         if common_tags:
             for tags in list(common_tags):
-                for tag in self.tag_ignore_nutrient[tags]:
+                for tag in self.rules['tag_ignore_nutrient'][tags]:
                     nutrients.discard(tag)
         return list(nutrients)
         
