@@ -45,8 +45,8 @@ def test_filterByNutrient(line, key, res):
     r.readRules(line)
     assert r.filterByNutrient(key) == res
 
-days_times = [(["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], {('short', 'medium')}),
-            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], {('short', 'medium'), ('medium', 'long')})]
+days_times = [(["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], [('short', 'medium'), None]),
+            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], [('short', 'medium'), ('medium', 'long')])]
 @pytest.mark.parametrize("lines,res", days_times)
 def test_getDayTimes(lines, res):
     r = Rules()

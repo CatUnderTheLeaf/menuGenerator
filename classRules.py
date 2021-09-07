@@ -1,3 +1,6 @@
+import calendar
+import itertools
+
 """ 
 A class that represent rules for generating menu
 
@@ -122,12 +125,12 @@ class Rules:
     """ 
     get prepare time for days of week if there are such rules
 
-    :return: array of prepareTimes per date
+    :return: array of all possible prepareTimes grouped by day of week
      """
     def getDayTimes(self):
-        times_list = [self.rules['day_time'][key] for key in self.rules['day_time']]
-        times_groups = set(tuple(times) for times in times_list)
-        # print(times_groups)
+        times_list = [self.rules['day_time'][key] if key in self.rules['day_time'] else None for key in calendar.day_abbr]
+        times_groups = [k for k, g in itertools.groupby(times_list)]
+        
         return times_groups
 
     """ 
@@ -139,7 +142,6 @@ class Rules:
     def getPrepTimes(self, dates):
         days = [day.strftime("%a") for day in dates]
         prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else None for (day,date) in zip(days, dates)}
-        # print(prepForDay)
         return prepForDay
 
     """ 
@@ -150,8 +152,9 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
+        print(days)
         indices = [(x, self.rules['day_discard_meal'][x.strftime("%a")]) for x in days if x.strftime("%a") in self.rules['day_discard_meal']]
-        
+        print(indices)
         return indices
 
     """ 

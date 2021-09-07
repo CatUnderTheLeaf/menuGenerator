@@ -77,6 +77,7 @@ class Menu:
                     self.subsets[meal]['recipes'][prep] = set(sublist)
                     self.subsets[meal]['tag'] = tag
                     self.subsets[meal]['nutr'] = nutr
+        # print(self.subsets)
                 
     def __repr__(self):
        return repr(self.recipeList)
