@@ -127,7 +127,7 @@ class Rules:
     def getDayTimes(self):
         times_list = [self.rules['day_time'][key] for key in self.rules['day_time']]
         times_groups = set(tuple(times) for times in times_list)
-        print(times_groups)
+        # print(times_groups)
         return times_groups
 
     """ 
@@ -138,7 +138,7 @@ class Rules:
      """
     def getPrepTimes(self, dates):
         days = [day.strftime("%a") for day in dates]
-        prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else [] for (day,date) in zip(days, dates)}
+        prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else None for (day,date) in zip(days, dates)}
         # print(prepForDay)
         return prepForDay
 

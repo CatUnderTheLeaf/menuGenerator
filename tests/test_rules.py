@@ -53,3 +53,31 @@ def test_getDayTimes(lines, res):
     for line in lines:
         r.readRules(line)
     assert r.getDayTimes() == res
+
+from datetime import date, timedelta
+
+def getDates(n):
+    days = [date.today() + timedelta(days=i) for i in range(n)]
+    return days
+
+dates_times = [(["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], 
+            [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], ('short', 'medium')), (['Sat', 'Sun'], ('medium', 'long'))]),
+            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], 
+            [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], ('short', 'medium')), (['Sat', 'Sun'], None)])]
+
+@pytest.mark.parametrize("lines,ress", dates_times)
+def test_getPrepTimes(lines, ress):
+    r = Rules()
+    for line in lines:
+        r.readRules(line)
+
+    result = {}
+    dates = getDates(7)
+    for date in dates:
+        for res in ress:
+            days, times = res
+            day = date.strftime("%a")
+            if day in days:
+                result[date] = times
+    
+    assert r.getPrepTimes(dates) == result
