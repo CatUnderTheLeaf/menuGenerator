@@ -57,8 +57,11 @@ class Rules:
     def readRules(self, line):
         rule = line.strip()
         if ' serve only ' in rule:
-            meal, tag = rule.split(' serve only ')
-            self.rules['meal_tag'][meal[len('At '):]] = tag
+            # TODO think what it should really imply: rule OR or AND
+            meals, tags = rule.split(' serve only ')
+            meals = meals[len('At '):].split(', ')
+            for meal in meals:
+                self.rules['meal_tag'][meal] = tags.split(', ')
         elif ' is ' in rule:
             product_class, nutrients = rule.split(' is ')
             self.rules['class_nutrient'][product_class] = nutrients.split(', ')
@@ -75,7 +78,10 @@ class Rules:
         elif ' discard ' in rule:
             days, meal = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
-                self.rules['day_discard_meal'][day] = meal.split(', ')
+                if day in self.rules['day_discard_meal']:
+                    self.rules['day_discard_meal'][day].update(meal.split(', '))
+                else:
+                    self.rules['day_discard_meal'][day] = set(meal.split(', '))
     
 
     """
@@ -152,9 +158,7 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
-        print(days)
         indices = [(x, self.rules['day_discard_meal'][x.strftime("%a")]) for x in days if x.strftime("%a") in self.rules['day_discard_meal']]
-        print(indices)
         return indices
 
     """ 

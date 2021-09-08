@@ -254,9 +254,9 @@ class Menu:
     :param prep: list of preparation times
     :return: True or False
     """
-    def checkRecipe(self, recipe, tag=None, nutr=None, prep=None):        
+    def checkRecipe(self, recipe, tag=None, nutr=None, prep=None):
         good_time = (recipe.prepareTime in prep) if ((prep is not None) and prep!=[]) else True
-        has_tags = (tag in recipe.tags) if (tag is not None) else True
+        has_tags = (set(recipe.tags)<=set(tag)) if (tag is not None) else True
         is_subset = (set(recipe.nutrients)<=set(nutr)) if (nutr is not None) else True
 
         return has_tags and is_subset and good_time
