@@ -164,7 +164,7 @@ class Menu:
     fill in the menu
     
      """
-    def fillMenu(self):        
+    def fillMenu(self):
         # for each meal/day get recipe from the corresponding subset
         for date in self.menu:
             for meal in self.mpd:
@@ -200,7 +200,7 @@ class Menu:
     :param recipe: recipe to delete from subsets
     
      """
-    def deleteRecipeFromSets(self, recipe):        
+    def deleteRecipeFromSets(self, recipe):
         for meal in self.subsets:
             for prepTime in self.subsets[meal]['recipes']:
                 self.subsets[meal]['recipes'][prepTime].discard(recipe)
