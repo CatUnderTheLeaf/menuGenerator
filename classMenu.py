@@ -172,7 +172,7 @@ class Menu:
                     cur_recipe = self.chooseRecipe(meal, self.menu[date]['prepTime'])
                     self.menu[date][meal] = cur_recipe
                     # if dishes can be repeated search for next available day and meal
-                    if self.repeatDishes and not cur_recipe.oneTime:
+                    if self.repeatDishes and cur_recipe and not cur_recipe.oneTime:
                         availableDay = self.findAvailableDay(date, cur_recipe)
                         if availableDay:
                             nextDate, nextMeal = availableDay
@@ -189,10 +189,14 @@ class Menu:
     
      """
     def chooseRecipe(self, meal, prepTime):
-        recipe = random.sample(self.subsets[meal]['recipes'][prepTime], 1)[0]
-        # delete this recipe from all sets
-        self.deleteRecipeFromSets(recipe)
-        return recipe
+        sub = self.subsets[meal]['recipes']
+        if prepTime not in sub or len(sub[prepTime]) < 1:
+            return None
+        else:
+            recipe = random.sample(sub[prepTime], 1)[0]
+            # delete this recipe from all sets
+            self.deleteRecipeFromSets(recipe)
+            return recipe
 
     """ 
     delete recipe from subsets, so there will be no same dishes in one day
@@ -203,11 +207,12 @@ class Menu:
     def deleteRecipeFromSets(self, recipe):
         for meal in self.subsets:
             for prepTime in self.subsets[meal]['recipes']:
-                self.subsets[meal]['recipes'][prepTime].discard(recipe)
-                # if subset is empty get it anew
-                if len(self.subsets[meal]['recipes'][prepTime]) < 1:
-                    sublist = self.filter(self.subsets[meal]['tag'], self.subsets[meal]['nutr'], prepTime)
-                    self.subsets[meal]['recipes'][prepTime] = set(sublist)
+                if recipe in self.subsets[meal]['recipes'][prepTime]:
+                    self.subsets[meal]['recipes'][prepTime].discard(recipe)
+                    # if subset is empty get it anew
+                    if len(self.subsets[meal]['recipes'][prepTime]) < 1:
+                        sublist = self.filter(self.subsets[meal]['tag'], self.subsets[meal]['nutr'], prepTime)
+                        self.subsets[meal]['recipes'][prepTime] = set(sublist)
         return
 
     """ 
