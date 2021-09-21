@@ -133,12 +133,6 @@ def test_deleteRecipeFromSetsTwo():
             for prepTime in m.subsets[meal]['recipes']:
                 assert len(m.subsets[meal]['recipes'][prepTime])==del_len
 
-
-
-
-
-# findAvailableDay(self, old_date, recipe):
-
 lines = [
     (['breakfast'], ['free', 'high_carb'], 'short', 1), # all is the same
     (['breakfast'], ['free', 'protein', 'high_carb'], 'short', 1), # nutrients are not all the same
@@ -198,5 +192,16 @@ def test_checkRecipe(tag, nutr, prep, res):
     recipe.nutrients = ['free', 'high_carb']
     assert m.checkRecipe(recipe, tag, nutr, prep) == res
 
+# findAvailableDay(self, old_date, recipe):
 
-# fillMenu(self):
+# without discardMeals()
+def test_fillMenu():
+    sdate = date.today()
+    for n in range(10):
+        days = [sdate + timedelta(days=i) for i in range(n)]
+        m = Menu()
+        m.getEmptyMenu(days)
+        m.fillMenu()
+        for day in m.menu:
+            for meal in m.mpd:
+                assert m.menu[day][meal] is not None
