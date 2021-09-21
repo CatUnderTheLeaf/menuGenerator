@@ -192,8 +192,6 @@ def test_checkRecipe(tag, nutr, prep, res):
     recipe.nutrients = ['free', 'high_carb']
     assert m.checkRecipe(recipe, tag, nutr, prep) == res
 
-# findAvailableDay(self, old_date, recipe):
-
 # without discardMeals()
 def test_fillMenu():
     sdate = date.today()
@@ -205,3 +203,42 @@ def test_fillMenu():
         for day in m.menu:
             for meal in m.mpd:
                 assert m.menu[day][meal] is not None
+
+lines = [
+    # 1: Today I have a breakfast, when can I eat the same dish? - Tomorrow at breakfast 
+    ({'Breakfast': {'tag': ['breakfast'], 'nutr': ['low_carb', 'high_carb', 'fat', 'free']}, 
+    'Lunch': {'tag': None, 'nutr': ['low_carb', 'high_carb', 'protein', 'fat', 'free']}, 
+    'Dinner': {'tag': None, 'nutr': ['protein', 'fat', 'free', 'low_carb']}}, 
+    {'meal': 'Breakfast', 'tags': ['breakfast'], 'prepareTime': 'short', 'nutrients': ['free', 'high_carb']}, 
+    {},
+    (1, 'Breakfast')),
+    # 2 Today I have a breakfast, tomorrow I have a breakfast, when can I eat the same dish? - Tomorrow at lunch
+    ({'Breakfast': {'tag': ['breakfast'], 'nutr': ['low_carb', 'high_carb', 'fat', 'free']}, 
+    'Lunch': {'tag': None, 'nutr': ['low_carb', 'high_carb', 'protein', 'fat', 'free']}, 
+    'Dinner': {'tag': None, 'nutr': ['protein', 'fat', 'free', 'low_carb']}}, 
+    {'meal': 'Breakfast', 'tags': ['breakfast'], 'prepareTime': 'short', 'nutrients': ['free', 'high_carb']}, 
+    {'meal': 'Breakfast', 'tags': ['breakfast'], 'prepareTime': 'short', 'nutrients': ['free', 'high_carb']},
+    (1, 'Lunch')),
+    # 3 Today I have a lunch, tomorrow I have a lunch, when can I eat the same dish? - A day after tomorrow at lunch
+    ({'Breakfast': {'tag': ['breakfast'], 'nutr': ['low_carb', 'high_carb', 'fat', 'free']}, 
+    'Lunch': {'tag': None, 'nutr': ['low_carb', 'high_carb', 'protein', 'fat', 'free']}, 
+    'Dinner': {'tag': None, 'nutr': ['protein', 'fat', 'free', 'low_carb']}}, 
+    {'meal': 'Lunch', 'tags': ['dinner'], 'prepareTime': 'short', 'nutrients': ['free', 'high_carb']},
+    {'meal': 'Lunch', 'tags': ['dinner'], 'prepareTime': 'short', 'nutrients': ['free', 'high_carb']},  (2, 'Lunch'))
+]
+@pytest.mark.parametrize("subset, fakeRecipe1, fakeRecipe2, res", lines)
+def test_findAvailableDay(subset, fakeRecipe1, fakeRecipe2, res):
+    sdate = date.today()
+    days = [sdate + timedelta(days=i) for i in range(3)]
+    m = Menu()
+    m.getEmptyMenu(days)
+    m.subsets = subset
+    recipe = Recipe(tags=fakeRecipe1['tags'], nutrients=fakeRecipe1['nutrients'],prepareTime=fakeRecipe1['prepareTime'])
+    m.menu[sdate][fakeRecipe1['meal']] = recipe
+    if fakeRecipe2:
+        recipe2 = Recipe(tags=fakeRecipe2['tags'], nutrients=fakeRecipe2['nutrients'],prepareTime=fakeRecipe2['prepareTime'])
+        m.menu[sdate + timedelta(days=1)][fakeRecipe2['meal']] = recipe2
+    
+    ind_day, meal = res
+    new_res = (sdate + timedelta(days=ind_day), meal)
+    assert m.findAvailableDay(sdate, recipe)==new_res
