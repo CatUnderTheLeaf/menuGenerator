@@ -139,9 +139,47 @@ def test_deleteRecipeFromSetsTwo():
 
 # findAvailableDay(self, old_date, recipe):
 
-# filter(self, tag=None, nutr=None, prep=None):
+lines = [
+    (['breakfast'], ['free', 'high_carb'], 'short', 1), # all is the same
+    (['breakfast'], ['free', 'protein', 'high_carb'], 'short', 1), # nutrients are not all the same
+    (['breakfast'], ['free', 'protein'], 'short', 0), # nutrients are different
+    (['breakfast'], ['free', 'high_carb'], 'medium', 0), # prepareTime is different
+    (['breakfast'], ['free', 'high_carb'], ['short', 'medium'], 1), # multiple prepareTimes
+    (['dinner'], ['free', 'protein'], 'short', 1), # tags are different
+    (['dinner'], ['free', 'high_carb', 'protein', 'fat'], 'short', 2) # prepTime is empty 
+]
+@pytest.mark.parametrize("tag, nutr, prep, res", lines)
+def test_filter(tag, nutr, prep, res):
+    m = Menu()
+    recipe = Recipe()
+    recipe.tags = ['breakfast']
+    recipe.prepareTime = 'short'
+    recipe.nutrients = ['free', 'high_carb']
+    recipe2 = Recipe()
+    recipe2.tags = ['breakfast']
+    recipe2.prepareTime = 'long'
+    recipe2.nutrients = ['free', 'high_carb']
+    recipe3 = Recipe()
+    recipe3.tags = ['dinner']
+    recipe3.prepareTime = 'short'
+    recipe3.nutrients = ['free', 'protein']
+    recipe4 = Recipe()
+    recipe4.tags = ['dinner']
+    recipe4.prepareTime = 'medium'
+    recipe4.nutrients = ['free', 'protein', 'high_carb']
+    recipe5 = Recipe()
+    recipe5.tags = ['dinner']
+    recipe5.prepareTime = 'short'
+    recipe5.nutrients = ['free', 'fat']
+    m.recipeList.clear()
+    m.recipeList.append(recipe)
+    m.recipeList.append(recipe2)
+    m.recipeList.append(recipe3)
+    m.recipeList.append(recipe4)
+    m.recipeList.append(recipe5)
 
-# checkRecipe(self, recipe, tag=None, nutr=None, prep=None):
+    assert len(m.filter(tag, nutr, prep)) == res
+
 lines = [
     (['breakfast'], ['free', 'high_carb'], 'short', True), # all is the same
     (['breakfast'], ['free', 'protein', 'high_carb'], 'short', True), # nutrients are not all the same
