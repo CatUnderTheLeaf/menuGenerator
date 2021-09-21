@@ -142,6 +142,23 @@ def test_deleteRecipeFromSetsTwo():
 # filter(self, tag=None, nutr=None, prep=None):
 
 # checkRecipe(self, recipe, tag=None, nutr=None, prep=None):
+lines = [
+    (['breakfast'], ['free', 'high_carb'], 'short', True), # all is the same
+    (['breakfast'], ['free', 'protein', 'high_carb'], 'short', True), # nutrients are not all the same
+    (['breakfast'], ['free', 'protein'], 'short', False), # nutrients are different
+    (['breakfast'], ['free', 'high_carb'], 'medium', False), # prepareTime is different
+    (['breakfast'], ['free', 'high_carb'], ['short', 'medium'], True), # multiple prepareTimes
+    (['dinner'], ['free', 'high_carb'], 'short', False), # tags are different
+    (['breakfast', 'dough food'], ['free', 'high_carb'], 'short', True) # more than one tag 
+]
+@pytest.mark.parametrize("tag, nutr, prep, res", lines)
+def test_checkRecipe(tag, nutr, prep, res):
+    m = Menu()
+    recipe = Recipe()
+    recipe.tags = ['breakfast']
+    recipe.prepareTime = 'short'
+    recipe.nutrients = ['free', 'high_carb']
+    assert m.checkRecipe(recipe, tag, nutr, prep) == res
 
 
 # fillMenu(self):
