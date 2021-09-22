@@ -1,5 +1,5 @@
 import pytest
-from classRules import Rules
+from classes.classRules import Rules
 
 # test initializing Rules with empty db_path
 def test_initRules():

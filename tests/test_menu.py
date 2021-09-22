@@ -1,7 +1,7 @@
-from classRecipe import Recipe
+from classes.classRecipe import Recipe
 import pytest
-from classMenu import Menu
-from classRules import Rules
+from classes.classMenu import Menu
+from classes.classRules import Rules
 
 from datetime import date, timedelta
 

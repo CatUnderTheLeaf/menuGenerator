@@ -3,8 +3,8 @@ import pickle
 from pathlib import Path
 from datetime import date, timedelta
 
-from classRules import Rules
-from classRecipe import Recipe
+from classes.classRules import Rules
+from classes.classRecipe import Recipe
 """ 
 a class that represent a list of recipes,
 has a bunch of useful filtering and randomizing functions

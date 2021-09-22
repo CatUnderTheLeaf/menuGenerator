@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 
-from classMenu import Menu
+from classes.classMenu import Menu
 
 # Create Menu object
 menu = Menu()
