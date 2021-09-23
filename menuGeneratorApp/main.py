@@ -1,13 +1,15 @@
-import kivy
+from kivymd.app import MDApp
+from kivy.lang import Builder
+from kivy.uix.boxlayout import BoxLayout
 
-from kivy.app import App
-from kivy.uix.label import Label
+class MenuGenerator(BoxLayout):
+    pass
 
-class MyApp(App):
+class MenuGeneratorApp(MDApp):
 
     def build(self):
-        return Label(text='Hello world')
-
+        self.theme_cls.primary_palette = "Gray"
+        return MenuGenerator()
 
 if __name__ == '__main__':
-    MyApp().run()
+    MenuGeneratorApp().run()
