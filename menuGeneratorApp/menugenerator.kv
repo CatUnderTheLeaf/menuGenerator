@@ -5,7 +5,7 @@ MDBoxLayout:
 
     MDToolbar:
         id: toolbar
-        title: "Test MDBottomNavigation"
+        title: "Menu Generator"
         md_bg_color: app.theme_cls.primary_color
         left_action_items: [["menu", lambda x: None]]
 
@@ -59,10 +59,24 @@ MDBoxLayout:
                 text: "Oh god JS again"
                 halign: "center"
 
-<Tab>
-    text: root.title
+<Tab>:
     ScrollView:
         MDList:
-            id: container
-            text: root.text
+            id: scroll
+
+<OneLineListItem>:
+    text: "Single-line item"
+
+<TwoLineAvatarListItem>:
+    text: "Two-line item with avatar"
+    secondary_text: "Secondary text here"
+
+    ImageLeftWidget:
+        source: "data/logo/kivy-icon-256.png"
+
+<ListItemWithCheckbox>:
+    IconLeftWidget:
+        icon: root.icon
+
+    RightCheckbox:
     
