@@ -1,5 +1,6 @@
 import random
 import pickle
+import os
 from pathlib import Path
 from datetime import date, timedelta
 
@@ -35,8 +36,8 @@ class Menu:
     menu = {}
     subsets = {}
         
-    def __init__(self):                 
-        self.rules = Rules(DB_RULES)
+    def __init__(self, parent_path):
+        self.rules = Rules(os.path.join(parent_path, DB_RULES))
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
         self.n = 1
         self.repeatDishes = True
@@ -44,7 +45,7 @@ class Menu:
         # if there are changes in product files reload them
         # self.reloadProducts()
 
-        with open(DB_PRODUCTS, 'rb') as file:
+        with open(os.path.join(parent_path, DB_PRODUCTS), 'rb') as file:
             self.class_products = pickle.load(file)   
             print("load class_products dictionary")
             self.products_class = {}
@@ -58,7 +59,7 @@ class Menu:
         # if there are changes in recipe files reload them
         # self.reloadRecipes()        
 
-        with open(DB_RECIPE, 'rb') as file:
+        with open(os.path.join(parent_path, DB_RECIPE), 'rb') as file:
             self.recipeList = pickle.load(file)            
             print("load recipes")
 
