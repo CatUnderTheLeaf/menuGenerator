@@ -74,6 +74,14 @@ MDBoxLayout:
     ImageLeftWidget:
         source: "data/logo/kivy-icon-256.png"
 
+<Content>
+    size_hint_y: None
+    height: self.minimum_height
+
+    OneLineListItem:
+        text: root.text
+
+
 <ListItemWithCheckbox>:
     IconLeftWidget:
         icon: root.icon
