@@ -8,7 +8,7 @@ from kivymd.uix.tab import MDTabsBase
 from kivy.properties import StringProperty
 from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem, MDList, OneLineListItem, TwoLineAvatarListItem, BaseListItem
 from kivymd.icon_definitions import md_icons
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelThreeLine
 from kivymd import images_path
 
 
@@ -30,30 +30,22 @@ class MenuGeneratorApp(MDApp):
         for i in range(10):
             day = sdate + timedelta(days=i)
             day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
-            self.root.ids.tabs.add_widget(Tab(title=day_title))
-        tabs = self.root.ids.tabs.get_tab_list()
-        for tab in tabs:
+            
+            tab = Tab(title=day_title)
             for i in range(3):
-                tab.tab.ids.scroll.add_widget(
-                    OneLineListItem(text=f"Meal {i+1} on day {tab.tab.title}")
+                tab.ids.box.add_widget(
+                    OneLineListItem(text=f"Meal {i+1} on day {tab.title}")
                 )
-                # tab.tab.ids.scroll.add_widget(
-                #     TwoLineAvatarListItem(text=f"Recipe {i+1}")
-                # )
                 panel = MDExpansionPanel(
-                    content=Content(text=f"Recipe instructions for recipe {i+1} on day {tab.tab.title}"),
-                    # content=Content(),
-                    icon=f"{images_path}kivymd.png",
+                    icon= 'language-python',
+                    content=Content(text=f"Recipe instructions for recipe {i+1} on day {tab.title}"),
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f"Recipe {i+1}",
-                        secondary_text="Secondary text here"                        
+                        secondary_text="Secondary text"
                     )
                 )
-                grid = MDGridLayout(cols=1, adaptive_height=True)
-                grid.add_widget(panel)
-                tab.tab.ids.scroll.add_widget(grid
-                )
-                
+                tab.ids.box.add_widget(panel)
+            self.root.ids.tabs.add_widget(tab)
             
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
