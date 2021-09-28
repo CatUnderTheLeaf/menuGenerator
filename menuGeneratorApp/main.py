@@ -3,19 +3,15 @@ from datetime import date, timedelta
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.tab import MDTabsBase
-from kivy.properties import StringProperty
-from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem, MDList, OneLineListItem, TwoLineAvatarListItem, BaseListItem
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelThreeLine
-from kivymd import images_path
+from kivy.properties import StringProperty, ObjectProperty
+from kivymd.uix.list import OneLineListItem
 
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 
-class ListItemWithCheckbox(OneLineAvatarIconListItem):
-    '''Custom list item.'''
-
-    icon = StringProperty("android")
+class ContentNavigationDrawer(MDBoxLayout):
+    screen_manager = ObjectProperty()
+    nav_drawer = ObjectProperty()
 
 class Content(MDBoxLayout):
     text = StringProperty("android")
@@ -59,8 +55,7 @@ class MenuGeneratorApp(MDApp):
         pass
         # instance_tab.ids.container.text = tab_text
     pass
-    # def build(self):
-    #     return MenuGenerator()
+
 
 if __name__ == '__main__':
     MenuGeneratorApp().run()

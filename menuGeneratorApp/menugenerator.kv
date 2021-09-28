@@ -1,21 +1,22 @@
 #:kivy 2.0.0
-MDScreen:
-    MDBoxLayout:
-        orientation: "vertical"
+<ContentNavigationDrawer>:
 
-        MDToolbar:
-            id: toolbar
-            title: "Menu Generator"
-            md_bg_color: app.theme_cls.primary_color
-            left_action_items: [["menu", lambda x: None]]
-            elevation: 10
-            
-        MDTabs:
-            id: tabs
-            on_tab_switch: app.on_tab_switch(*args)
-        
-            
-        
+    ScrollView:
+
+        MDList:
+
+            OneLineListItem:
+                text: "Screen 1"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 1"
+
+            OneLineListItem:
+                text: "Screen 2"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "scr 2"
+
 <Tab>:
     MDBoxLayout:
         orientation: "vertical"
@@ -33,3 +34,53 @@ MDScreen:
 
     OneLineListItem:
         text: root.text
+
+MDScreen:
+
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10        
+        title: "Menu Generator"
+        md_bg_color: app.theme_cls.primary_color
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+    MDNavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+
+            MDScreen:
+                name: "scr 1"
+
+                MDLabel:
+                    text: "Screen 1"
+                    halign: "center"
+
+
+            MDScreen:
+                name: "scr 2"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+
+                    MDToolbar:
+                        id: toolbar
+                        pos_hint: {"top": 1}
+                        elevation: 10        
+                        title: "Menu Generator"
+                        md_bg_color: app.theme_cls.primary_color
+                        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                        
+                    MDTabs:
+                        id: tabs
+                        on_tab_switch: app.on_tab_switch(*args)
+
+            
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
