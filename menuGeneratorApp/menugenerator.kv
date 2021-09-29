@@ -10,12 +10,14 @@
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "scr 1"
+                    root.toolbar.title = "Menu"
 
             OneLineListItem:
                 text: "Settings"
                 on_press:
                     root.nav_drawer.set_state("close")
                     root.screen_manager.current = "scr 2"
+                    root.toolbar.title = "Settings"
 
 <Tab>:
     MDBoxLayout:
@@ -41,7 +43,7 @@ MDScreen:
         id: toolbar
         pos_hint: {"top": 1}
         elevation: 10        
-        title: "Menu Generator"
+        title: "Menu"
         md_bg_color: app.theme_cls.primary_color
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
 
@@ -78,3 +80,4 @@ MDScreen:
             ContentNavigationDrawer:
                 screen_manager: screen_manager
                 nav_drawer: nav_drawer
+                toolbar: toolbar
