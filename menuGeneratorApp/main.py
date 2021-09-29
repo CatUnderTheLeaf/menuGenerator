@@ -1,4 +1,7 @@
 from datetime import date, timedelta
+import os
+
+from classes.classMenu import Menu
 
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -22,27 +25,36 @@ class Tab(MDFloatLayout, MDTabsBase):
     '''Class implementing content for a tab.'''
 
 class MenuGeneratorApp(MDApp):
+    p = os.path.dirname(__file__)
+    # Create Menu object
+    menu = Menu(p)
+
+    # generate menu for n+1 days applying rules
+    n = 10
+    sdate = date.today()
+    edate = sdate + timedelta(days=n)
+    menu.generateDailyMenu(sdate, edate)
+
     def on_start(self):
         self.root.ids.screen_manager.transition = NoTransition()
-        sdate = date.today()
-        for i in range(10):
-            day = sdate + timedelta(days=i)
+        for day in self.menu.menu:
             day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
-            
             tab = Tab(title=day_title)
-            for i in range(3):
-                tab.ids.box.add_widget(
-                    OneLineListItem(text=f"Meal {i+1} on day {tab.title}")
-                )
-                panel = MDExpansionPanel(
-                    icon= 'language-python',
-                    content=Content(text=f"Recipe instructions for recipe {i+1} on day {tab.title}"),
-                    panel_cls=MDExpansionPanelTwoLine(
-                        text=f"Recipe {i+1}",
-                        secondary_text="Secondary text"
+            for meal in self.menu.mpd:
+                recipe = self.menu.menu[day][meal]
+                if (recipe is not None):
+                    tab.ids.box.add_widget(
+                        OneLineListItem(text=f"{meal}")
+                    )                    
+                    panel = MDExpansionPanel(
+                        icon= 'language-python',
+                        content=Content(text=f"Recipe instructions for recipe {recipe}"),
+                        panel_cls=MDExpansionPanelTwoLine(
+                            text=f"{recipe}",
+                            secondary_text=f"{', '.join(recipe.ingridients)}"
+                        )
                     )
-                )
-                tab.ids.box.add_widget(panel)
+                    tab.ids.box.add_widget(panel)
             self.root.ids.tabs.add_widget(tab)
             
 
@@ -59,5 +71,5 @@ class MenuGeneratorApp(MDApp):
     pass
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':    
     MenuGeneratorApp().run()
