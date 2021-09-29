@@ -50,32 +50,26 @@ MDScreen:
 
         ScreenManager:
             id: screen_manager
-
+            
             MDScreen:
                 name: "scr 1"
 
-                MDLabel:
-                    text: "Screen 1"
-                    halign: "center"
-
-
-            MDScreen:
-                name: "scr 2"
-
                 MDBoxLayout:
                     orientation: "vertical"
+                    y: root.y - toolbar.height
 
-                    MDToolbar:
-                        id: toolbar
-                        pos_hint: {"top": 1}
-                        elevation: 10        
-                        title: "Menu Generator"
-                        md_bg_color: app.theme_cls.primary_color
-                        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                        
                     MDTabs:
                         id: tabs
                         on_tab_switch: app.on_tab_switch(*args)
+            
+            MDScreen:
+                name: "scr 2"
+
+                MDLabel:
+                    text: "Screen 2"
+                    halign: "center"
+
+
 
             
         MDNavigationDrawer:

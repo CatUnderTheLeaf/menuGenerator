@@ -6,6 +6,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
 from kivy.properties import StringProperty, ObjectProperty
 from kivymd.uix.list import OneLineListItem
+from kivy.uix.screenmanager import NoTransition
 
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 
@@ -22,6 +23,7 @@ class Tab(MDFloatLayout, MDTabsBase):
 
 class MenuGeneratorApp(MDApp):
     def on_start(self):
+        self.root.ids.screen_manager.transition = NoTransition()
         sdate = date.today()
         for i in range(10):
             day = sdate + timedelta(days=i)
