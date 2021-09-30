@@ -3,6 +3,9 @@
     orientation: "vertical"
     padding: "8dp"
     spacing: "8dp"
+    screen_manager: root.screen_manager
+    nav_drawer: root.nav_drawer
+    toolbar: root.toolbar
 
     AnchorLayout:
         anchor_x: "left"
@@ -21,12 +24,19 @@
         adaptive_height: True
 
     ScrollView:
+        screen_manager: root.screen_manager
+        nav_drawer: root.nav_drawer
+        toolbar: root.toolbar
 
         DrawerList:
             id: md_list
+            screen_manager: root.screen_manager
+            nav_drawer: root.nav_drawer
+            toolbar: root.toolbar
             
             ItemDrawer:
                 text: "Menu"
+                text_color: app.theme_cls.primary_color
                 cur_screen: "scr 1"
                 title: "Menu"
                 icon: "book-open-variant"
@@ -40,10 +50,11 @@
 <ItemDrawer>:
     theme_text_color: "Custom"
     on_press:
-        self.parent.parent.parent.nav_drawer.set_state("close")
-        self.parent.parent.parent.screen_manager.current = root.cur_screen
-        self.parent.parent.parent.toolbar.title = root.title
-        on_release: self.parent.set_color_item(self)
+        self.parent.set_color_item(self)
+        self.parent.nav_drawer.set_state("close")
+        self.parent.screen_manager.current = root.cur_screen
+        self.parent.toolbar.title = root.title
+        
 
     IconLeftWidget:
         icon: root.icon
@@ -87,6 +98,13 @@ MDScreen:
             MDScreen:
                 name: "scr 1"
 
+                MDSpinner:
+                    id: spinner
+                    size_hint: None, None
+                    size: dp(46), dp(46)
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    active: False
+                
                 MDBoxLayout:
                     orientation: "vertical"
                     y: root.y - toolbar.height
@@ -97,11 +115,41 @@ MDScreen:
             
             MDScreen:
                 name: "scr 2"
+                
+                MDBoxLayout:
+                    orientation: "vertical"
+                    top: root.top - toolbar.height
+                    padding: dp(10)
+                    spacing: dp(10)
+                    adaptive_height: True
 
-                MDLabel:
-                    text: "Screen 2"
-                    halign: "center"
+                    MDLabel:
+                        text: "Time period "
 
+                    MDSeparator:
+
+                    MDChooseChip:
+
+                        MDChip:
+                            text: "day"
+                            color: 'lightgrey'
+                            icon: "circle-outline"
+                            callback: app.callback
+                            selected_chip_color: app.theme_cls.primary_color
+
+                        MDChip:
+                            text: "week"
+                            color: 'lightgrey'
+                            icon: "circle-slice-2"
+                            callback: app.callback
+                            selected_chip_color: app.theme_cls.primary_color
+
+                        MDChip:
+                            text: "month"
+                            color: 'lightgrey'
+                            icon: "circle-slice-4"
+                            callback: app.callback
+                            selected_chip_color: app.theme_cls.primary_color
 
 
             

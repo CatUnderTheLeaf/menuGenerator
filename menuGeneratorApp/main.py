@@ -11,6 +11,7 @@ from kivy.properties import StringProperty, ObjectProperty, ListProperty
 from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
+from kivymd.toast import toast
 
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 
@@ -41,6 +42,7 @@ class Tab(MDFloatLayout, MDTabsBase):
     '''Class implementing content for a tab.'''
 
 class MenuGeneratorApp(MDApp):
+
     p = os.path.dirname(__file__)
     # Create Menu object
     menu = Menu(p)
@@ -49,8 +51,9 @@ class MenuGeneratorApp(MDApp):
     n = 10
     
 
-    def generateMenuTabs(self):     
-
+    def generateMenuTabs(self):
+        # TODO now spinner frizes when new tabs are generating
+        # self.root.ids.spinner.active = True
         # remove old tabs if exist
         # unfortunately it will leave the last tab
         first_time = True
@@ -105,6 +108,9 @@ class MenuGeneratorApp(MDApp):
         pass
         # instance_tab.ids.container.text = tab_text
     pass
+
+    def callback(self, instance, value):
+        toast(value)
 
 
 if __name__ == '__main__':    
