@@ -31,12 +31,24 @@ class MenuGeneratorApp(MDApp):
 
     # generate menu for n+1 days applying rules
     n = 10
-    sdate = date.today()
-    edate = sdate + timedelta(days=n)
-    menu.generateDailyMenu(sdate, edate)
+    
 
-    def on_start(self):
-        self.root.ids.screen_manager.transition = NoTransition()
+    def generateMenuTabs(self):     
+
+        # remove old tabs if exist
+        # unfortunately it will leave the last tab
+        first_time = True
+        tabs = self.root.ids.tabs.get_tab_list()
+        for del_tab in tabs:
+            first_time = False
+            self.root.ids.tabs.remove_widget(del_tab)
+        
+        # new dates
+        sdate = date.today()
+        edate = sdate + timedelta(days=self.n)
+        self.menu.generateDailyMenu(sdate, edate)
+
+        # add new Tab widgets
         for day in self.menu.menu:
             day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
             tab = Tab(title=day_title)
@@ -54,8 +66,16 @@ class MenuGeneratorApp(MDApp):
                             secondary_text=f"{', '.join(recipe.ingridients)}"
                         )
                     )
-                    tab.ids.box.add_widget(panel)
+                    tab.ids.box.add_widget(panel)            
             self.root.ids.tabs.add_widget(tab)
+
+        # remove last tab from previous if exists
+        if not first_time:
+            self.root.ids.tabs.remove_widget(self.root.ids.tabs.get_tab_list()[0])
+
+    def on_start(self):
+        self.root.ids.screen_manager.transition = NoTransition()
+        self.generateMenuTabs()
             
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):

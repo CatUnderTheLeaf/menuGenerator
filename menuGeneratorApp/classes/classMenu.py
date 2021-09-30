@@ -127,6 +127,7 @@ class Menu:
     
      """
     def generateDailyMenu(self, sdate=date.today(), edate=date.today()):
+        self.menu = {}
         self.n = (edate - sdate).days + 1
         days = [sdate + timedelta(days=i) for i in range(self.n)]
 
