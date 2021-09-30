@@ -64,7 +64,7 @@ class MenuGeneratorApp(MDApp):
         
         # new dates
         sdate = date.today()
-        edate = sdate + timedelta(days=self.n)
+        edate = sdate + timedelta(days=self.n-1)
         self.menu.generateDailyMenu(sdate, edate)
 
         # add new Tab widgets
@@ -110,7 +110,12 @@ class MenuGeneratorApp(MDApp):
     pass
 
     def callback(self, instance, value):
-        toast(value)
+        if value=="day":
+            self.n = 1
+        if value=="week":
+            self.n = 7
+        if value=="month":
+            self.n = 30
 
 
 if __name__ == '__main__':    

@@ -134,21 +134,21 @@ MDScreen:
                             text: "day"
                             color: 'lightgrey'
                             icon: "circle-outline"
-                            callback: app.callback
+                            on_release: app.callback(self, self.text)
                             selected_chip_color: app.theme_cls.primary_color
 
                         MDChip:
                             text: "week"
                             color: 'lightgrey'
                             icon: "circle-slice-2"
-                            callback: app.callback
+                            on_release: app.callback(self, self.text)
                             selected_chip_color: app.theme_cls.primary_color
 
                         MDChip:
                             text: "month"
                             color: 'lightgrey'
                             icon: "circle-slice-4"
-                            callback: app.callback
+                            on_release: app.callback(self, self.text)
                             selected_chip_color: app.theme_cls.primary_color
 
 
