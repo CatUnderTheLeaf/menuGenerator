@@ -7,18 +7,34 @@ from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
-from kivy.properties import StringProperty, ObjectProperty
-from kivymd.uix.list import OneLineListItem
+from kivy.properties import StringProperty, ObjectProperty, ListProperty
+from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem
 from kivy.uix.screenmanager import NoTransition
+from kivymd.theming import ThemableBehavior
 
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
+
+class ItemDrawer(OneLineIconListItem):
+    icon = StringProperty()
+    text_color = ListProperty((0, 0, 0, 1))
+
+class DrawerList(ThemableBehavior, MDList):
+    def set_color_item(self, instance_item):
+        """Called when tap on a menu item."""
+
+        # Set the color of the icon and text for the menu item.
+        for item in self.children:
+            if item.text_color == self.theme_cls.primary_color:
+                item.text_color = self.theme_cls.text_color
+                break
+        instance_item.text_color = self.theme_cls.primary_color
 
 class ContentNavigationDrawer(MDBoxLayout):
     screen_manager = ObjectProperty()
     nav_drawer = ObjectProperty()
 
 class Content(MDBoxLayout):
-    text = StringProperty("android")
+    text = StringProperty()
     pass
 
 class Tab(MDFloatLayout, MDTabsBase):

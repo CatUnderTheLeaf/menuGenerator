@@ -1,23 +1,54 @@
 #:kivy 2.0.0
 <ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+
+    AnchorLayout:
+        anchor_x: "left"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "56dp", "56dp"
+            source: "data/logo/kivy-icon-256.png"
+
+    MDLabel:
+        text: "Menu Generator"
+        font_style: "Button"
+        adaptive_height: True
 
     ScrollView:
 
-        MDList:
-
-            OneLineListItem:
+        DrawerList:
+            id: md_list
+            
+            ItemDrawer:
                 text: "Menu"
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "scr 1"
-                    root.toolbar.title = "Menu"
+                cur_screen: "scr 1"
+                title: "Menu"
+                icon: "book-open-variant"
 
-            OneLineListItem:
+            ItemDrawer:
                 text: "Settings"
-                on_press:
-                    root.nav_drawer.set_state("close")
-                    root.screen_manager.current = "scr 2"
-                    root.toolbar.title = "Settings"
+                cur_screen: "scr 2"
+                title: "Settings"
+                icon: "cog"
+
+<ItemDrawer>:
+    theme_text_color: "Custom"
+    on_press:
+        self.parent.parent.parent.nav_drawer.set_state("close")
+        self.parent.parent.parent.screen_manager.current = root.cur_screen
+        self.parent.parent.parent.toolbar.title = root.title
+        on_release: self.parent.set_color_item(self)
+
+    IconLeftWidget:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color
 
 <Tab>:
     MDBoxLayout:
@@ -44,7 +75,6 @@ MDScreen:
         pos_hint: {"top": 1}
         elevation: 10        
         title: "Menu"
-        md_bg_color: app.theme_cls.primary_color
         left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
         right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
