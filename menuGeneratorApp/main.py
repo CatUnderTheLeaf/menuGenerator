@@ -39,6 +39,7 @@ class Content(MDBoxLayout):
     pass
 
 class Tab(MDFloatLayout, MDTabsBase):
+    day = ObjectProperty()
     '''Class implementing content for a tab.'''
 
 class MenuGeneratorApp(MDApp):
@@ -48,21 +49,20 @@ class MenuGeneratorApp(MDApp):
     menu = Menu(p)
 
     # generate menu for n+1 days applying rules
-    n = 10
+    n = 4
     
-
+    """ 
+    Generate Menu tabs for n days
+    delete previous tabs and load content to the first new tab
+    
+     """
     def generateMenuTabs(self):
         # TODO now spinner frizes when new tabs are generating
         # self.root.ids.spinner.active = True
-        # remove old tabs if exist
-        # unfortunately it will leave the last tab
-        first_time = True
-        tabs = self.root.ids.tabs.get_tab_list()
-        for del_tab in tabs:
-            first_time = False
-            self.root.ids.tabs.remove_widget(del_tab)
+        # old tabs to remove if exist
+        del_tabs = self.root.ids.tabs.get_tab_list()
         
-        # new dates
+        # generate Menu for new dates
         sdate = date.today()
         edate = sdate + timedelta(days=self.n-1)
         self.menu.generateDailyMenu(sdate, edate)
@@ -70,28 +70,45 @@ class MenuGeneratorApp(MDApp):
         # add new Tab widgets
         for day in self.menu.menu:
             day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
-            tab = Tab(title=day_title)
-            for meal in self.menu.mpd:
-                recipe = self.menu.menu[day][meal]
-                if (recipe is not None):
-                    tab.ids.box.add_widget(
-                        OneLineListItem(text=f"{meal}")
-                    )                    
-                    panel = MDExpansionPanel(
-                        icon= 'language-python',
-                        content=Content(text=f"Recipe instructions for recipe {recipe}"),
-                        panel_cls=MDExpansionPanelTwoLine(
-                            text=f"{recipe}",
-                            secondary_text=f"{', '.join(recipe.ingridients)}"
-                        )
-                    )
-                    tab.ids.box.add_widget(panel)            
+            tab = Tab(title=day_title, day=day)                
             self.root.ids.tabs.add_widget(tab)
 
-        # remove last tab from previous if exists
-        if not first_time:
-            self.root.ids.tabs.remove_widget(self.root.ids.tabs.get_tab_list()[0])
+        all_tabs = self.root.ids.tabs.get_tab_list()
+        
+        # remove old tabs from previous if exist
+        for i in range(len(del_tabs)):            
+            self.root.ids.tabs.remove_widget(all_tabs[i])
 
+        # fill first tab with content
+        self.fillTabs(self.root.ids.tabs.get_tab_list()[0].tab)
+
+    """ 
+    Fill the content of a tab
+
+    :param instance_tab: <__main__.Tab object>    
+     """
+    def fillTabs(self, instance_tab):
+        for meal in self.menu.mpd:
+                    recipe = self.menu.menu[instance_tab.day][meal]
+                    if (recipe is not None):
+                        instance_tab.ids.box.add_widget(
+                            OneLineListItem(text=f"{meal}")
+                        )                    
+                        panel = MDExpansionPanel(
+                            icon= 'language-python',
+                            content=Content(text=f"Recipe instructions for recipe {recipe}"),
+                            panel_cls=MDExpansionPanelTwoLine(
+                                text=f"{recipe}",
+                                secondary_text=f"{', '.join(recipe.ingridients)}"
+                            )
+                        )
+                        instance_tab.ids.box.add_widget(panel)     
+
+    """ 
+    Set transition between Screens
+    Generate Menu
+    
+     """
     def on_start(self):
         self.root.ids.screen_manager.transition = NoTransition()
         self.generateMenuTabs()
@@ -105,9 +122,10 @@ class MenuGeneratorApp(MDApp):
         :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
         :param tab_text: text or name icon of tab;
         '''
-        pass
-        # instance_tab.ids.container.text = tab_text
+        if len(instance_tab.ids.box.children)<1:
+            self.fillTabs(instance_tab)
     pass
+
 
     def callback(self, instance, value):
         if value=="day":
