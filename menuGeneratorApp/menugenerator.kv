@@ -103,6 +103,7 @@ MDScreen:
                     size_hint: None, None
                     size: dp(46), dp(46)
                     pos_hint: {'center_x': .5, 'center_y': .5}
+                    determinate: True
                     active: False
                 
                 MDBoxLayout:
@@ -128,28 +129,29 @@ MDScreen:
 
                     MDSeparator:
 
-                    MDChooseChip:
+                    MDStackLayout:
+                        adaptive_height: True
+                        spacing: dp(5)
+                        id: timePeriod
 
                         MDChip:
                             text: "day"
-                            color: 'lightgrey'
                             icon: "circle-outline"
-                            on_release: app.callback(self, self.text)
-                            selected_chip_color: app.theme_cls.primary_color
+                            on_release: app.on_chip_check(self, self.text)
+                            check: True
 
                         MDChip:
                             text: "week"
-                            color: 'lightgrey'
                             icon: "circle-slice-2"
-                            on_release: app.callback(self, self.text)
-                            selected_chip_color: app.theme_cls.primary_color
+                            on_release: app.on_chip_check(self, self.text)
+                            check: True
 
                         MDChip:
                             text: "month"
-                            color: 'lightgrey'
                             icon: "circle-slice-4"
-                            on_release: app.callback(self, self.text)
-                            selected_chip_color: app.theme_cls.primary_color
+                            on_release: app.on_chip_check(self, self.text)
+                            check: True
+                        
 
 
             
