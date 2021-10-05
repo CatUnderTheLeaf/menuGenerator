@@ -113,12 +113,16 @@ class MenuGeneratorApp(MDApp):
             tP = store.get('settings')['timePeriod']
             self.set_n_days(tP)
             self.setTimePeriodChipColor(tP)
+            self.repeatDishes = store.get('settings')['repeatDishes']
+            self.root.ids.repeatDishes.active = self.repeatDishes
         else:
             self.n = 2
+            self.repeatDishes = False
         self.root.ids.screen_manager.transition = NoTransition()
         p = os.path.dirname(__file__)
         # Create Menu object
         self.menu = Menu(p)
+        self.menu.repeatDishes = self.repeatDishes
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
 
@@ -127,7 +131,7 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_stop(self):
-        store.put('settings', timePeriod=self.timePeriod)
+        store.put('settings', timePeriod=self.timePeriod, repeatDishes=self.repeatDishes)
 
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
@@ -183,6 +187,13 @@ class MenuGeneratorApp(MDApp):
             if chip.text!=value and len(chip.ids.box_check.children):
                 check = chip.ids.box_check.children[0]
                 chip.ids.box_check.remove_widget(check)
+
+    def on_repeat_switch(self, checkbox, value):
+        if value:
+            self.repeatDishes = True
+        else:
+            self.repeatDishes = False
+
         
 
     
