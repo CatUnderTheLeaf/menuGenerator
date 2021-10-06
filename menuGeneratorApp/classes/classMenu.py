@@ -35,10 +35,21 @@ class Menu:
     """
     menu = {}
     subsets = {}
-        
+
+    @property
+    def mpd(self):
+        sorted_keys = sorted(self._mpd.keys())
+        return [self._mpd[key] for key in sorted_keys]
+
+    def update_mpd(self, value, text):
+        if value in self._mpd:
+            del self._mpd[value]
+        else:
+            self._mpd[value] = text
+
     def __init__(self, parent_path):
         self.rules = Rules(os.path.join(parent_path, DB_RULES))
-        self.mpd = ['Breakfast', 'Lunch', 'Dinner']
+        self._mpd = {}
         self.n = 1
         self.timePeriod = "day"
         self.repeatDishes = True
@@ -64,23 +75,30 @@ class Menu:
             self.recipeList = pickle.load(file)            
             print("load recipes")
 
-        # make subsets of recipes grouped by prep time and meal type
-        times_groups = self.rules.getDayTimes()
-        for meal in self.mpd:
-            self.subsets[meal] = {}
-            self.subsets[meal]['recipes'] = {}
-            for prep in times_groups:
-                # Check if recipes should be filtered 
-                # by tags for this type of meal
-                tag, nutr = self.rules.filterByMeal(meal)
-                if tag is not None or nutr is not None:
-                    # print("filter with tags or nutrients")
-                    sublist = self.filter(tag, nutr, prep)
-                    self.subsets[meal]['recipes'][prep] = set(sublist)
-                    self.subsets[meal]['tag'] = tag
-                    self.subsets[meal]['nutr'] = nutr
-        # print(self.subsets)
-                
+    """ 
+    generate subsets of recipes
+    grouped by meal and prepareTime    
+     """  
+    def generate_subsets(self):
+        mpd_exist = True if len(self.mpd) else False
+        if mpd_exist:
+            need_to_generate = True if not(len(self.subsets)) else set(self.subsets.keys())!=set(self.mpd)
+            if need_to_generate:
+                times_groups = self.rules.getDayTimes()
+                for meal in self.mpd:
+                    self.subsets[meal] = {}
+                    self.subsets[meal]['recipes'] = {}
+                    for prep in times_groups:
+                        # Check if recipes should be filtered 
+                        # by tags for this type of meal
+                        tag, nutr = self.rules.filterByMeal(meal)
+                        if tag is not None or nutr is not None:
+                            # print("filter with tags or nutrients")
+                            sublist = self.filter(tag, nutr, prep)
+                            self.subsets[meal]['recipes'][prep] = set(sublist)
+                            self.subsets[meal]['tag'] = tag
+                            self.subsets[meal]['nutr'] = nutr
+
     def __repr__(self):
        return repr(self.recipeList)
 
@@ -132,10 +150,14 @@ class Menu:
         self.n = (edate - sdate).days + 1
         days = [sdate + timedelta(days=i) for i in range(self.n)]
 
+        self.generate_subsets()
+
         self.getEmptyMenu(days)
         self.discardMeals()
         self.fillMenu()
         
+        print(self.mpd)
+
         return
 
     """ 
@@ -318,3 +340,4 @@ class Menu:
             pickle.dump(menu, file)
         
         return
+        

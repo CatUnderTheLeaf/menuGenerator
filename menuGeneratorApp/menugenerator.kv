@@ -132,9 +132,11 @@ MDScreen:
                             
                             MDLabel:
                                 text: "Time period"
-
-                            MDSeparator:
-
+                                
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
+                            
                             MDStackLayout:
                                 adaptive_height: True
                                 spacing: dp(5)
@@ -143,19 +145,19 @@ MDScreen:
                                 MDChip:
                                     text: "day"
                                     icon: "circle-outline"
-                                    on_release: app.on_chip_check(self, self.text)
+                                    on_release: app.on_timePeriod_check(self, self.text)
                                     check: True
 
                                 MDChip:
                                     text: "week"
                                     icon: "circle-slice-2"
-                                    on_release: app.on_chip_check(self, self.text)
+                                    on_release: app.on_timePeriod_check(self, self.text)
                                     check: True
 
                                 MDChip:
                                     text: "month"
                                     icon: "circle-slice-4"
-                                    on_release: app.on_chip_check(self, self.text)
+                                    on_release: app.on_timePeriod_check(self, self.text)
                                     check: True
                             
                             MDSeparator:
@@ -172,12 +174,62 @@ MDScreen:
                                     on_active: app.on_repeat_switch(*args)                                    
                             
                             MDSeparator:
+                            
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
                         
+                            MDLabel:
+                                text: "Meals"
 
-    
-                        
+                            Widget:
+                                size_hint_y: None
+                                height: dp(5)
 
+                            MDGridLayout:
+                                cols: 1
+                                adaptive_height: True
+                                spacing: dp(5)
+                                id: meals                                
 
+                                MDChip:
+                                    text: "Breakfast"                                    
+                                    icon: "bowl-mix"
+                                    value: 0
+                                    on_release: app.on_meal_check(self, self.value)
+                                    check: True
+
+                                MDChip:
+                                    text: "Brunch"
+                                    icon: "food-variant"
+                                    value: 1
+                                    on_release: app.on_meal_check(self, self.value)
+                                    check: True
+
+                                MDChip:
+                                    text: "Lunch"
+                                    icon: "pasta"
+                                    value: 2
+                                    on_release: app.on_meal_check(self, self.value)
+                                    check: True
+                                
+                                MDChip:
+                                    text: "Supper"
+                                    icon: "pot-steam"
+                                    value: 3
+                                    on_release: app.on_meal_check(self, self.value)
+                                    check: True
+
+                                MDChip:
+                                    text: "Dinner"
+                                    icon: "noodles"
+                                    value: 4
+                                    on_release: app.on_meal_check(self, self.value)
+                                    check: True                                
+                            
+                            MDSeparator:
+                            
+                            
             
         MDNavigationDrawer:
             id: nav_drawer

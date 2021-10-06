@@ -112,6 +112,7 @@ class MenuGeneratorApp(MDApp):
     def on_start(self):
         timePeriod = "day"
         repeatDishes = False
+        meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
         
         self.root.ids.screen_manager.transition = NoTransition()
 
@@ -123,14 +124,18 @@ class MenuGeneratorApp(MDApp):
         if store.exists('settings'):
             timePeriod = store.get('settings')['timePeriod']            
             repeatDishes = store.get('settings')['repeatDishes']
+            meals = store.get('settings')['meals']
         
         # set settings in the menu
         self.set_n_days(timePeriod)
         self.menu.repeatDishes = repeatDishes
+        for key in meals:
+            self.menu.update_mpd(int(key), meals[key])
 
         # set settings on the screen
         self.setTimePeriodChipColor(timePeriod)
         self.root.ids.repeatDishes.active = repeatDishes
+        self.setMealChipColor(meals)
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
@@ -140,7 +145,9 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_stop(self):
-        store.put('settings', timePeriod=self.menu.timePeriod, repeatDishes=self.menu.repeatDishes)
+        store.put('settings', timePeriod=self.menu.timePeriod, 
+                            repeatDishes=self.menu.repeatDishes,
+                            meals = self.menu._mpd)
 
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
@@ -169,17 +176,37 @@ class MenuGeneratorApp(MDApp):
                             font_size=sp(20),
                         ))
 
+    '''Check meal chip as it was saved in settings
+
+    :param meals: dict (chip.value: chip.text)
+    '''
+    def setMealChipColor(self, meals):
+        chips = self.root.ids.meals.children
+        print(meals)
+        print(chips)
+        for chip in chips:
+            print(chip.value)
+            if str(chip.value) in meals:
+                print("it is here")
+                chip.ids.box_check.add_widget(MDIcon(
+                            icon="check",
+                            size_hint=(None, None),
+                            size=("26dp", "26dp"),
+                            font_size=sp(20),
+                        ))
+
     '''Set number of days and timeperiod
 
     :param value: text of the chip in settings;
     '''
-    def set_n_days(self, value):
+    def set_n_days(self, value):        
         if value=="day":
             self.menu.n = 1
             self.menu.timePeriod = "day"
         if value=="week":
             self.menu.n = 7
             self.menu.timePeriod = "week"
+        # TODO set n based on which month is now
         if value=="month":
             self.menu.n = 30
             self.menu.timePeriod = "month"    
@@ -189,7 +216,7 @@ class MenuGeneratorApp(MDApp):
     :param instance: kivymd.uix.chip.MDChip
     :param value: text of the chip;
     '''
-    def on_chip_check(self, instance, value):
+    def on_timePeriod_check(self, instance, value):
         self.set_n_days(value)
         # remove all other checks except instance
         for chip in instance.parent.children:
@@ -203,6 +230,22 @@ class MenuGeneratorApp(MDApp):
         else:
             self.menu.repeatDishes = False
 
+    def on_meal_check(self, instance, value):
+        print(value)
+        self.menu.update_mpd(value, instance.text)
+        print(self.menu._mpd)
+        # if not instance.ids.box_check.children:
+        #     # self.menu.update_mpd(value, instance.text, True)
+        #     self.menu.mpd[value] = instance.text
+        # else:
+        #     if value in self.menu.mpd:
+        #         del self.menu.mpd[value]
+        # print(sorted(self.menu.mpd))
+        # meals = []
+        # for chip in instance.parent.children:
+        #     if not chip.ids.box_check.children:
+        #         meals.append(chip.text)
+        # print(meals)
         
 
     
