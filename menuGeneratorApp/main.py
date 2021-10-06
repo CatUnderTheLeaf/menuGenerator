@@ -61,7 +61,8 @@ class MenuGeneratorApp(MDApp):
         
         # generate Menu for new dates
         sdate = date.today()
-        edate = sdate + timedelta(days=self.n-1)
+        n = self.menu.n
+        edate = sdate + timedelta(days=n-1)
         self.menu.generateDailyMenu(sdate, edate)
 
         # add new Tab widgets
@@ -104,25 +105,33 @@ class MenuGeneratorApp(MDApp):
 
     """ 
     Set transition between Screens
+    Load settings
     Generate Menu
     
      """
     def on_start(self):
+        timePeriod = "day"
+        repeatDishes = False
+        
+        self.root.ids.screen_manager.transition = NoTransition()
+
+        # Create Menu object
+        p = os.path.dirname(__file__)
+        self.menu = Menu(p)
+
         # load settings from the storage
         if store.exists('settings'):
-            tP = store.get('settings')['timePeriod']
-            self.set_n_days(tP)
-            self.setTimePeriodChipColor(tP)
-            self.repeatDishes = store.get('settings')['repeatDishes']
-            self.root.ids.repeatDishes.active = self.repeatDishes
-        else:
-            self.n = 2
-            self.repeatDishes = False
-        self.root.ids.screen_manager.transition = NoTransition()
-        p = os.path.dirname(__file__)
-        # Create Menu object
-        self.menu = Menu(p)
-        self.menu.repeatDishes = self.repeatDishes
+            timePeriod = store.get('settings')['timePeriod']            
+            repeatDishes = store.get('settings')['repeatDishes']
+        
+        # set settings in the menu
+        self.set_n_days(timePeriod)
+        self.menu.repeatDishes = repeatDishes
+
+        # set settings on the screen
+        self.setTimePeriodChipColor(timePeriod)
+        self.root.ids.repeatDishes.active = repeatDishes
+
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
 
@@ -131,7 +140,7 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_stop(self):
-        store.put('settings', timePeriod=self.timePeriod, repeatDishes=self.repeatDishes)
+        store.put('settings', timePeriod=self.menu.timePeriod, repeatDishes=self.menu.repeatDishes)
 
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
@@ -166,14 +175,14 @@ class MenuGeneratorApp(MDApp):
     '''
     def set_n_days(self, value):
         if value=="day":
-            self.n = 1
-            self.timePeriod = "day"
+            self.menu.n = 1
+            self.menu.timePeriod = "day"
         if value=="week":
-            self.n = 7
-            self.timePeriod = "week"
+            self.menu.n = 7
+            self.menu.timePeriod = "week"
         if value=="month":
-            self.n = 30
-            self.timePeriod = "month"    
+            self.menu.n = 30
+            self.menu.timePeriod = "month"    
 
     '''Called when checking chips.
 
@@ -190,9 +199,9 @@ class MenuGeneratorApp(MDApp):
 
     def on_repeat_switch(self, checkbox, value):
         if value:
-            self.repeatDishes = True
+            self.menu.repeatDishes = True
         else:
-            self.repeatDishes = False
+            self.menu.repeatDishes = False
 
         
 

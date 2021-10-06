@@ -40,6 +40,7 @@ class Menu:
         self.rules = Rules(os.path.join(parent_path, DB_RULES))
         self.mpd = ['Breakfast', 'Lunch', 'Dinner']
         self.n = 1
+        self.timePeriod = "day"
         self.repeatDishes = True
 
         # if there are changes in product files reload them
