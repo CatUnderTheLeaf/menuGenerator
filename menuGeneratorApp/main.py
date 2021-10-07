@@ -14,6 +14,7 @@ from kivymd.theming import ThemableBehavior
 from kivy.metrics import sp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
+from kivymd.utils.fitimage import FitImage
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -92,7 +93,11 @@ class MenuGeneratorApp(MDApp):
                     if (recipe is not None):
                         instance_tab.ids.box.add_widget(
                             OneLineListItem(text=f"{meal}")
-                        )                    
+                        )
+                        img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
+                        img_box.add_widget(FitImage(source="menuGeneratorApp\img\Hot_meal.jpg"))
+                        instance_tab.ids.box.add_widget(img_box)
+                
                         panel = MDExpansionPanel(
                             icon= 'language-python',
                             content=Content(text=f"Recipe instructions for recipe {recipe}"),
