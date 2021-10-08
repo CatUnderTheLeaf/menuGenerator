@@ -5,7 +5,6 @@
     spacing: "8dp"
     screen_manager: root.screen_manager
     nav_drawer: root.nav_drawer
-    toolbar: root.toolbar
 
     AnchorLayout:
         anchor_x: "left"
@@ -26,31 +25,26 @@
     ScrollView:
         screen_manager: root.screen_manager
         nav_drawer: root.nav_drawer
-        toolbar: root.toolbar
 
         DrawerList:
             id: md_list
             screen_manager: root.screen_manager
             nav_drawer: root.nav_drawer
-            toolbar: root.toolbar
             
             ItemDrawer:
                 text: "Menu"
                 text_color: app.theme_cls.primary_color
                 cur_screen: "scr 1"
-                title: "Menu"
                 icon: "book-open-variant"
 
             ItemDrawer:
                 text: "Settings"
                 cur_screen: "scr 2"
-                title: "Settings"
                 icon: "cog"
 
             ItemDrawer:
                 text: "Recipes"
                 cur_screen: "scr 3"
-                title: "All recipes"
                 icon: "nutrition"
 
 <ItemDrawer>:
@@ -59,7 +53,6 @@
         self.parent.set_color_item(self)
         self.parent.nav_drawer.set_state("close")
         self.parent.screen_manager.current = root.cur_screen
-        self.parent.toolbar.title = root.title
         
 
     IconLeftWidget:
@@ -80,13 +73,14 @@
 
 <Content>:
     size_hint_y: None
-    height: self.minimum_height
+    height: recipe_text.height
 
     MDBoxLayout:
         orientation: "vertical"
         adaptive_height: True
 
         MDLabel:
+            id: recipe_text
             text: root.text
 
 <SwipeToDeleteItem>:
@@ -103,7 +97,7 @@
 
     MDCardSwipeFrontBox:
 
-        TwoLineAvatarListItem:
+        TwoLineAvatarIconListItem:
             id: listItem
             text: root.text
             secondary_text: root.secondary_text
@@ -111,176 +105,184 @@
 
             ImageLeftWidget:
                 source: root.source
+            IconRightWidget:
+                icon: "pencil-outline"
+                on_release: app.edit_recipe(root)
 
 
 MDScreen:
 
-    MDToolbar:
-        id: toolbar
-        pos_hint: {"top": 1}
-        elevation: 10        
-        title: "Menu"
-        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-        right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
+    MDBoxLayout:
+        orientation: "vertical"
+        
+        MDNavigationLayout:
 
-    MDNavigationLayout:
-        x: toolbar.height
-
-        ScreenManager:
-            id: screen_manager
-            
-            MDScreen:
-                name: "scr 1"
-
-                MDSpinner:
-                    id: spinner
-                    size_hint: None, None
-                    size: dp(46), dp(46)
-                    pos_hint: {'center_x': .5, 'center_y': .5}
-                    determinate: True
-                    active: False
+            ScreenManager:
+                id: screen_manager
                 
-                MDBoxLayout:
-                    orientation: "vertical"
-                    y: root.y - toolbar.height
+                MDScreen:   
+                    name: "scr 1"
+                    
+                    MDBoxLayout:
+                        orientation: "vertical"
 
-                    MDTabs:
-                        id: tabs
-                        on_tab_switch: app.on_tab_switch(*args)
-            
-            MDScreen:
-                name: "scr 2"
+                        MDToolbar:
+                            id: menu
+                            pos_hint: {"top": 1}
+                            title: "Menu"
+                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
-                MDBoxLayout:
-                    orientation: "vertical"
-                    y: root.y - toolbar.height
-                    padding: dp(10)
 
-                    ScrollView:
-                        
-                        MDGridLayout:
-                            padding: dp(10)
-                            spacing: dp(10)
-                            cols: 1
-                            adaptive_height: True
-                            
-                            MDLabel:
-                                text: "Time period"
-                                
-                            Widget:
-                                size_hint_y: None
-                                height: dp(5)
-                            
-                            MDStackLayout:
-                                adaptive_height: True
-                                spacing: dp(5)
-                                id: timePeriod
+                        MDTabs:
+                            id: tabs
+                            on_tab_switch: app.on_tab_switch(*args)
+                
+                MDScreen:
+                    name: "scr 2"
 
-                                MDChip:
-                                    text: "day"
-                                    icon: "circle-outline"
-                                    on_release: app.on_timePeriod_check(self, self.text)
-                                    check: True
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: dp(5)
 
-                                MDChip:
-                                    text: "week"
-                                    icon: "circle-slice-2"
-                                    on_release: app.on_timePeriod_check(self, self.text)
-                                    check: True
+                        MDToolbar:
+                            id: settings
+                            pos_hint: {"top": 1}
+                            title: "Settings"
+                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
-                                MDChip:
-                                    text: "month"
-                                    icon: "circle-slice-4"
-                                    on_release: app.on_timePeriod_check(self, self.text)
-                                    check: True
-                            
-                            MDSeparator:
+                        ScrollView:
                             
                             MDGridLayout:
-                                cols: 2
-                                adaptive_height: True                            
-
-                                MDLabel:
-                                    text: "Repeat dishes"
-
-                                MDSwitch:
-                                    id: repeatDishes
-                                    on_active: app.on_repeat_switch(*args)                                    
-                            
-                            MDSeparator:
-                            
-                            Widget:
-                                size_hint_y: None
-                                height: dp(5)
-                        
-                            MDLabel:
-                                text: "Meals"
-
-                            Widget:
-                                size_hint_y: None
-                                height: dp(5)
-
-                            MDGridLayout:
+                                padding: dp(20)
+                                spacing: dp(10)
                                 cols: 1
                                 adaptive_height: True
-                                spacing: dp(5)
-                                id: meals                                
-
-                                MDChip:
-                                    text: "Breakfast"                                    
-                                    icon: "bowl-mix"
-                                    value: 0
-                                    on_release: app.on_meal_check(self, self.value)
-                                    check: True
-
-                                MDChip:
-                                    text: "Brunch"
-                                    icon: "food-variant"
-                                    value: 1
-                                    on_release: app.on_meal_check(self, self.value)
-                                    check: True
-
-                                MDChip:
-                                    text: "Lunch"
-                                    icon: "pasta"
-                                    value: 2
-                                    on_release: app.on_meal_check(self, self.value)
-                                    check: True
                                 
-                                MDChip:
-                                    text: "Supper"
-                                    icon: "pot-steam"
-                                    value: 3
-                                    on_release: app.on_meal_check(self, self.value)
-                                    check: True
+                                MDLabel:
+                                    text: "Time period"
+                                    
+                                Widget:
+                                    size_hint_y: None
+                                    height: dp(5)
+                                
+                                MDStackLayout:
+                                    adaptive_height: True
+                                    spacing: dp(5)
+                                    id: timePeriod
 
-                                MDChip:
-                                    text: "Dinner"
-                                    icon: "noodles"
-                                    value: 4
-                                    on_release: app.on_meal_check(self, self.value)
-                                    check: True                                
-                            
-                            MDSeparator:
+                                    MDChip:
+                                        text: "day"
+                                        icon: "circle-outline"
+                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
 
-            MDScreen:
-                name: "scr 3"
-                 
-                MDBoxLayout:
-                    orientation: "vertical"
-                    y: root.y - toolbar.height
-        
-                    ScrollView:
+                                    MDChip:
+                                        text: "week"
+                                        icon: "circle-slice-2"
+                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
 
-                        MDList:
-                            id: recipe_scroll
+                                    MDChip:
+                                        text: "month"
+                                        icon: "circle-slice-4"
+                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
+                                
+                                MDSeparator:
+                                
+                                MDGridLayout:
+                                    cols: 2
+                                    adaptive_height: True                            
+
+                                    MDLabel:
+                                        text: "Repeat dishes"
+
+                                    MDSwitch:
+                                        id: repeatDishes
+                                        on_active: app.on_repeat_switch(*args)                                    
+                                
+                                MDSeparator:
+                                
+                                Widget:
+                                    size_hint_y: None
+                                    height: dp(5)
                             
-                            
+                                MDLabel:
+                                    text: "Meals"
+
+                                Widget:
+                                    size_hint_y: None
+                                    height: dp(5)
+
+                                MDGridLayout:
+                                    cols: 1
+                                    adaptive_height: True
+                                    spacing: dp(5)
+                                    id: meals                                
+
+                                    MDChip:
+                                        text: "Breakfast"                                    
+                                        icon: "bowl-mix"
+                                        value: 0
+                                        on_release: app.on_meal_check(self, self.value)
+                                        check: True
+
+                                    MDChip:
+                                        text: "Brunch"
+                                        icon: "food-variant"
+                                        value: 1
+                                        on_release: app.on_meal_check(self, self.value)
+                                        check: True
+
+                                    MDChip:
+                                        text: "Lunch"
+                                        icon: "pasta"
+                                        value: 2
+                                        on_release: app.on_meal_check(self, self.value)
+                                        check: True
+                                    
+                                    MDChip:
+                                        text: "Supper"
+                                        icon: "pot-steam"
+                                        value: 3
+                                        on_release: app.on_meal_check(self, self.value)
+                                        check: True
+
+                                    MDChip:
+                                        text: "Dinner"
+                                        icon: "noodles"
+                                        value: 4
+                                        on_release: app.on_meal_check(self, self.value)
+                                        check: True                                
+                                
+                                MDSeparator:
+
+                MDScreen:
+                    name: "scr 3"
+                    
+                    MDBoxLayout:
+                        orientation: "vertical"
             
-        MDNavigationDrawer:
-            id: nav_drawer
+                        MDToolbar:
+                            id: recipeList
+                            pos_hint: {"top": 1} 
+                            title: "All recipes"
+                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
-            ContentNavigationDrawer:
-                screen_manager: screen_manager
-                nav_drawer: nav_drawer
-                toolbar: toolbar
+
+                        ScrollView:
+
+                            MDList:
+                                id: recipe_scroll
+                                
+                                
+                
+            MDNavigationDrawer:
+                id: nav_drawer
+
+                ContentNavigationDrawer:
+                    screen_manager: screen_manager
+                    nav_drawer: nav_drawer
