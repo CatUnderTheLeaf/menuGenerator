@@ -34,17 +34,17 @@
             ItemDrawer:
                 text: "Menu"
                 text_color: app.theme_cls.primary_color
-                cur_screen: "scr 1"
+                cur_screen: "scr1"
                 icon: "book-open-variant"
 
             ItemDrawer:
                 text: "Settings"
-                cur_screen: "scr 2"
+                cur_screen: "scr2"
                 icon: "cog"
 
             ItemDrawer:
                 text: "Recipes"
-                cur_screen: "scr 3"
+                cur_screen: "scr3"
                 icon: "nutrition"
 
 <ItemDrawer>:
@@ -121,7 +121,7 @@ MDScreen:
                 id: screen_manager
                 
                 MDScreen:   
-                    name: "scr 1"
+                    name: "scr1"
                     
                     MDBoxLayout:
                         orientation: "vertical"
@@ -139,7 +139,7 @@ MDScreen:
                             on_tab_switch: app.on_tab_switch(*args)
                 
                 MDScreen:
-                    name: "scr 2"
+                    name: "scr2"
 
                     MDBoxLayout:
                         orientation: "vertical"
@@ -260,7 +260,7 @@ MDScreen:
                                 MDSeparator:
 
                 MDScreen:
-                    name: "scr 3"
+                    name: "scr3"
                     
                     MDBoxLayout:
                         orientation: "vertical"
@@ -270,13 +270,30 @@ MDScreen:
                             pos_hint: {"top": 1} 
                             title: "All recipes"
                             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
-
+                            
 
                         ScrollView:
 
                             MDList:
                                 id: recipe_scroll
+
+                MDScreen:
+                    name: "scr4"
+                    
+                    MDBoxLayout:
+                        orientation: "vertical"
+            
+                        MDToolbar:
+                            id: editRecipe
+                            pos_hint: {"top": 1} 
+                            title: "Edit recipe"
+                            left_action_items: [["arrow-left", lambda x: app.returnBack()]]
+                            right_action_items: [["check", lambda x: app.saveRecipe(), "save"]]
+
+
+                        MDLabel:
+                            id: edit_recipe
+                            text: "screen edit recipe"
                                 
                                 
                 

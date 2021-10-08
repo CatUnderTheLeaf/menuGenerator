@@ -250,7 +250,16 @@ class MenuGeneratorApp(MDApp):
 
     def remove_recipe_from_list(self, instance):
         self.root.ids.recipe_scroll.remove_widget(instance)
+    
+    def edit_recipe(self, instance):
+        self.root.ids.screen_manager.current = "scr4"
+        self.root.ids.edit_recipe.text = instance.text
         
+    def saveRecipe(self):
+        print("save recipe")
+    
+    def returnBack(self):
+        self.root.ids.screen_manager.current = "scr3"
         
 
     
