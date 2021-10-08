@@ -1,1 +1,1 @@
-{"settings": {"timePeriod": "week", "repeatDishes": false, "meals": {"0": "Breakfast", "4": "Dinner", "2": "Lunch"}}}
+{"settings": {"timePeriod": "week", "repeatDishes": true, "meals": {"0": "Breakfast", "4": "Dinner", "2": "Lunch"}}}

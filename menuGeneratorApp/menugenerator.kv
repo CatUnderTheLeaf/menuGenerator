@@ -47,6 +47,12 @@
                 title: "Settings"
                 icon: "cog"
 
+            ItemDrawer:
+                text: "Recipes"
+                cur_screen: "scr 3"
+                title: "All recipes"
+                icon: "nutrition"
+
 <ItemDrawer>:
     theme_text_color: "Custom"
     on_press:
@@ -232,6 +238,18 @@ MDScreen:
                                     check: True                                
                             
                             MDSeparator:
+
+            MDScreen:
+                name: "scr 3"
+                 
+                MDBoxLayout:
+                    orientation: "vertical"
+                    y: root.y - toolbar.height
+        
+                    ScrollView:
+
+                        MDList:
+                            id: recipe_scroll
                             
                             
             

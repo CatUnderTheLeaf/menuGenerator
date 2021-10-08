@@ -8,7 +8,7 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
 from kivy.properties import StringProperty, ObjectProperty, ListProperty
-from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem
+from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarListItem, ImageLeftWidget
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
 from kivy.metrics import sp
@@ -144,6 +144,17 @@ class MenuGeneratorApp(MDApp):
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
+        self.get_recipes()
+
+    def get_recipes(self):
+        for recipe in self.menu.recipeList:
+            img = ImageLeftWidget(source="menuGeneratorApp\img\Hot_meal.jpg")
+            list_item = TwoLineAvatarListItem(
+                                text=f"{recipe}",
+                                secondary_text=f"{', '.join(recipe.ingridients)}"
+                            )
+            list_item.add_widget(img)
+            self.root.ids.recipe_scroll.add_widget(list_item)
 
     """ 
     Save settings to a storage
@@ -187,12 +198,8 @@ class MenuGeneratorApp(MDApp):
     '''
     def setMealChipColor(self, meals):
         chips = self.root.ids.meals.children
-        print(meals)
-        print(chips)
         for chip in chips:
-            print(chip.value)
             if str(chip.value) in meals:
-                print("it is here")
                 chip.ids.box_check.add_widget(MDIcon(
                             icon="check",
                             size_hint=(None, None),

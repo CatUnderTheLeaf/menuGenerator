@@ -155,9 +155,7 @@ class Menu:
         self.getEmptyMenu(days)
         self.discardMeals()
         self.fillMenu()
-        
-        print(self.mpd)
-
+                
         return
 
     """ 
