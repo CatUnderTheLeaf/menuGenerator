@@ -78,7 +78,7 @@
                 adaptive_height: True
                 id: box
 
-<Content>
+<Content>:
     size_hint_y: None
     height: self.minimum_height
 
@@ -88,6 +88,30 @@
 
         MDLabel:
             text: root.text
+
+<SwipeToDeleteItem>:
+    size_hint_y: None
+    height: listItem.height
+
+    MDCardSwipeLayerBox:
+        padding: "8dp"
+
+        MDIconButton:
+            icon: "trash-can"
+            pos_hint: {"center_y": .5}
+            on_release: app.remove_recipe_from_list(root)
+
+    MDCardSwipeFrontBox:
+
+        TwoLineAvatarListItem:
+            id: listItem
+            text: root.text
+            secondary_text: root.secondary_text
+            _no_ripple_effect: True
+
+            ImageLeftWidget:
+                source: root.source
+
 
 MDScreen:
 

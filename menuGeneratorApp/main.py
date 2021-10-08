@@ -15,6 +15,7 @@ from kivy.metrics import sp
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
 from kivymd.utils.fitimage import FitImage
+from kivymd.uix.card import MDCardSwipe
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -42,11 +43,14 @@ class ContentNavigationDrawer(MDBoxLayout):
 
 class Content(MDBoxLayout):
     text = StringProperty()
-    pass
 
 class Tab(MDFloatLayout, MDTabsBase):
     day = ObjectProperty()
-    '''Class implementing content for a tab.'''
+
+class SwipeToDeleteItem(MDCardSwipe):
+    text = StringProperty()
+    secondary_text = StringProperty()
+    source = StringProperty()
 
 class MenuGeneratorApp(MDApp):  
     """ 
@@ -148,12 +152,11 @@ class MenuGeneratorApp(MDApp):
 
     def get_recipes(self):
         for recipe in self.menu.recipeList:
-            img = ImageLeftWidget(source="menuGeneratorApp\img\Hot_meal.jpg")
-            list_item = TwoLineAvatarListItem(
-                                text=f"{recipe}",
-                                secondary_text=f"{', '.join(recipe.ingridients)}"
-                            )
-            list_item.add_widget(img)
+            list_item = SwipeToDeleteItem(
+                    text=f"{recipe}",
+                    secondary_text=f"{', '.join(recipe.ingridients)}",
+                    source="menuGeneratorApp\img\Hot_meal.jpg"
+                )
             self.root.ids.recipe_scroll.add_widget(list_item)
 
     """ 
@@ -243,21 +246,11 @@ class MenuGeneratorApp(MDApp):
             self.menu.repeatDishes = False
 
     def on_meal_check(self, instance, value):
-        print(value)
         self.menu.update_mpd(value, instance.text)
-        print(self.menu._mpd)
-        # if not instance.ids.box_check.children:
-        #     # self.menu.update_mpd(value, instance.text, True)
-        #     self.menu.mpd[value] = instance.text
-        # else:
-        #     if value in self.menu.mpd:
-        #         del self.menu.mpd[value]
-        # print(sorted(self.menu.mpd))
-        # meals = []
-        # for chip in instance.parent.children:
-        #     if not chip.ids.box_check.children:
-        #         meals.append(chip.text)
-        # print(meals)
+
+    def remove_recipe_from_list(self, instance):
+        self.root.ids.recipe_scroll.remove_widget(instance)
+        
         
 
     
