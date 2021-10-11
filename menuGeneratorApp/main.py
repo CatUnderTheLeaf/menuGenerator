@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from logging import raiseExceptions
 import os
 
 from classes.classMenu import Menu
@@ -16,6 +17,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
 from kivymd.utils.fitimage import FitImage
 from kivymd.uix.card import MDCardSwipe
+from kivymd.uix.chip import MDChip
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -51,6 +53,7 @@ class SwipeToDeleteItem(MDCardSwipe):
     text = StringProperty()
     secondary_text = StringProperty()
     source = StringProperty()
+    recipe = ObjectProperty()
 
 class MenuGeneratorApp(MDApp):  
     """ 
@@ -155,7 +158,8 @@ class MenuGeneratorApp(MDApp):
             list_item = SwipeToDeleteItem(
                     text=f"{recipe}",
                     secondary_text=f"{', '.join(recipe.ingridients)}",
-                    source="menuGeneratorApp\img\Hot_meal.jpg"
+                    source="menuGeneratorApp\img\Hot_meal.jpg",
+                    recipe = recipe
                 )
             self.root.ids.recipe_scroll.add_widget(list_item)
 
@@ -253,7 +257,31 @@ class MenuGeneratorApp(MDApp):
     
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
-        self.root.ids.edit_recipe.text = instance.text
+        recipe = instance.recipe
+        self.root.ids.recipeTitle.text = recipe.title
+        # remove old ingridients
+        all_ingridients = len(self.root.ids.recipeIngridients.children)
+        for ingridient in recipe.ingridients:
+            self.root.ids.recipeIngridients.add_widget(MDChip(
+                                        text=ingridient,
+                                        icon='',
+                                        check=False))
+        # remove old ingridients
+        for i in range(all_ingridients):
+            self.root.ids.recipeIngridients.remove_widget(self.root.ids.recipeIngridients.children[-1])
+        
+        # remove old tags
+        all_tags = len(self.root.ids.recipeTags.children)
+        for tag in recipe.tags:
+            self.root.ids.recipeTags.add_widget(MDChip(
+                                        text=tag,
+                                        icon='',
+                                        check=False))
+        for i in range(all_tags):
+            self.root.ids.recipeTags.remove_widget(self.root.ids.recipeTags.children[-1])
+        
+        self.root.ids.recipeDescription.text = recipe.description
+
         
     def saveRecipe(self):
         print("save recipe")

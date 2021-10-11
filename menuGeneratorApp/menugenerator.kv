@@ -93,6 +93,8 @@
         MDIconButton:
             icon: "trash-can"
             pos_hint: {"center_y": .5}
+            theme_text_color: "Custom"
+            text_color: "red"
             on_release: app.remove_recipe_from_list(root)
 
     MDCardSwipeFrontBox:
@@ -107,6 +109,8 @@
                 source: root.source
             IconRightWidget:
                 icon: "pencil-outline"
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
                 on_release: app.edit_recipe(root)
 
 
@@ -284,17 +288,93 @@ MDScreen:
                         orientation: "vertical"
             
                         MDToolbar:
-                            id: editRecipe
+                            id: editRecipeBar
                             pos_hint: {"top": 1} 
                             title: "Edit recipe"
                             left_action_items: [["arrow-left", lambda x: app.returnBack()]]
                             right_action_items: [["check", lambda x: app.saveRecipe(), "save"]]
 
 
-                        MDLabel:
-                            id: edit_recipe
-                            text: "screen edit recipe"
+                        ScrollView:
+
+                            MDBoxLayout:
+                                id: editRecipe
+                                orientation: "vertical"
+                                adaptive_height: True
+                                padding: dp(48)
+                                spacing: dp(15)
                                 
+                                MDTextField:
+                                    id: recipeTitle
+                                    hint_text: "Title"
+                                    required: True
+                                    helper_text_mode: "on_error"
+
+                                MDLabel:
+                                    text: "Ingridients"
+
+                                MDStackLayout:
+                                    adaptive_height: True
+                                    spacing: dp(5)
+                                    id: recipeIngridients
+                                
+                                MDSeparator:
+
+                                MDLabel:
+                                    text: "Prepare time"
+
+                                MDStackLayout:
+                                    adaptive_height: True
+                                    spacing: dp(5)
+                                    id: recipePrepareTime
+
+                                    MDChip:
+                                        text: "short"
+                                        icon: "circle-outline"
+                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
+
+                                    MDChip:
+                                        text: "medium"
+                                        icon: "circle-slice-2"
+                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
+
+                                    MDChip:
+                                        text: "long"
+                                        icon: "circle-slice-4"
+                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        check: True
+
+                                MDSeparator:
+
+                                MDLabel:
+                                    text: "Tags"
+
+                                MDStackLayout:
+                                    adaptive_height: True
+                                    spacing: dp(5)
+                                    id: recipeTags
+
+                                MDSeparator:
+
+                                MDGridLayout:
+                                    cols: 2
+                                    adaptive_height: True                            
+
+                                    MDLabel:
+                                        text: "Repeat dish?"
+
+                                    MDSwitch:
+                                        id: recipeRepeatDish
+                                        # on_active: app.on_repeat_switch(*args)
+
+                                MDSeparator:
+
+                                MDTextField:
+                                    id: recipeDescription
+                                    multiline: True
+                                    hint_text: "Prepare instructions"
                                 
                 
             MDNavigationDrawer:
