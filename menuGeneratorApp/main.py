@@ -145,7 +145,7 @@ class MenuGeneratorApp(MDApp):
             self.menu.update_mpd(int(key), meals[key])
 
         # set settings on the screen
-        self.setTimePeriodChipColor(timePeriod)
+        self.setChooseChip(self.root.ids.timePeriod, timePeriod)
         self.root.ids.repeatDishes.active = repeatDishes
         self.setMealChipColor(meals)
 
@@ -186,12 +186,13 @@ class MenuGeneratorApp(MDApp):
     
     '''Check chip as it was saved in settings
 
-    :param tPeriod: text of the chip;
+    :param id: widget id, container of chips
+    :param value: text of the chip;
     '''
-    def setTimePeriodChipColor(self, tPeriod):
-        chips = self.root.ids.timePeriod.children
+    def setChooseChip(self, id, value):
+        chips = id.children
         for chip in chips:
-            if chip.text==tPeriod:
+            if chip.text==value and not len(chip.ids.box_check.children):
                 chip.ids.box_check.add_widget(MDIcon(
                             icon="check",
                             size_hint=(None, None),
@@ -269,6 +270,10 @@ class MenuGeneratorApp(MDApp):
         for i in range(all_ingridients):
             self.root.ids.recipeIngridients.remove_widget(self.root.ids.recipeIngridients.children[-1])
         
+        # set recipe prepare time and remove old times
+        self.setChooseChip(self.root.ids.recipePrepareTime, recipe.prepareTime)
+        self.on_choseChip_check(self.root.ids.recipePrepareTime.children[0], recipe.prepareTime)
+
         # remove old tags
         all_tags = len(self.root.ids.recipeTags.children)
         for tag in recipe.tags:
