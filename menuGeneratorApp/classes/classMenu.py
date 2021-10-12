@@ -48,6 +48,7 @@ class Menu:
             self._mpd[value] = text
 
     def __init__(self, parent_path):
+        self.parent_path = parent_path
         self.rules = Rules(os.path.join(parent_path, DB_RULES))
         self._mpd = {}
         self.n = 1
@@ -310,13 +311,13 @@ class Menu:
     in future will not be needed
      """
     def reloadRecipes(self):
-        with open(HELPER_ITEM) as f:
+        with open(os.path.join(self.parent_path, HELPER_ITEM)) as f:
             menuList = [line.rstrip() for line in f]
-        with open(HELPER_TAGS) as f:
+        with open(os.path.join(self.parent_path, HELPER_TAGS)) as f:
             tags = [line.rstrip().split(', ') for line in f]
-        with open(HELPER_INGRIDIENTS) as f:
+        with open(os.path.join(self.parent_path, HELPER_INGRIDIENTS)) as f:
             ingridients = [line.rstrip().split(', ') for line in f]
-        with open(HELPER_TIME) as f:
+        with open(os.path.join(self.parent_path, HELPER_TIME)) as f:
             prepTime = [line.rstrip() for line in f]
         
         # add recipe objects to a list
@@ -327,13 +328,13 @@ class Menu:
             new_recipe.nutrients = self.identifyNutrients(new_recipe)
             new_recipe.oneTime = True
             menu.append(new_recipe)
-        # print(menu)
+        print(menu)
         # menu[5].oneTime = False
         # menu[6].oneTime = False
         # menu[11].oneTime = False
         # menu[13].oneTime = False
         # dump list in a file
-        with open(DB_RECIPE, 'wb') as file:
+        with open(os.path.join(self.parent_path, DB_RECIPE), 'wb') as file:
             print("dump in db file")
             pickle.dump(menu, file)
         

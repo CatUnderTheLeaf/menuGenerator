@@ -30,6 +30,6 @@ class Recipe:
        return (f'{self.title!r}')
 
     def __str__(self):
-        # return f'{self.title}  -  {self.tags} - {self.prepareTime}'
+        # return f'{self.title}  -  {self.tags} - {self.prepareTime} - {self.oneTime}'
         return self.title
         

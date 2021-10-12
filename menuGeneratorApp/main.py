@@ -273,6 +273,9 @@ class MenuGeneratorApp(MDApp):
         # set recipe prepare time and remove old times
         self.setChooseChip(self.root.ids.recipePrepareTime, recipe.prepareTime)
         self.on_choseChip_check(self.root.ids.recipePrepareTime.children[0], recipe.prepareTime)
+        
+        # set if recipe can be used on two consecutive days
+        self.root.ids.recipeRepeatDish.active = not recipe.oneTime
 
         # remove old tags
         all_tags = len(self.root.ids.recipeTags.children)
