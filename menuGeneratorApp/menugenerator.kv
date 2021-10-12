@@ -178,20 +178,26 @@ MDScreen:
 
                                     MDChip:
                                         text: "day"
-                                        icon: "circle-outline"
-                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "calendar-today"
+                                        on_release: 
+                                            app.on_choseChip_check(self, self.text)
+                                            app.set_n_days(self.text)
                                         check: True
 
                                     MDChip:
                                         text: "week"
-                                        icon: "circle-slice-2"
-                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "calendar-week"
+                                        on_release: 
+                                            app.on_choseChip_check(self, self.text)
+                                            app.set_n_days(self.text)
                                         check: True
 
                                     MDChip:
                                         text: "month"
-                                        icon: "circle-slice-4"
-                                        on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "calendar-month"
+                                        on_release: 
+                                            app.on_choseChip_check(self, self.text)
+                                            app.set_n_days(self.text)
                                         check: True
                                 
                                 MDSeparator:
@@ -330,20 +336,20 @@ MDScreen:
 
                                     MDChip:
                                         text: "short"
-                                        icon: "circle-outline"
-                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "clock-time-one-outline"
+                                        on_release: app.on_choseChip_check(self, self.text)
                                         check: True
 
                                     MDChip:
                                         text: "medium"
-                                        icon: "circle-slice-2"
-                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "clock-time-five-outline"
+                                        on_release: app.on_choseChip_check(self, self.text)
                                         check: True
 
                                     MDChip:
                                         text: "long"
-                                        icon: "circle-slice-4"
-                                        # on_release: app.on_timePeriod_check(self, self.text)
+                                        icon: "clock-time-nine-outline"
+                                        on_release: app.on_choseChip_check(self, self.text)
                                         check: True
 
                                 MDSeparator:

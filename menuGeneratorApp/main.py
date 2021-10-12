@@ -235,8 +235,7 @@ class MenuGeneratorApp(MDApp):
     :param instance: kivymd.uix.chip.MDChip
     :param value: text of the chip;
     '''
-    def on_timePeriod_check(self, instance, value):
-        self.set_n_days(value)
+    def on_choseChip_check(self, instance, value):
         # remove all other checks except instance
         for chip in instance.parent.children:
             if chip.text!=value and len(chip.ids.box_check.children):
