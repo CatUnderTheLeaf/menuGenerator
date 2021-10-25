@@ -8,11 +8,17 @@ from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
-from kivy.properties import StringProperty, ObjectProperty, ListProperty
-from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarListItem, ImageLeftWidget
+from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
-from kivy.metrics import sp
+from kivy.metrics import dp, sp
+from kivy.properties import (
+    BooleanProperty,
+    ColorProperty,
+    ListProperty,
+    StringProperty,
+    ObjectProperty
+)
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
 from kivymd.utils.fitimage import FitImage
@@ -54,6 +60,17 @@ class SwipeToDeleteItem(MDCardSwipe):
     secondary_text = StringProperty()
     source = StringProperty()
     recipe = ObjectProperty()
+
+class ButtonWithCross(MDBoxLayout, ThemableBehavior):
+    color = ColorProperty(None)
+    text = StringProperty()
+    icon = StringProperty("close")
+    text_color = ColorProperty(None)
+    radius = ListProperty(
+        [
+            dp(12),
+        ]
+    )
 
 class MenuGeneratorApp(MDApp):  
     """ 
@@ -255,6 +272,10 @@ class MenuGeneratorApp(MDApp):
     def remove_recipe_from_list(self, instance):
         self.root.ids.recipe_scroll.remove_widget(instance)
     
+    def deleteWidget(self, instance):
+        print("dfdfdf")
+        print(instance.text)
+
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
         recipe = instance.recipe
@@ -262,10 +283,8 @@ class MenuGeneratorApp(MDApp):
         # remove old ingridients
         all_ingridients = len(self.root.ids.recipeIngridients.children)
         for ingridient in recipe.ingridients:
-            self.root.ids.recipeIngridients.add_widget(MDChip(
-                                        text=ingridient,
-                                        icon='',
-                                        check=False))
+            self.root.ids.recipeIngridients.add_widget(ButtonWithCross(
+                                        text=ingridient))
         # remove old ingridients
         for i in range(all_ingridients):
             self.root.ids.recipeIngridients.remove_widget(self.root.ids.recipeIngridients.children[-1])
