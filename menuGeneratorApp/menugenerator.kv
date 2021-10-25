@@ -95,7 +95,7 @@
             pos_hint: {"center_y": .5}
             theme_text_color: "Custom"
             text_color: "red"
-            on_release: app.remove_recipe_from_list(root)
+            on_release: app.removeCustomWidget(app.root.ids.recipe_scroll, root)
 
     MDCardSwipeFrontBox:
 
@@ -147,7 +147,8 @@
         theme_text_color: "Custom"
         adaptive_size: True
         pos_hint: {"center_y": .5}
-        on_release: app.deleteIngridient(root)
+        on_release: app.removeCustomWidget(root.parentId, root)
+
 
 
 MDScreen:
