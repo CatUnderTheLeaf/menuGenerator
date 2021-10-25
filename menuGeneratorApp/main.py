@@ -270,24 +270,22 @@ class MenuGeneratorApp(MDApp):
         self.menu.update_mpd(value, instance.text)
 
     def remove_recipe_from_list(self, instance):
+        print(instance.parent)
         self.root.ids.recipe_scroll.remove_widget(instance)
     
-    def deleteWidget(self, instance):
-        print("dfdfdf")
-        print(instance.text)
+    def deleteIngridient(self, instance):
+        self.root.ids.recipeIngridients.remove_widget(instance)
 
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
         recipe = instance.recipe
         self.root.ids.recipeTitle.text = recipe.title
         # remove old ingridients
-        all_ingridients = len(self.root.ids.recipeIngridients.children)
+        self.root.ids.recipeIngridients.clear_widgets()
+        # load new ingridients
         for ingridient in recipe.ingridients:
             self.root.ids.recipeIngridients.add_widget(ButtonWithCross(
                                         text=ingridient))
-        # remove old ingridients
-        for i in range(all_ingridients):
-            self.root.ids.recipeIngridients.remove_widget(self.root.ids.recipeIngridients.children[-1])
         
         # set recipe prepare time and remove old times
         self.setChooseChip(self.root.ids.recipePrepareTime, recipe.prepareTime)
@@ -297,14 +295,13 @@ class MenuGeneratorApp(MDApp):
         self.root.ids.recipeRepeatDish.active = not recipe.oneTime
 
         # remove old tags
-        all_tags = len(self.root.ids.recipeTags.children)
+        self.root.ids.recipeTags.clear_widgets()
+        # load new tags
         for tag in recipe.tags:
             self.root.ids.recipeTags.add_widget(MDChip(
                                         text=tag,
                                         icon='',
                                         check=False))
-        for i in range(all_tags):
-            self.root.ids.recipeTags.remove_widget(self.root.ids.recipeTags.children[-1])
         
         self.root.ids.recipeDescription.text = recipe.description
 
