@@ -3,6 +3,7 @@ from logging import raiseExceptions
 import os
 
 from classes.classMenu import Menu
+from classes.classMenuDB import MenuDB
 
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -27,6 +28,7 @@ from kivymd.uix.card import MDCardSwipe
 from kivy.storage.jsonstore import JsonStore
 
 store = JsonStore('menu_settings.json')
+menuDB = MenuDB(os.path.dirname(__file__))
 
 
 class ItemDrawer(OneLineIconListItem):
@@ -188,6 +190,7 @@ class MenuGeneratorApp(MDApp):
         store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
+        menuDB.disconnect()
 
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
