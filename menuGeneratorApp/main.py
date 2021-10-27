@@ -27,8 +27,11 @@ from kivymd.uix.card import MDCardSwipe
 
 from kivy.storage.jsonstore import JsonStore
 
-store = JsonStore('menu_settings.json')
-menuDB = MenuDB(os.path.dirname(__file__))
+MENU_DB = 'db/menuDB.db'
+MENU_SETTINGS = 'menu_settings.json'
+
+menuDB = MenuDB('sqlite', os.path.join(os.path.dirname(__file__), MENU_DB))
+store = JsonStore(os.path.join(os.path.dirname(__file__), 'menu_settings.json'))
 
 
 class ItemDrawer(OneLineIconListItem):
