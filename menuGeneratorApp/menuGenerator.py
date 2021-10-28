@@ -3,26 +3,30 @@ import os
 
 from classes.classMenu import Menu
 from classes.classMenuDB import MenuDB
-
-p = os.path.dirname(__file__)
-
-
+from classes.classUnqliteDB import UnqliteDB
 
 # Create Menu object
-menu = Menu(p)
 
-MENU_DB = 'db/menuDB.db'
+import yaml
+with open(os.path.join(os.path.dirname(__file__), "app_settings.yml"), 'r') as stream:
+    data_loaded = yaml.safe_load(stream)
+print(data_loaded['DB_TYPE'])
 
-# menuDB = MenuDB('sqlite', os.path.join(os.path.dirname(__file__), MENU_DB), menu.recipeList)
-# menuDB.disconnect()
+db = data_loaded['DB_TYPE']
+db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB'])
 
-MENU_UnqliteDB = 'db/menuUnqliteDB.db'
-menuDB = MenuDB('unqlite', os.path.join(os.path.dirname(__file__), MENU_UnqliteDB))
-menuDB.disconnect()
+menu = Menu()
+menu.connectDB(db, db_path)
 
 # generate menu for n+1 days applying rules
-# n = 10
-# sdate = date.today()
-# edate = sdate + timedelta(days=n)
-# menu.generateDailyMenu(sdate, edate)
-# print(menu)
+n = 10
+sdate = date.today()
+edate = sdate + timedelta(days=n)
+meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
+for key in meals:
+    menu.update_mpd(int(key), meals[key])
+
+menu.generateDailyMenu(sdate, edate)
+print(menu)
+
+menu.disconnectDB()

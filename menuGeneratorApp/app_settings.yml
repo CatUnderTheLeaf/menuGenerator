@@ -1,0 +1,10 @@
+# Choose what type of db to use
+DB_TYPE: unqlite
+# DB_TYPE: sqlite
+
+# Path to the corresponding DBs
+MENU_DB: db/menuUnqliteDB.db
+# MENU_DB: db/menuSqliteDB.db
+
+# Path to the menu settings
+MENU_SETTINGS: menu_settings.json

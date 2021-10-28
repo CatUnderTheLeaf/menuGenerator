@@ -41,10 +41,9 @@ class Rules:
         self.rules['day_discard_meal'] = {}
         print("load rules")
 
-        if not db_rules=='':
-            with open(db_rules, 'r') as file:
-                for line in file:
-                    self.readRules(line)
+        if not db_rules=='':            
+            for line in db_rules:
+                self.readRules(line)
         else:
             print('path to DB is empty')
         # print(self.rules)
@@ -54,8 +53,7 @@ class Rules:
 
     :param line: string line from file
      """
-    def readRules(self, line):
-        rule = line.strip()
+    def readRules(self, rule):
         if ' serve only ' in rule:
             # TODO think what it should really imply: rule OR or AND
             meals, tags = rule.split(' serve only ')
