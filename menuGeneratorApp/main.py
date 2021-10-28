@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from logging import raiseExceptions
 import os
+import yaml
 
 from classes.classMenu import Menu
 from classes.classMenuDB import MenuDB
@@ -26,13 +27,6 @@ from kivymd.utils.fitimage import FitImage
 from kivymd.uix.card import MDCardSwipe
 
 from kivy.storage.jsonstore import JsonStore
-
-MENU_DB = 'db/menuDB.db'
-MENU_SETTINGS = 'menu_settings.json'
-
-menuDB = MenuDB('sqlite', os.path.join(os.path.dirname(__file__), MENU_DB))
-store = JsonStore(os.path.join(os.path.dirname(__file__), 'menu_settings.json'))
-
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
@@ -150,15 +144,27 @@ class MenuGeneratorApp(MDApp):
         
         self.root.ids.screen_manager.transition = NoTransition()
 
-        # Create Menu object
-        p = os.path.dirname(__file__)
-        self.menu = Menu(p)
+        # Create Menu object        
+        self.menu = Menu()
+
+        # load db_type and db_path
+        with open(os.path.join(os.path.dirname(__file__), "app_settings.yml"), 'r') as stream:
+            data_loaded = yaml.safe_load(stream)
+
+        db = data_loaded['DB_TYPE']
+        db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB'])
+        self.menu.connectDB(db, db_path)
+
+        settings_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_SETTINGS'])
+        self.store = JsonStore(settings_path)
+
+
 
         # load settings from the storage
-        if store.exists('settings'):
-            timePeriod = store.get('settings')['timePeriod']            
-            repeatDishes = store.get('settings')['repeatDishes']
-            meals = store.get('settings')['meals']
+        if self.store.exists('settings'):
+            timePeriod = self.store.get('settings')['timePeriod']            
+            repeatDishes = self.store.get('settings')['repeatDishes']
+            meals = self.store.get('settings')['meals']
         
         # set settings in the menu
         self.set_n_days(timePeriod)
@@ -176,7 +182,7 @@ class MenuGeneratorApp(MDApp):
         self.get_recipes()
 
     def get_recipes(self):
-        for recipe in self.menu.recipeList:
+        for recipe in self.menu.db.getRecipes():
             list_item = SwipeToDeleteItem(
                     text=f"{recipe}",
                     secondary_text=f"{', '.join(recipe.ingridients)}",
@@ -190,10 +196,10 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_stop(self):
-        store.put('settings', timePeriod=self.menu.timePeriod, 
+        self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
-        menuDB.disconnect()
+        self.menu.disconnectDB()
 
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
