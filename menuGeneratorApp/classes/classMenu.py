@@ -132,7 +132,7 @@ class Menu:
         for date in new_dates:
             for meal in self.mpd:
                 if meal not in self.menu[date]:                    
-                    check = self.db.checkRecipe(recipe, self.db.db.subsets[meal]['tag'], self.db.db.subsets[meal]['nutr'], self.menu[date]['prepTime'])
+                    check = self.db.checkRecipe(recipe, self.db.subsets[meal]['tag'], self.db.subsets[meal]['nutr'], self.menu[date]['prepTime'])
                     if check:
                         return (date, meal)       
         return
