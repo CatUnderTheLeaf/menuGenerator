@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from logging import raiseExceptions
 import os
+from kivy.uix.widget import Widget
 import yaml
 
 from classes.classMenu import Menu
@@ -19,7 +20,8 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     StringProperty,
-    ObjectProperty
+    ObjectProperty,
+    NumericProperty
 )
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
@@ -70,6 +72,11 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
             dp(12),
         ]
     )
+
+class HiddenRecipeData(Widget):
+    id = NumericProperty()
+    food_class = ListProperty()
+    nutrients = ListProperty()
 
 class MenuGeneratorApp(MDApp):  
     """ 
@@ -287,6 +294,10 @@ class MenuGeneratorApp(MDApp):
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
         recipe = instance.recipe
+        self.root.ids.recipeId.id = recipe.id
+        self.root.ids.recipeId.food_class = recipe.food_class
+        self.root.ids.recipeId.nutrients = recipe.nutrients
+        
         self.root.ids.recipeTitle.text = recipe.title
         # remove old ingridients
         self.root.ids.recipeIngridients.clear_widgets()
@@ -315,8 +326,28 @@ class MenuGeneratorApp(MDApp):
 
         
     def saveRecipe(self):
-        print("save recipe")
+        # form recipe data
+        recipe = {}
+        recipe['title'] = self.root.ids.recipeTitle.text
+        recipe['ingridients'] = []
+        for ingridient in self.root.ids.recipeIngridients.children:
+            recipe['ingridients'].append(ingridient.text)
+        recipe['prepareTime'] = ''
+        for prepareTime in self.root.ids.recipePrepareTime.children:
+            if len(prepareTime.ids.box_check.children):
+                recipe['prepareTime'] = prepareTime.text
+        recipe['tags'] = []
+        for tag in self.root.ids.recipeTags.children:
+            recipe['tags'].append(tag.text)
+        recipe['oneTime'] = not self.root.ids.recipeRepeatDish.active
+        recipe['description'] = self.root.ids.recipeDescription.text
+        recipe['food_class'] = self.root.ids.recipeId.food_class
+        recipe['nutrients'] = self.root.ids.recipeId.nutrients
+
+        self.menu.db.updateRecipe(self.root.ids.recipeId.id, recipe)
     
+                        
+
     def returnBack(self):
         self.root.ids.screen_manager.current = "scr3"
         

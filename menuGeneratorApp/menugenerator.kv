@@ -149,8 +149,6 @@
         pos_hint: {"center_y": .5}
         on_release: app.removeCustomWidget(root.parentId, root)
 
-
-
 MDScreen:
 
     MDBoxLayout:
@@ -338,13 +336,17 @@ MDScreen:
 
 
                         ScrollView:
-
+                            
                             MDBoxLayout:
                                 id: editRecipe
                                 orientation: "vertical"
                                 adaptive_height: True
                                 padding: dp(48)
                                 spacing: dp(15)
+
+                                HiddenRecipeData:
+                                    id: recipeId
+
                                 
                                 MDTextField:
                                     id: recipeTitle

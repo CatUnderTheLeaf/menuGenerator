@@ -40,6 +40,7 @@ class UnqliteDB:
   
      """
     def getRecipes(self):
+        print("get all recipes")
         if (self._recipes is None):        
             all = self.recipesCollection.all()
             self._recipes = [self.makeRecipeFromRecord(x) for x in all]
@@ -53,7 +54,8 @@ class UnqliteDB:
   
      """
     def makeRecipeFromRecord(self, record):
-        return Recipe(title=record['title'], 
+        return Recipe(id = record['__id'],
+                        title=record['title'], 
                         ingridients=record['ingridients'], 
                         food_class=record['food_class'], 
                         nutrients=record['nutrients'], 
@@ -62,6 +64,12 @@ class UnqliteDB:
                         tags=record['tags'], 
                         oneTime=record['oneTime']) 
 
+    """ 
+    update recipe in the collection
+  
+     """
+    def updateRecipe(self, id, recipe):
+        self.recipesCollection.update(id, recipe)
 
     """ 
     filter recipes by tags, nutrients and preparation time

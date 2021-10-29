@@ -32,6 +32,13 @@ class MenuDB:
         return self.db.getRecipes()
 
     """ 
+    update recipe in the collection
+  
+     """
+    def updateRecipe(self, id, recipe):
+        self.db.updateRecipe(id, recipe)
+
+    """ 
     generate subsets of recipes
     grouped by meal and prepareTime    
      """  

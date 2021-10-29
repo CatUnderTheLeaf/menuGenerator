@@ -13,7 +13,8 @@ class Recipe:
     tags: breakfast/dinner, dough food, etc
     oneTime: True/False, if a dish can be prepared for more than one day
      """
-    def __init__(self, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], oneTime=True):        
+    def __init__(self, id=0, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], oneTime=True):        
+        self.id = id
         self.title = title
         # TODO later implement, now it is not so important
         # self.img = img
