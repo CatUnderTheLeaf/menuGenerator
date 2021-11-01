@@ -1,11 +1,9 @@
 from datetime import date, timedelta
 from logging import raiseExceptions
 import os
-from kivy.uix.widget import Widget
 import yaml
 
 from classes.classMenu import Menu
-from classes.classMenuDB import MenuDB
 
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -86,7 +84,8 @@ class MenuGeneratorApp(MDApp):
     def generateMenuTabs(self):
         # TODO as tabs now has no problems with load do I need spinner???
         # self.root.ids.spinner.active = True
-        # old tabs to remove if exist
+        # old tabs to remove if exist 
+        # because I can't delete all tabs but one 
         del_tabs = self.root.ids.tabs.get_tab_list()
         
         # generate Menu for new dates
@@ -164,8 +163,6 @@ class MenuGeneratorApp(MDApp):
         settings_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_SETTINGS'])
         self.store = JsonStore(settings_path)
 
-
-
         # load settings from the storage
         if self.store.exists('settings'):
             timePeriod = self.store.get('settings')['timePeriod']            
@@ -185,18 +182,7 @@ class MenuGeneratorApp(MDApp):
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
-
-    def get_recipes(self):
-        if not len(self.root.ids.recipe_scroll.children):
-            for recipe in self.menu.db.getRecipes():
-                list_item = SwipeToDeleteItem(
-                        text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingridients)}",
-                        source="menuGeneratorApp\img\Hot_meal.jpg",
-                        recipe = recipe
-                    )
-                self.root.ids.recipe_scroll.add_widget(list_item)
-
+    
     """ 
     Save settings to a storage
     
@@ -207,7 +193,22 @@ class MenuGeneratorApp(MDApp):
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
 
-
+    """ 
+    Load all recipes to the Recipe list scroll
+    if it is empty
+ 
+     """
+    def get_recipes(self):
+        if not len(self.root.ids.recipe_scroll.children):
+            for recipe in self.menu.db.getRecipes():
+                list_item = SwipeToDeleteItem(
+                        text=f"{recipe}",
+                        secondary_text=f"{', '.join(recipe.ingridients)}",
+                        source="menuGeneratorApp\img\Hot_meal.jpg",
+                        recipe = recipe
+                    )
+                self.root.ids.recipe_scroll.add_widget(list_item)
+ 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         '''Called when switching tabs.
 
@@ -250,7 +251,8 @@ class MenuGeneratorApp(MDApp):
                             font_size=sp(20),
                         ))
 
-    '''Set number of days and timeperiod
+    '''
+    Set number of days and timeperiod
 
     :param value: text of the chip in settings;
     '''
@@ -278,24 +280,41 @@ class MenuGeneratorApp(MDApp):
                 check = chip.ids.box_check.children[0]
                 chip.ids.box_check.remove_widget(check)
 
+    '''Called when clicking on repeat Switch in settings.
+
+    :param checkbox: kivymd.uix.chip.MDChip.checkbox
+    :param value: text of the chip;
+    '''
     def on_repeat_switch(self, checkbox, value):
         if value:
             self.menu.repeatDishes = True
         else:
             self.menu.repeatDishes = False
 
+    '''Called when checking meals in settings.
+
+    :param instance: kivymd.uix.chip.MDChip
+    :param value: text of the chip;
+    '''
     def on_meal_check(self, instance, value):
         self.menu.update_mpd(value, instance.text)
      
+    '''remove widget from its parent
+
+    :param parentId: parent id of the Widget to remove
+    :param instance: a Widget to remove;
+    '''
     def removeCustomWidget(self, parentId, instance):
         parentId.remove_widget(instance)
 
+    '''Load edit recipe screen
+    and all recipe info to edit 
+
+    :param instance: a Widget with recipe;
+    '''
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
         recipe = instance.recipe
-        # self.root.ids.recipeId.id = recipe.id
-        # self.root.ids.recipeId.food_class = recipe.food_class
-        # self.root.ids.recipeId.nutrients = recipe.nutrients
         
         # remove old widget
         self.root.ids.editRecipeScroll.clear_widgets()
@@ -326,8 +345,10 @@ class MenuGeneratorApp(MDApp):
         # add recipeWidget
         self.root.ids.editRecipeScroll.add_widget(recipeWidget)
 
+    '''Save all recipe info 
 
-        
+    :param recipeWidget: a Widget with recipe;
+    '''    
     def saveRecipe(self, recipeWidget):
         # form recipe data
         recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
@@ -347,21 +368,27 @@ class MenuGeneratorApp(MDApp):
 
         # return to recipeList screen
         self.root.ids.screen_manager.current = "scr3"
-        # redraw recipe
+        # redraw recipe widget in scrollview
         self.redrawRecipeWidget(recipeWidget.parentWidget, recipeWidget.recipe)
 
+    '''redraw recipeWidget in the scrollview
+    with new recipe info 
+
+    :param parentWidget: a Widget in the scrollview
+    :param newRecipe: new recipe info
+    '''    
     def redrawRecipeWidget(self, parentWidget, newRecipe):
         parentWidget.text=f"{newRecipe}"
         parentWidget.secondary_text=f"{', '.join(newRecipe.ingridients)}"
                     # source="menuGeneratorApp\img\Hot_meal.jpg",
         parentWidget.recipe = newRecipe
 
+    '''
+    return back to recipe list without saving
+    '''    
     def returnBack(self):
         self.root.ids.screen_manager.current = "scr3"
         
-
-    
-
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
