@@ -185,17 +185,17 @@ class MenuGeneratorApp(MDApp):
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
-        self.get_recipes()
 
     def get_recipes(self):
-        for recipe in self.menu.db.getRecipes():
-            list_item = SwipeToDeleteItem(
-                    text=f"{recipe}",
-                    secondary_text=f"{', '.join(recipe.ingridients)}",
-                    source="menuGeneratorApp\img\Hot_meal.jpg",
-                    recipe = recipe
-                )
-            self.root.ids.recipe_scroll.add_widget(list_item)
+        if not len(self.root.ids.recipe_scroll.children):
+            for recipe in self.menu.db.getRecipes():
+                list_item = SwipeToDeleteItem(
+                        text=f"{recipe}",
+                        secondary_text=f"{', '.join(recipe.ingridients)}",
+                        source="menuGeneratorApp\img\Hot_meal.jpg",
+                        recipe = recipe
+                    )
+                self.root.ids.recipe_scroll.add_widget(list_item)
 
     """ 
     Save settings to a storage

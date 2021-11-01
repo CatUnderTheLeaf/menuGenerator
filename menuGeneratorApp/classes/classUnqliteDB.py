@@ -40,7 +40,6 @@ class UnqliteDB:
   
      """
     def getRecipes(self):
-        print("get all recipes")
         if (self._recipes is None):        
             all = self.recipesCollection.all()
             self._recipes = [self.makeRecipeFromRecord(x) for x in all]
