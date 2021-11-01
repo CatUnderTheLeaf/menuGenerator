@@ -73,10 +73,9 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
         ]
     )
 
-class HiddenRecipeData(Widget):
-    id = NumericProperty()
-    food_class = ListProperty()
-    nutrients = ListProperty()
+class RecipeWidget(MDBoxLayout):
+    recipe = ObjectProperty()
+    parentWidget = ObjectProperty()
 
 class MenuGeneratorApp(MDApp):  
     """ 
@@ -294,59 +293,68 @@ class MenuGeneratorApp(MDApp):
     def edit_recipe(self, instance):
         self.root.ids.screen_manager.current = "scr4"
         recipe = instance.recipe
-        self.root.ids.recipeId.id = recipe.id
-        self.root.ids.recipeId.food_class = recipe.food_class
-        self.root.ids.recipeId.nutrients = recipe.nutrients
+        # self.root.ids.recipeId.id = recipe.id
+        # self.root.ids.recipeId.food_class = recipe.food_class
+        # self.root.ids.recipeId.nutrients = recipe.nutrients
         
-        self.root.ids.recipeTitle.text = recipe.title
-        # remove old ingridients
-        self.root.ids.recipeIngridients.clear_widgets()
+        # remove old widget
+        self.root.ids.editRecipeScroll.clear_widgets()
+        # form new recipe
+        recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
+        recipeWidget.ids.recipeTitle.text = recipe.title
         # load new ingridients
         for ingridient in recipe.ingridients:
-            self.root.ids.recipeIngridients.add_widget(ButtonWithCross(
+            recipeWidget.ids.recipeIngridients.add_widget(ButtonWithCross(
                                         text=ingridient,
-                                        parentId=self.root.ids.recipeIngridients))
+                                        parentId=recipeWidget.ids.recipeIngridients))
             
-        # set recipe prepare time and remove old times
-        self.setChooseChip(self.root.ids.recipePrepareTime, recipe.prepareTime)
-        self.on_choseChip_check(self.root.ids.recipePrepareTime.children[0], recipe.prepareTime)
+        # set recipe prepare
+        self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
+        self.on_choseChip_check(recipeWidget.ids.recipePrepareTime.children[0], recipe.prepareTime)
         
         # set if recipe can be used on two consecutive days
-        self.root.ids.recipeRepeatDish.active = not recipe.oneTime
+        recipeWidget.ids.recipeRepeatDish.active = recipe.repeat
 
-        # remove old tags
-        self.root.ids.recipeTags.clear_widgets()
         # load new tags
         for tag in recipe.tags:
-            self.root.ids.recipeTags.add_widget(ButtonWithCross(
+            recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
                                         text=tag,
-                                        parentId=self.root.ids.recipeTags))
+                                        parentId=recipeWidget.ids.recipeTags))
         
-        self.root.ids.recipeDescription.text = recipe.description
+        recipeWidget.ids.recipeDescription.text = recipe.description
+
+        # add recipeWidget
+        self.root.ids.editRecipeScroll.add_widget(recipeWidget)
+
 
         
-    def saveRecipe(self):
+    def saveRecipe(self, recipeWidget):
         # form recipe data
-        recipe = {}
-        recipe['title'] = self.root.ids.recipeTitle.text
-        recipe['ingridients'] = []
-        for ingridient in self.root.ids.recipeIngridients.children:
-            recipe['ingridients'].append(ingridient.text)
-        recipe['prepareTime'] = ''
-        for prepareTime in self.root.ids.recipePrepareTime.children:
+        recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
+        recipeWidget.recipe.ingridients = []
+        for ingridient in recipeWidget.ids.recipeIngridients.children:
+            recipeWidget.recipe.ingridients.append(ingridient.text)
+        recipeWidget.recipe.prepareTime = ''
+        for prepareTime in recipeWidget.ids.recipePrepareTime.children:
             if len(prepareTime.ids.box_check.children):
-                recipe['prepareTime'] = prepareTime.text
-        recipe['tags'] = []
-        for tag in self.root.ids.recipeTags.children:
-            recipe['tags'].append(tag.text)
-        recipe['oneTime'] = not self.root.ids.recipeRepeatDish.active
-        recipe['description'] = self.root.ids.recipeDescription.text
-        recipe['food_class'] = self.root.ids.recipeId.food_class
-        recipe['nutrients'] = self.root.ids.recipeId.nutrients
+                recipeWidget.recipe.prepareTime = prepareTime.text
+        recipeWidget.recipe.tags = []
+        for tag in recipeWidget.ids.recipeTags.children:
+            recipeWidget.recipe.tags.append(tag.text)
+        recipeWidget.recipe.repeat = recipeWidget.ids.recipeRepeatDish.active
+        recipeWidget.recipe.description = recipeWidget.ids.recipeDescription.text
+        self.menu.db.updateRecipe(recipeWidget.recipe)
 
-        self.menu.db.updateRecipe(self.root.ids.recipeId.id, recipe)
-    
-                        
+        # return to recipeList screen
+        self.root.ids.screen_manager.current = "scr3"
+        # redraw recipe
+        self.redrawRecipeWidget(recipeWidget.parentWidget, recipeWidget.recipe)
+
+    def redrawRecipeWidget(self, parentWidget, newRecipe):
+        parentWidget.text=f"{newRecipe}"
+        parentWidget.secondary_text=f"{', '.join(newRecipe.ingridients)}"
+                    # source="menuGeneratorApp\img\Hot_meal.jpg",
+        parentWidget.recipe = newRecipe
 
     def returnBack(self):
         self.root.ids.screen_manager.current = "scr3"

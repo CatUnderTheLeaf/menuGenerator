@@ -35,8 +35,8 @@ class MenuDB:
     update recipe in the collection
   
      """
-    def updateRecipe(self, id, recipe):
-        self.db.updateRecipe(id, recipe)
+    def updateRecipe(self, recipeObj):
+        self.db.updateRecipe(recipeObj.id, recipeObj)
 
     """ 
     generate subsets of recipes

@@ -62,14 +62,27 @@ class UnqliteDB:
                         prepareTime=record['prepareTime'], 
                         text=record['description'], 
                         tags=record['tags'], 
-                        oneTime=record['oneTime']) 
+                        repeat=record['repeat']) 
 
     """ 
     update recipe in the collection
   
      """
-    def updateRecipe(self, id, recipe):
+    def updateRecipe(self, id, recipeObj):
+
+        recipe = {}
+        recipe['title'] = recipeObj.title
+        recipe['ingridients'] = recipeObj.ingridients
+        recipe['prepareTime'] = recipeObj.prepareTime
+        recipe['tags'] = recipeObj.tags
+        recipe['repeat'] = recipeObj.repeat
+        recipe['description'] = recipeObj.description
+        recipe['food_class'] = recipeObj.food_class
+        recipe['nutrients'] = recipeObj.nutrients
+
         self.recipesCollection.update(id, recipe)
+        # print(self._recipes)
+        # self._recipes[id] = self.makeRecipeFromRecord(self.recipesCollection.fetch(id))
 
     """ 
     filter recipes by tags, nutrients and preparation time
