@@ -110,7 +110,7 @@ class Menu:
                     cur_recipe = self.db.chooseRecipe(meal, self.menu[date]['prepTime'])
                     self.menu[date][meal] = cur_recipe
                     # if dishes can be repeated search for next available day and meal
-                    if self.repeatDishes and cur_recipe and not cur_recipe.oneTime:
+                    if self.repeatDishes and cur_recipe and cur_recipe.repeat:
                         availableDay = self.findAvailableDay(date, cur_recipe)
                         if availableDay:
                             nextDate, nextMeal = availableDay
