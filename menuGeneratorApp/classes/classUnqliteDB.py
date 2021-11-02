@@ -84,6 +84,24 @@ class UnqliteDB:
         # self._recipes[id] = self.makeRecipeFromRecord(self.recipesCollection.fetch(id))
 
     """ 
+    insert recipe in the collection
+  
+     """
+    def insertRecipe(self, recipeObj):
+
+        recipe = {}
+        recipe['title'] = recipeObj.title
+        recipe['ingridients'] = recipeObj.ingridients
+        recipe['prepareTime'] = recipeObj.prepareTime
+        recipe['tags'] = recipeObj.tags
+        recipe['repeat'] = recipeObj.repeat
+        recipe['description'] = recipeObj.description
+        recipe['food_class'] = recipeObj.food_class
+        recipe['nutrients'] = recipeObj.nutrients
+
+        self.recipesCollection.store(recipe)
+
+    """ 
     filter recipes by tags, nutrients and preparation time
 
     :param tag: tags of recipe ('breakfast', etc)

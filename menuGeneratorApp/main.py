@@ -4,6 +4,7 @@ import os
 import yaml
 
 from classes.classMenu import Menu
+from classes.classRecipe import Recipe
 
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
@@ -201,14 +202,24 @@ class MenuGeneratorApp(MDApp):
     def get_recipes(self):
         if not len(self.root.ids.recipe_scroll.children):
             for recipe in self.menu.db.getRecipes():
-                list_item = SwipeToDeleteItem(
+                self.addRecipeInList(recipe)
+
+    """ 
+    add one recipe to the Recipe list scroll
+
+    :param recipe: Recipe object
+ 
+     """
+    def addRecipeInList(self, recipe):
+        list_item = SwipeToDeleteItem(
                         text=f"{recipe}",
                         secondary_text=f"{', '.join(recipe.ingridients)}",
                         source="menuGeneratorApp\img\Hot_meal.jpg",
                         recipe = recipe
                     )
-                self.root.ids.recipe_scroll.add_widget(list_item)
- 
+        self.root.ids.recipe_scroll.add_widget(list_item)
+
+
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         '''Called when switching tabs.
 
@@ -312,35 +323,38 @@ class MenuGeneratorApp(MDApp):
 
     :param instance: a Widget with recipe;
     '''
-    def edit_recipe(self, instance):
+    def edit_recipe(self, instance={}):
         self.root.ids.screen_manager.current = "scr4"
-        recipe = instance.recipe
         
         # remove old widget
         self.root.ids.editRecipeScroll.clear_widgets()
         # form new recipe
-        recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
-        recipeWidget.ids.recipeTitle.text = recipe.title
-        # load new ingridients
-        for ingridient in recipe.ingridients:
-            recipeWidget.ids.recipeIngridients.add_widget(ButtonWithCross(
-                                        text=ingridient,
-                                        parentId=recipeWidget.ids.recipeIngridients))
+        if instance:
+            recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
+            recipe = instance.recipe        
+            recipeWidget.ids.recipeTitle.text = recipe.title
+            # load new ingridients
+            for ingridient in recipe.ingridients:
+                recipeWidget.ids.recipeIngridients.add_widget(ButtonWithCross(
+                                            text=ingridient,
+                                            parentId=recipeWidget.ids.recipeIngridients))
+                
+            # set recipe prepare
+            self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
+            self.on_choseChip_check(recipeWidget.ids.recipePrepareTime.children[0], recipe.prepareTime)
             
-        # set recipe prepare
-        self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
-        self.on_choseChip_check(recipeWidget.ids.recipePrepareTime.children[0], recipe.prepareTime)
-        
-        # set if recipe can be used on two consecutive days
-        recipeWidget.ids.recipeRepeatDish.active = recipe.repeat
+            # set if recipe can be used on two consecutive days
+            recipeWidget.ids.recipeRepeatDish.active = recipe.repeat
 
-        # load new tags
-        for tag in recipe.tags:
-            recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
-                                        text=tag,
-                                        parentId=recipeWidget.ids.recipeTags))
-        
-        recipeWidget.ids.recipeDescription.text = recipe.description
+            # load new tags
+            for tag in recipe.tags:
+                recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
+                                            text=tag,
+                                            parentId=recipeWidget.ids.recipeTags))
+            
+            recipeWidget.ids.recipeDescription.text = recipe.description
+        else:
+            recipeWidget = RecipeWidget(recipe = Recipe())
 
         # add recipeWidget
         self.root.ids.editRecipeScroll.add_widget(recipeWidget)
@@ -351,25 +365,33 @@ class MenuGeneratorApp(MDApp):
     '''    
     def saveRecipe(self, recipeWidget):
         # form recipe data
-        recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
-        recipeWidget.recipe.ingridients = []
-        for ingridient in recipeWidget.ids.recipeIngridients.children:
-            recipeWidget.recipe.ingridients.append(ingridient.text)
-        recipeWidget.recipe.prepareTime = ''
-        for prepareTime in recipeWidget.ids.recipePrepareTime.children:
-            if len(prepareTime.ids.box_check.children):
-                recipeWidget.recipe.prepareTime = prepareTime.text
-        recipeWidget.recipe.tags = []
-        for tag in recipeWidget.ids.recipeTags.children:
-            recipeWidget.recipe.tags.append(tag.text)
-        recipeWidget.recipe.repeat = recipeWidget.ids.recipeRepeatDish.active
-        recipeWidget.recipe.description = recipeWidget.ids.recipeDescription.text
-        self.menu.db.updateRecipe(recipeWidget.recipe)
+        if recipeWidget.ids.recipeTitle.text=='':
+            recipeWidget.ids.recipeTitle.error = True
+            recipeWidget.ids.recipeTitle.focus = True
+        else:
+            recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
+            recipeWidget.recipe.ingridients = []
+            for ingridient in recipeWidget.ids.recipeIngridients.children:
+                recipeWidget.recipe.ingridients.append(ingridient.text)
+            recipeWidget.recipe.prepareTime = ''
+            for prepareTime in recipeWidget.ids.recipePrepareTime.children:
+                if len(prepareTime.ids.box_check.children):
+                    recipeWidget.recipe.prepareTime = prepareTime.text
+            recipeWidget.recipe.tags = []
+            for tag in recipeWidget.ids.recipeTags.children:
+                recipeWidget.recipe.tags.append(tag.text)
+            recipeWidget.recipe.repeat = recipeWidget.ids.recipeRepeatDish.active
+            recipeWidget.recipe.description = recipeWidget.ids.recipeDescription.text
+            self.menu.db.updateRecipe(recipeWidget.recipe)
 
-        # return to recipeList screen
-        self.root.ids.screen_manager.current = "scr3"
-        # redraw recipe widget in scrollview
-        self.redrawRecipeWidget(recipeWidget.parentWidget, recipeWidget.recipe)
+            # return to recipeList screen
+            self.root.ids.screen_manager.current = "scr3"
+            # redraw recipe widget in scrollview
+            # or add a new one list item
+            if recipeWidget.parentWidget:
+                self.redrawRecipeWidget(recipeWidget.parentWidget, recipeWidget.recipe)
+            else:
+                self.addRecipeInList(recipeWidget.recipe)
 
     '''redraw recipeWidget in the scrollview
     with new recipe info 
@@ -392,3 +414,8 @@ class MenuGeneratorApp(MDApp):
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
+
+# TODO
+# delete recipe from db function
+# add ingridients functionality
+# add tags functionality 

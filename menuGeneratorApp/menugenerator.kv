@@ -106,14 +106,15 @@
             text: root.text
             secondary_text: root.secondary_text
             _no_ripple_effect: True
+            on_release: app.edit_recipe(root)
 
             ImageLeftWidget:
                 source: root.source
-            IconRightWidget:
-                icon: "pencil-outline"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                on_release: app.edit_recipe(root)
+            # IconRightWidget:
+            #     icon: "pencil-outline"
+            #     theme_text_color: "Custom"
+            #     text_color: app.theme_cls.primary_color
+                # on_release: app.edit_recipe(root)
 
 <ButtonWithCross>:  
     id: box
@@ -400,6 +401,14 @@ MDScreen:
 
                             MDList:
                                 id: recipe_scroll
+                        
+                    MDFloatingActionButton:
+                        icon: "plus"
+                        theme_text_color: "Custom"
+                        elevation_normal: 12
+                        y: dp(10)
+                        x: Window.width - (dp(56) + dp(10))
+                        on_release: app.edit_recipe()
 
                 MDScreen:
                     name: "scr4"

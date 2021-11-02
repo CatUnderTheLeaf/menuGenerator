@@ -4,6 +4,7 @@ a class that represent a single recipe
 
 class Recipe:
     """ 
+    id: recipe id in db 
     title: name of the Recipe
     ingridients: list of products
     food_class: list of food classes, 'fat', 'fruit', 'cereal', etc
@@ -13,7 +14,7 @@ class Recipe:
     tags: breakfast/dinner, dough food, etc
     repeat: True/False, if a dish can be prepared for more than one day
      """
-    def __init__(self, id=0, title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
+    def __init__(self, id='', title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
         self.id = id
         self.title = title
         # TODO later implement, now it is not so important

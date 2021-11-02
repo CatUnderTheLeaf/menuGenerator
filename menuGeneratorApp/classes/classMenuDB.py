@@ -36,7 +36,10 @@ class MenuDB:
   
      """
     def updateRecipe(self, recipeObj):
-        self.db.updateRecipe(recipeObj.id, recipeObj)
+        if recipeObj.id=='':
+            self.db.insertRecipe(recipeObj)
+        else:
+            self.db.updateRecipe(recipeObj.id, recipeObj)
 
     """ 
     generate subsets of recipes
