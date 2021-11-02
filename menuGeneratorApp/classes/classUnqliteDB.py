@@ -65,6 +65,9 @@ class UnqliteDB:
 
     """ 
     update recipe in the collection
+
+    :param id: recipe id
+    :param recipeObj: Recipe object to update
   
      """
     def updateRecipe(self, id, recipeObj):
@@ -80,12 +83,22 @@ class UnqliteDB:
         recipe['nutrients'] = recipeObj.nutrients
 
         self.recipesCollection.update(id, recipe)
-        # print(self._recipes)
-        # self._recipes[id] = self.makeRecipeFromRecord(self.recipesCollection.fetch(id))
+        
+
+    """ 
+    delete recipes from the collection
+
+    :param ids: list of recipe ids
+  
+     """
+    def deleteRecipes(self, ids):
+        for id in ids:
+            self.recipesCollection.delete(id)
 
     """ 
     insert recipe in the collection
-  
+
+    :param recipeObj: Recipe object to insert  
      """
     def insertRecipe(self, recipeObj):
 

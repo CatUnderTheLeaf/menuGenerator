@@ -10,7 +10,7 @@ from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
-from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem
+from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarIconListItem
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
 from kivy.metrics import dp, sp
@@ -24,7 +24,9 @@ from kivy.properties import (
 )
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.uix.label import MDIcon
+from kivymd.uix.selection import MDSelectionList
 from kivymd.utils.fitimage import FitImage
+from kivy.utils import get_color_from_hex
 from kivymd.uix.card import MDCardSwipe
 
 from kivy.storage.jsonstore import JsonStore
@@ -54,11 +56,14 @@ class Content(MDBoxLayout):
 class Tab(MDFloatLayout, MDTabsBase):
     day = ObjectProperty()
 
-class SwipeToDeleteItem(MDCardSwipe):
+class RecipeListItem(TwoLineAvatarIconListItem):
     text = StringProperty()
     secondary_text = StringProperty()
     source = StringProperty()
-    recipe = ObjectProperty()
+    recipe = ObjectProperty()    
+
+class RecipeSelectionList(MDSelectionList):
+    last_selected = BooleanProperty()
 
 class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     color = ColorProperty(None)
@@ -77,6 +82,7 @@ class RecipeWidget(MDBoxLayout):
     parentWidget = ObjectProperty()
 
 class MenuGeneratorApp(MDApp):  
+    overlay_color = get_color_from_hex("#6042e4")
     """ 
     Generate Menu tabs for n days
     delete previous tabs and load content to the first new tab
@@ -211,7 +217,7 @@ class MenuGeneratorApp(MDApp):
  
      """
     def addRecipeInList(self, recipe):
-        list_item = SwipeToDeleteItem(
+        list_item = RecipeListItem(
                         text=f"{recipe}",
                         secondary_text=f"{', '.join(recipe.ingridients)}",
                         source="menuGeneratorApp\img\Hot_meal.jpg",
@@ -219,15 +225,14 @@ class MenuGeneratorApp(MDApp):
                     )
         self.root.ids.recipe_scroll.add_widget(list_item)
 
+    '''Called when switching tabs.
 
-    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
-        '''Called when switching tabs.
-
-        :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
-        :param instance_tab: <__main__.Tab object>;
-        :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
-        :param tab_text: text or name icon of tab;
-        '''
+    :type instance_tabs: <kivymd.uix.tab.MDTabs object>;
+    :param instance_tab: <__main__.Tab object>;
+    :param instance_tab_label: <kivymd.uix.tab.MDTabsLabel object>;
+    :param tab_text: text or name icon of tab;
+    '''
+    def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):        
         if len(instance_tab.ids.box.children)<1:
             self.fillTabs(instance_tab)
     
@@ -318,12 +323,29 @@ class MenuGeneratorApp(MDApp):
     def removeCustomWidget(self, parentId, instance):
         parentId.remove_widget(instance)
 
+    '''Remove recipeWidget and
+    remove recipe from db 
+
+    :param instance: a Widget with recipe;
+    '''
+    def deleteRecipes(self, recipes):
+        ids = []
+        for recipeWidget in recipes:
+            ids.append(recipeWidget.instance_item.recipe.id)
+            self.removeCustomWidget(self.root.ids.recipe_scroll, recipeWidget)
+        self.root.ids.recipe_scroll.selected_mode = False
+        self.menu.db.deleteRecipes(ids)
+
+
     '''Load edit recipe screen
     and all recipe info to edit 
 
     :param instance: a Widget with recipe;
     '''
     def edit_recipe(self, instance={}):
+        if instance and instance.parent.owner.last_selected:
+            instance.parent.owner.last_selected = False
+            return
         self.root.ids.screen_manager.current = "scr4"
         
         # remove old widget
@@ -410,12 +432,75 @@ class MenuGeneratorApp(MDApp):
     '''    
     def returnBack(self):
         self.root.ids.screen_manager.current = "scr3"
+
+    '''
+    switch the selection mode "on" or "off"
+    '''
+    def set_selection_mode(self, instance_recipe_scroll, mode):
+        if mode:
+            md_bg_color = self.overlay_color
+            left_action_items = [
+                [
+                    "close",
+                    lambda x: self.unselectAllRecipes(),
+                ]
+            ]
+            right_action_items = [["trash-can", lambda x: self.deleteRecipes(instance_recipe_scroll.get_selected_list_items())]]
+        else:
+            md_bg_color = (0, 0, 0, 1)
+            left_action_items = [["menu", lambda x: self.root.ids.nav_drawer.set_state("open")]]
+            right_action_items = []
+            self.root.ids.recipeListToolbar.title = "All recipes"
+
+        self.root.ids.recipeListToolbar.left_action_items = left_action_items
+        self.root.ids.recipeListToolbar.right_action_items = right_action_items
+
+    '''
+    unselect all Recipes
+    and mark that all was unselected
+    '''
+    def unselectAllRecipes(self):
+        self.root.ids.recipe_scroll.unselected_all()
+        self.root.ids.recipe_scroll.last_selected = False
+
+    '''
+    add or increase number of selected items in the toolbar
+
+    :param instance_recipe_scroll: MDSelectionList with recipes
+    :param instance_selection_item: selected item
+    '''
+    def on_selected(self, instance_recipe_scroll, instance_selection_item):
+        self.root.ids.recipeListToolbar.title = str(
+            len(instance_recipe_scroll.get_selected_list_items())
+        )
+
+    '''
+    decrease or remove number of selected items in the toolbar
+    mark that last item was removed 
+    (used for a workaround because 
+    on_press or on_release events of RecipeListItem 
+    are called after SelectionItem.on_touch*
+    and there can be a situation, when
+    you want to unselect the last selected item, 
+    so you click on it, selected_mode is false, item is not selected,
+    and it goes straight to RecipeListItem.on_release and opens 'edit' Screen)
+
+    :param instance_recipe_scroll: MDSelectionList with recipes
+    :param instance_selection_item: selected item
+    '''
+    def on_unselected(self, instance_recipe_scroll, instance_selection_item):
+        if instance_recipe_scroll.get_selected_list_items():
+            self.root.ids.recipeListToolbar.title = str(
+                len(instance_recipe_scroll.get_selected_list_items())
+            )
+        else:
+            instance_recipe_scroll.last_selected = True
+
         
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
 
 # TODO
-# delete recipe from db function
 # add ingridients functionality
 # add tags functionality 

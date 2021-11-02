@@ -33,13 +33,24 @@ class MenuDB:
 
     """ 
     update recipe in the collection
-  
+
+    :param recipeObj: Recipe object to update  
      """
     def updateRecipe(self, recipeObj):
         if recipeObj.id=='':
             self.db.insertRecipe(recipeObj)
         else:
             self.db.updateRecipe(recipeObj.id, recipeObj)
+
+    """ 
+    delete recipe from the collection
+
+    :param recipeIds: list of recipe ids
+  
+     """
+    def deleteRecipes(self, recipeIds):
+        self.db.deleteRecipes(recipeIds)
+
 
     """ 
     generate subsets of recipes
