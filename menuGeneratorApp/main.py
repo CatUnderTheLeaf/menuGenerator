@@ -13,6 +13,8 @@ from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarIconListItem
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
+from kivymd.icon_definitions import md_icons
+
 from kivy.metrics import dp, sp
 from kivy.properties import (
     BooleanProperty,
@@ -27,7 +29,6 @@ from kivymd.uix.label import MDIcon
 from kivymd.uix.selection import MDSelectionList
 from kivymd.utils.fitimage import FitImage
 from kivy.utils import get_color_from_hex
-from kivymd.uix.card import MDCardSwipe
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -495,6 +496,33 @@ class MenuGeneratorApp(MDApp):
             )
         else:
             instance_recipe_scroll.last_selected = True
+
+    def refresh(self, text, recipeWidget):
+                
+        def add_icon_item(name_icon):
+            recipeWidget.ids.rv.data.append(
+                {
+                    "viewclass": "OneLineListItem",
+                    "text": name_icon,
+                    "on_release": lambda x=name_icon: self.set_item(x, recipeWidget)
+                }
+            )
+
+        if len(text) > 1:
+            recipeWidget.ids.rv.data = []
+            for name_icon in md_icons.keys():
+                if text in name_icon:
+                    add_icon_item(name_icon)
+            print(recipeWidget.ids.rv.data)
+        else:
+            recipeWidget.ids.rv.data = []
+            
+
+
+    def set_item(self, text__item, recipeWidget):
+        recipeWidget.ids.field.focus = False
+        recipeWidget.ids.field.text = text__item
+        recipeWidget.ids.rv.data = []
 
         
 
