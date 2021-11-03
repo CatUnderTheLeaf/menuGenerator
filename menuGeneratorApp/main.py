@@ -513,16 +513,21 @@ class MenuGeneratorApp(MDApp):
             for name_icon in md_icons.keys():
                 if text in name_icon:
                     add_icon_item(name_icon)
-            print(recipeWidget.ids.rv.data)
+            # print(recipeWidget.ids.rv.data)
+            if recipeWidget.ids.rv.data:
+                recipeWidget.ids.rv.parent.height = dp(205)
+            else:
+                recipeWidget.ids.rv.parent.height = 0
         else:
             recipeWidget.ids.rv.data = []
+            recipeWidget.ids.rv.parent.height = 0
             
-
 
     def set_item(self, text__item, recipeWidget):
         recipeWidget.ids.field.focus = False
         recipeWidget.ids.field.text = text__item
         recipeWidget.ids.rv.data = []
+        recipeWidget.ids.rv.parent.height = 0
 
         
 

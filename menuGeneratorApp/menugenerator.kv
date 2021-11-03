@@ -210,11 +210,6 @@
     
     MDSeparator:
     
-    # MDBoxLayout:
-    #     # adaptive_height: True
-    #     orientation: 'vertical'
-    #     spacing: dp(20)
-    
     MDLabel:
         text: "Tags"   
 
@@ -223,26 +218,32 @@
         spacing: dp(5)
         id: recipeTags 
 
-    MDTextFieldRound:
-        id: field
-        size_hint_x: None
-        width: "200dp"
-        hint_text: "New tag"
-        on_text: if self.focus: app.refresh(self.text, root)
+    MDBoxLayout:
+        adaptive_height: True
+        padding: dp(11), 0, 0, 0            
 
-    RecycleView:
-        id: rv
-        key_viewclass: 'viewclass'
-        key_size: 'height'  
-        height: dp(200)          
+        MDTextFieldRound:
+            id: field
+            size_hint_x: None
+            width: "200dp"
+            hint_text: "Password"
+            on_text: if self.focus: app.refresh(self.text, root)
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_height: True
+        height: 0
 
-        RecycleBoxLayout:
-            # padding: dp(10)
-            default_size: dp(200), dp(48)
-            default_size_hint: 0.5, None
-            size_hint_y: None
-            height: dp(200)
-            orientation: 'vertical'
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'            
+
+            RecycleBoxLayout:
+                default_size: dp(200), dp(48)
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
    
     
 
