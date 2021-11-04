@@ -19,6 +19,19 @@ class UnqliteDB:
         self._rules = None
         self._recipes = None
         self._tags = None
+        self._products = None
+
+    """ 
+    fetch all products from the collection
+
+    :return: list of products 
+  
+     """   
+    def getProducts(self):
+        if (self._products is None):            
+            all = self.products.all()
+            self._products = list(set([product['name'] for product in all]))
+        return self._products
 
     """ 
     fetch all rules from the collection

@@ -23,7 +23,9 @@ meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
 for key in meals:
     menu.update_mpd(int(key), meals[key])
 
-menu.generateDailyMenu(sdate, edate)
-print(menu)
+# menu.generateDailyMenu(sdate, edate)
+# print(menu)
+products = menu.db.getProducts()
+print(products)
 
 menu.disconnectDB()

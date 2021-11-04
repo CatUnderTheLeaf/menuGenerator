@@ -158,6 +158,19 @@
         pos: text_field.width - self.width + dp(8), 0
         on_release: app.set_item(text_field.text, text_field, root.parent.parent)
 
+<ContentCustomSheet>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: "400dp"
+    padding: dp(48)
+    
+    ScrollView:
+
+        MDStackLayout:
+            adaptive_height: True
+            spacing: dp(5)
+            id: chooseIngridients
+
 <RecipeWidget>:
     id: editRecipe
     orientation: "vertical"
@@ -178,7 +191,15 @@
         adaptive_height: True
         spacing: dp(5)
         id: recipeIngridients
+        height: 0
     
+    MDIconButton:
+        icon: "plus"
+        theme_text_color: "Custom"
+        md_bg_color: app.theme_cls.primary_color
+        user_font_size: "20sp"
+        on_release: app.show_example_list_bottom_sheet()
+
     MDSeparator:
 
     MDLabel:
@@ -226,15 +247,14 @@
         multiline: True
         hint_text: "Prepare instructions"
     
-    MDSeparator:
-    
     MDLabel:
         text: "Tags"   
 
     MDStackLayout:
         adaptive_height: True
         spacing: dp(5)
-        id: recipeTags 
+        id: recipeTags
+        height: 0
 
     MDBoxLayout:
         adaptive_height: True

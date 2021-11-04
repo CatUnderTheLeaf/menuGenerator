@@ -16,6 +16,8 @@ from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLin
 from kivy.uix.screenmanager import NoTransition
 from kivymd.theming import ThemableBehavior
 from kivymd.icon_definitions import md_icons
+from kivymd.uix.bottomsheet import MDCustomBottomSheet
+from kivymd.uix.chip import MDChip
 
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -79,6 +81,9 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
             dp(12),
         ]
     )
+
+class ContentCustomSheet(MDBoxLayout):
+    pass
 
 class ClickableTextFieldRound(MDRelativeLayout):
     text = StringProperty()
@@ -557,6 +562,16 @@ class MenuGeneratorApp(MDApp):
             recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
+
+    def show_example_list_bottom_sheet(self):
+        products = self.menu.db.getProducts()
+        custom_sheet = ContentCustomSheet()
+        for product in products:
+            custom_sheet.ids.chooseIngridients.add_widget(MDChip(
+                                        text=product, check=True))
+
+        self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
+        self.custom_sheet.open()
 
         
 

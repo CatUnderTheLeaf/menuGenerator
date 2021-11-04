@@ -13,6 +13,15 @@ class MenuDB:
         self.subsets = {}
     
     """ 
+    get all products from the DB
+
+    :return: list of products 
+  
+     """   
+    def getProducts(self):
+        return self.db.getProducts()
+
+    """ 
     get rules from the DB
     converted to the Rules object
 
