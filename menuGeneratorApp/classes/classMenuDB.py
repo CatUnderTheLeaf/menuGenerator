@@ -23,6 +23,25 @@ class MenuDB:
         return self.db.getRules()
 
     """ 
+    get tags from the DB
+
+    :return: list of tags
+  
+     """
+    def getTags(self):
+        return self.db.getTags()
+
+    """ 
+    get tags from the DB that are not in the recipe
+
+    :param tags: set of recipe tags
+    :return: list of tags
+  
+     """
+    def getUnusedTags(self, tags):
+        return self.db.getUnusedTags(tags)
+
+    """ 
     ret all recipes
 
     :return: list of Recipe objects 
@@ -41,6 +60,15 @@ class MenuDB:
             self.db.insertRecipe(recipeObj)
         else:
             self.db.updateRecipe(recipeObj.id, recipeObj)
+        self.updateTags(recipeObj)
+
+    """ 
+    update tags in the db
+
+    :param recipeObj: Recipe object
+     """
+    def updateTags(self, recipeObj):        
+        self.db.updateTags(recipeObj)
 
     """ 
     delete recipe from the collection

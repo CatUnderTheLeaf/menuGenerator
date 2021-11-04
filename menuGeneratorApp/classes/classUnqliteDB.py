@@ -18,6 +18,7 @@ class UnqliteDB:
         
         self._rules = None
         self._recipes = None
+        self._tags = None
 
     """ 
     fetch all rules from the collection
@@ -31,6 +32,40 @@ class UnqliteDB:
             all = self.rulesCollection.all()
             self._rules = Rules([x['rule'] for x in all])
         return self._rules
+
+    """ 
+    get tags from the DB
+
+    :return: list of tags
+  
+     """
+    def getTags(self):
+        if (self._tags is None):   
+            allTags = set()                
+            for recipe in self._recipes:
+                allTags.update(recipe.tags)
+            self._tags = allTags
+        return self._tags
+
+    """ 
+    update tags in the db
+
+    :param recipeObj: Recipe object
+     """
+    def updateTags(self, recipeObj):        
+        self.getTags()
+        self._tags.update(recipeObj.tags)
+
+    """ 
+    get tags from the DB that are not in the recipe
+
+    :param tags: set of recipe tags
+    :return: list of tags
+  
+     """
+    def getUnusedTags(self, tags):
+        allTags = self.getTags()
+        return list(allTags - set(tags))
 
     """ 
     fetch all recipes from the collection

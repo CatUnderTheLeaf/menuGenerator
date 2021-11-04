@@ -504,33 +504,51 @@ class MenuGeneratorApp(MDApp):
         else:
             instance_recipe_scroll.last_selected = True
 
+    '''
+    refresh dropdown items for tag search
+
+    :param textField: tags text field
+    :param recipeWidget: recipe Widget with recycle view
+    '''
     def refresh(self, text, textField, recipeWidget):
-        def add_icon_item(name_icon):
+        def add_tag_item(tag):
             recipeWidget.ids.rv.data.append(
                 {
                     "viewclass": "OneLineListItem",
-                    "text": name_icon,
-                    "on_release": lambda x=name_icon: self.set_item(x, textField, recipeWidget)
+                    "text": tag,
+                    "on_release": lambda x=tag: self.set_item(x, textField, recipeWidget)
                 }
             )
 
-        if len(text) > 1:
+        if len(text) > 0:
             recipeWidget.ids.rv.data = []
-            for name_icon in md_icons.keys():
-                if text in name_icon:
-                    add_icon_item(name_icon)
-            # print(recipeWidget.ids.rv.data)
-            if recipeWidget.ids.rv.data:
-                recipeWidget.ids.rv.parent.height = dp(205)
-            else:
-                recipeWidget.ids.rv.parent.height = 0
+            currentTags = []
+            for tag in recipeWidget.ids.recipeTags.children:
+                currentTags.append(tag.text)
+            for tag in self.menu.db.getUnusedTags(currentTags):
+                if text in tag:
+                    add_tag_item(tag)            
         else:
             recipeWidget.ids.rv.data = []
+            # recipeWidget.ids.rv.parent.height = 0
+            # for tag in self.menu.db.getTags():
+            #     add_tag_item(tag)
+        
+        if recipeWidget.ids.rv.data:
+                recipeWidget.ids.rv.parent.height = dp(205)
+        else:
             recipeWidget.ids.rv.parent.height = 0
             
+    '''
+    add new tag to the tags stackLayout
 
+    :param text__item: string text
+    :param textField: tags text field
+    :param recipeWidget: recipe Widget with recycle view
+    '''
     def set_item(self, text__item, textField, recipeWidget):
-        text = re.sub(r"\s+", "", text__item)
+        # text = re.sub(r"\s+", "", text__item)
+        text = ' '.join(text__item.split())
         if len(text):
             textField.focus = False
             textField.text = ''
