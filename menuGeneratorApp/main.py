@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+import re
 from logging import raiseExceptions
 import os
 import yaml
@@ -8,6 +9,7 @@ from classes.classRecipe import Recipe
 
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarIconListItem
@@ -77,6 +79,11 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
             dp(12),
         ]
     )
+
+class ClickableTextFieldRound(MDRelativeLayout):
+    text = StringProperty()
+    hint_text = StringProperty()
+    focus = BooleanProperty()
 
 class RecipeWidget(MDBoxLayout):
     recipe = ObjectProperty()
@@ -497,14 +504,13 @@ class MenuGeneratorApp(MDApp):
         else:
             instance_recipe_scroll.last_selected = True
 
-    def refresh(self, text, recipeWidget):
-                
+    def refresh(self, text, textField, recipeWidget):
         def add_icon_item(name_icon):
             recipeWidget.ids.rv.data.append(
                 {
                     "viewclass": "OneLineListItem",
                     "text": name_icon,
-                    "on_release": lambda x=name_icon: self.set_item(x, recipeWidget)
+                    "on_release": lambda x=name_icon: self.set_item(x, textField, recipeWidget)
                 }
             )
 
@@ -523,11 +529,16 @@ class MenuGeneratorApp(MDApp):
             recipeWidget.ids.rv.parent.height = 0
             
 
-    def set_item(self, text__item, recipeWidget):
-        recipeWidget.ids.field.focus = False
-        recipeWidget.ids.field.text = text__item
-        recipeWidget.ids.rv.data = []
-        recipeWidget.ids.rv.parent.height = 0
+    def set_item(self, text__item, textField, recipeWidget):
+        text = re.sub(r"\s+", "", text__item)
+        if len(text):
+            textField.focus = False
+            textField.text = ''
+            recipeWidget.ids.rv.data = []
+            recipeWidget.ids.rv.parent.height = 0
+            recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
+                                                text=text,
+                                                parentId=recipeWidget.ids.recipeTags))
 
         
 
