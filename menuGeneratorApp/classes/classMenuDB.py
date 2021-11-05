@@ -15,7 +15,7 @@ class MenuDB:
     """ 
     get all products from the DB
 
-    :return: list of products 
+    :return: dict of products 
   
      """   
     def getProducts(self):

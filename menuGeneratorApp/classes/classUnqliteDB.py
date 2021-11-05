@@ -24,13 +24,21 @@ class UnqliteDB:
     """ 
     fetch all products from the collection
 
-    :return: list of products 
+    :return: dict of products 
   
      """   
     def getProducts(self):
         if (self._products is None):            
-            all = self.products.all()
-            self._products = list(set([product['name'] for product in all]))
+            # all = self.products.all()
+            # self._products = list(set([product['name'] for product in all]))
+            all = {}
+            it = self.products.iterator()
+            for row in it:                
+                if row['food_class'] in all:
+                        all[row['food_class']].append(row['name'])
+                else:
+                    all[row['food_class']] = [row['name']]
+            self._products = all
         return self._products
 
     """ 

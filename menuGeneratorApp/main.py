@@ -28,7 +28,7 @@ from kivy.properties import (
     ObjectProperty,
     NumericProperty
 )
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelOneLine
 from kivymd.uix.label import MDIcon
 from kivymd.uix.selection import MDSelectionList
 from kivymd.utils.fitimage import FitImage
@@ -36,9 +36,20 @@ from kivy.utils import get_color_from_hex
 
 from kivy.storage.jsonstore import JsonStore
 
+class MyExpansionPanel(MDExpansionPanel):
+    products = ListProperty()
+    def on_open(self):
+        if len(self.content.ids.chooseIngridients.children)<1:
+            for product in self.products:
+                self.content.ids.chooseIngridients.add_widget(MDChip(
+                                            text=product, check=True))
+
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
     text_color = ListProperty((0, 0, 0, 1))
+
+class CustomSheetContent(MDBoxLayout):
+    text = StringProperty()
 
 class DrawerList(ThemableBehavior, MDList):
     def set_color_item(self, instance_item):
@@ -566,9 +577,16 @@ class MenuGeneratorApp(MDApp):
     def show_example_list_bottom_sheet(self):
         products = self.menu.db.getProducts()
         custom_sheet = ContentCustomSheet()
-        for product in products:
-            custom_sheet.ids.chooseIngridients.add_widget(MDChip(
-                                        text=product, check=True))
+        for category in products:
+            custom_content = CustomSheetContent()
+            panel = MyExpansionPanel(
+                        products=products[category],
+                        content=custom_content,
+                        panel_cls=MDExpansionPanelOneLine(
+                            text=f"{category}"
+                        )
+                    )
+            custom_sheet.ids.custom_sheet_grid.add_widget(panel)
 
         self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
         self.custom_sheet.open()

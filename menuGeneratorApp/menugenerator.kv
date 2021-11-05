@@ -165,11 +165,22 @@
     padding: dp(48)
     
     ScrollView:
-
-        MDStackLayout:
+        
+        MDBoxLayout:
+            orientation: "vertical"
             adaptive_height: True
-            spacing: dp(5)
-            id: chooseIngridients
+            id: custom_sheet_grid
+        
+<CustomSheetContent>:
+    padding: dp(20)
+    size_hint_y: None
+    adaptive_height: True
+    
+    MDStackLayout:
+        adaptive_height: True
+        # height: 0
+        spacing: dp(5)
+        id: chooseIngridients
 
 <RecipeWidget>:
     id: editRecipe
