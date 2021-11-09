@@ -3,6 +3,7 @@ import re
 from logging import raiseExceptions
 import os
 import yaml
+import math
 
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
@@ -38,18 +39,23 @@ from kivy.storage.jsonstore import JsonStore
 
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
+    
     def on_open(self):
         if len(self.content.ids.chooseIngridients.children)<1:
             for product in self.products:
-                self.content.ids.chooseIngridients.add_widget(MDChip(
-                                            text=product, check=True))
+                chip = MDChip(text=product, check=True)
+                self.content.ids.chooseIngridients.add_widget(chip)
+        
+
+class ContentCustomSheet(MDBoxLayout):    
+    rows = NumericProperty()
+
+class BottomCustomSheet(MDBoxLayout):
+    text = StringProperty()
 
 class ItemDrawer(OneLineIconListItem):
     icon = StringProperty()
     text_color = ListProperty((0, 0, 0, 1))
-
-class CustomSheetContent(MDBoxLayout):
-    text = StringProperty()
 
 class DrawerList(ThemableBehavior, MDList):
     def set_color_item(self, instance_item):
@@ -92,9 +98,6 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
             dp(12),
         ]
     )
-
-class ContentCustomSheet(MDBoxLayout):
-    pass
 
 class ClickableTextFieldRound(MDRelativeLayout):
     text = StringProperty()
@@ -546,9 +549,6 @@ class MenuGeneratorApp(MDApp):
                     add_tag_item(tag)            
         else:
             recipeWidget.ids.rv.data = []
-            # recipeWidget.ids.rv.parent.height = 0
-            # for tag in self.menu.db.getTags():
-            #     add_tag_item(tag)
         
         if recipeWidget.ids.rv.data:
                 recipeWidget.ids.rv.parent.height = dp(205)
@@ -576,18 +576,16 @@ class MenuGeneratorApp(MDApp):
 
     def show_example_list_bottom_sheet(self):
         products = self.menu.db.getProducts()
-        custom_sheet = ContentCustomSheet()
+        custom_sheet = BottomCustomSheet()   
         for category in products:
-            custom_content = CustomSheetContent()
             panel = MyExpansionPanel(
                         products=products[category],
-                        content=custom_content,
+                        content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
                             text=f"{category}"
                         )
                     )
             custom_sheet.ids.custom_sheet_grid.add_widget(panel)
-
         self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
         self.custom_sheet.open()
 
