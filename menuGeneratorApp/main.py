@@ -39,12 +39,35 @@ from kivy.storage.jsonstore import JsonStore
 
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
+    ingridients = ListProperty()
+    ingridientWidget = ObjectProperty()
     
     def on_open(self):
         if len(self.content.ids.chooseIngridients.children)<1:
             for product in self.products:
-                chip = MDChip(text=product, check=True)
+                chip = MDChip(text=product, check=True, icon='')
+                chip.bind(on_release=self.markIngridient)
+                if product in self.ingridients and not len(chip.ids.box_check.children):
+                    chip.ids.box_check.add_widget(MDIcon(
+                                icon="check",
+                                size_hint=(None, None),
+                                size=("26dp", "26dp"),
+                                font_size=sp(20),
+                            ))
                 self.content.ids.chooseIngridients.add_widget(chip)
+    
+    def markIngridient(self, instance_chip):
+        # TODO 
+        # 1. do not add same ingridients
+        # 2. refresh MyExpansionPanel content after check new inridient, close and reopen panel/Bottomsheet
+        if not len(instance_chip.ids.box_check.children):
+            self.ingridientWidget.add_widget(ButtonWithCross(
+                                            text=instance_chip.text,
+                                            parentId=self.ingridientWidget))
+        else:
+            for button_with_cross in self.ingridientWidget.children:
+                if button_with_cross.text==instance_chip.text:
+                    self.ingridientWidget.remove_widget(button_with_cross)
         
 
 class ContentCustomSheet(MDBoxLayout):    
@@ -574,12 +597,14 @@ class MenuGeneratorApp(MDApp):
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
 
-    def show_example_list_bottom_sheet(self):
+    def show_example_list_bottom_sheet(self, ingridients, ingridientWidget):
         products = self.menu.db.getProducts()
         custom_sheet = BottomCustomSheet()   
         for category in products:
             panel = MyExpansionPanel(
                         products=products[category],
+                        ingridients=ingridients,
+                        ingridientWidget=ingridientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
                             text=f"{category}"
@@ -596,4 +621,3 @@ if __name__ == '__main__':
 
 # TODO
 # add ingridients functionality
-# add tags functionality 

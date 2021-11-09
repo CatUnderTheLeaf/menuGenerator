@@ -179,6 +179,7 @@
         
     MDGridLayout:
         cols: 2
+        orientation: 'tb-lr'
         adaptive_height: True
         height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
         spacing: dp(5)
@@ -211,7 +212,7 @@
         theme_text_color: "Custom"
         md_bg_color: app.theme_cls.primary_color
         user_font_size: "20sp"
-        on_release: app.show_example_list_bottom_sheet()
+        on_release: app.show_example_list_bottom_sheet(root.recipe.ingridients, root.ids.recipeIngridients)
 
     MDSeparator:
 
