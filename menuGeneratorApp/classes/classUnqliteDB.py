@@ -1,4 +1,5 @@
 from unqlite import UnQLite
+from sortedcontainers import SortedList
 from classes.classRecipe import Recipe
 from classes.classRules import Rules
 
@@ -35,9 +36,9 @@ class UnqliteDB:
             it = self.products.iterator()
             for row in it:                
                 if row['food_class'] in all:
-                        all[row['food_class']].append(row['name'])
+                        all[row['food_class']].add(row['name'])
                 else:
-                    all[row['food_class']] = [row['name']]
+                    all[row['food_class']] = SortedList([row['name']])
             self._products = all
         return self._products
 
