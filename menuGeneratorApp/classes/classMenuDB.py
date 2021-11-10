@@ -65,6 +65,8 @@ class MenuDB:
     :param recipeObj: Recipe object to update  
      """
     def updateRecipe(self, recipeObj):
+        recipeObj.food_class = self.identifyFoodClass(recipeObj.ingridients)
+        recipeObj.nutrients = self.identifyNutrients(recipeObj.food_class, recipeObj.tags)
         if recipeObj.id=='':
             self.db.insertRecipe(recipeObj)
         else:
@@ -174,31 +176,24 @@ class MenuDB:
         return self.db.checkRecipe(recipe.prepareTime, recipe.tags, recipe.nutrients, tag, nutr, prep)
 
     """ 
-    TODO remake
     identify to which food class 
     belong ingridients
 
     :param recipe: a single recipe
     :return: list of unique food classes    
      """
-    def identifyFoodClass(self, recipe):            
-        foodClass = set()
-        for ingridient in recipe.ingridients:
-            foodClass.update(self.products_class[ingridient])
-        foodClass = list(foodClass)
-               
-        return foodClass
+    def identifyFoodClass(self, ingridients):        
+        return self.db.identifyFoodClass(ingridients)
 
     """ 
-    TODO remake
     identify to which nutrient type 
     belongs recipe
 
     :param recipe: a single recipe
     :return: list of unique nutrient types (carb, protein, fat or free)    
      """
-    def identifyNutrients(self, recipe):            
-        nutrients = self.db.getRules().identifyNutrient(recipe.food_class, recipe.tags)
+    def identifyNutrients(self, food_class, tags):            
+        nutrients = self.db.getRules().identifyNutrient(food_class, tags)
                
         return nutrients
 

@@ -30,8 +30,6 @@ class UnqliteDB:
      """   
     def getProducts(self):
         if (self._products is None):            
-            # all = self.products.all()
-            # self._products = list(set([product['name'] for product in all]))
             all = {}
             it = self.products.iterator()
             for row in it:                
@@ -41,6 +39,19 @@ class UnqliteDB:
                     all[row['food_class']] = SortedList([row['name']])
             self._products = all
         return self._products
+
+    """ 
+    identify to which food class 
+    belong ingridients
+
+    :param recipe: a single recipe
+    :return: list of unique food classes    
+     """
+    def identifyFoodClass(self, ingridients):            
+        food = self.products.filter(lambda ingridient: (ingridient['name'] in ingridients)==True)
+        foodClass = set(x['food_class'] for x in food)
+        
+        return list(foodClass)
 
     """ 
     fetch all rules from the collection

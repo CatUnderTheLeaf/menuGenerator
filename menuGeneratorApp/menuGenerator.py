@@ -26,8 +26,8 @@ for key in meals:
 # menu.generateDailyMenu(sdate, edate)
 # print(menu)
 rules = menu.db.db.rulesCollection
-for rule in rules:
-    print(rule)
+# for rule in rules:
+#     print(rule)
 # print(rules[10])
 # rules[10] = {'rule': 'meat,fish,cheese,eggs is protein'}
 
@@ -38,5 +38,13 @@ products = menu.db.db.products
     # if rule['food_class']=='cereals,grains,pasta,bread,vegan is high_carb':
         # products[rule['__id']] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': rule['name']}
     # print(rule)
+
+recipes = menu.db.db.recipesCollection
+for recipe in recipes:
+    # menu.db.updateRecipe(recipe)
+    print(recipe)
+
+# food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
+# print(food_class)
 
 menu.disconnectDB()
