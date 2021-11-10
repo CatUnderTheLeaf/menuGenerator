@@ -585,7 +585,6 @@ class MenuGeneratorApp(MDApp):
     :param recipeWidget: recipe Widget with recycle view
     '''
     def set_item(self, text__item, textField, recipeWidget):
-        # text = re.sub(r"\s+", "", text__item)
         text = ' '.join(text__item.split())
         if len(text):
             textField.focus = False
@@ -600,12 +599,19 @@ class MenuGeneratorApp(MDApp):
         products = self.menu.db.getProducts()
         custom_sheet = BottomCustomSheet()   
         for category in products:
+            cat_text = ''
+            if ',' in category:
+                cat_text = ', '.join(w[0].upper() + w[1:] for w in category.split(','))
+            elif '_' in category:
+                cat_text = ' '.join(category.split('_')).capitalize()
+            else:
+                cat_text = category.capitalize()
             panel = MyExpansionPanel(
                         products=products[category],
                         ingridientWidget=ingridientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
-                            text=f"{category}"
+                            text=f"{cat_text}"
                         )
                     )
             custom_sheet.ids.custom_sheet_grid.add_widget(panel)
@@ -616,6 +622,3 @@ class MenuGeneratorApp(MDApp):
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
-
-# TODO
-# add ingridients functionality
