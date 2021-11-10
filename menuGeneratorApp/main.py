@@ -39,15 +39,17 @@ from kivy.storage.jsonstore import JsonStore
 
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
-    ingridients = ListProperty()
     ingridientWidget = ObjectProperty()
     
     def on_open(self):
         if len(self.content.ids.chooseIngridients.children)<1:
+            ingridients = []
+            for button_with_cross in self.ingridientWidget.children:
+                ingridients.append(button_with_cross.text)
             for product in self.products:
                 chip = MDChip(text=product, check=True, icon='')
                 chip.bind(on_release=self.markIngridient)
-                if product in self.ingridients and not len(chip.ids.box_check.children):
+                if product in ingridients and not len(chip.ids.box_check.children):
                     chip.ids.box_check.add_widget(MDIcon(
                                 icon="check",
                                 size_hint=(None, None),
@@ -57,9 +59,6 @@ class MyExpansionPanel(MDExpansionPanel):
                 self.content.ids.chooseIngridients.add_widget(chip)
     
     def markIngridient(self, instance_chip):
-        # TODO 
-        # 1. do not add same ingridients
-        # 2. refresh MyExpansionPanel content after check new inridient, close and reopen panel/Bottomsheet
         if not len(instance_chip.ids.box_check.children):
             self.ingridientWidget.add_widget(ButtonWithCross(
                                             text=instance_chip.text,
@@ -603,7 +602,6 @@ class MenuGeneratorApp(MDApp):
         for category in products:
             panel = MyExpansionPanel(
                         products=products[category],
-                        ingridients=ingridients,
                         ingridientWidget=ingridientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
