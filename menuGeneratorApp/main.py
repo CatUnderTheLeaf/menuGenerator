@@ -9,6 +9,8 @@ from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
 from kivymd.app import MDApp
+from kivy.core.window import Window
+from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.dialog import MDDialog
@@ -138,6 +140,7 @@ class MenuGeneratorApp(MDApp):
     overlay_color = get_color_from_hex("#6042e4")
     dialog = None
     custom_sheet = None
+    
 
     """ 
     Generate Menu tabs for n days
@@ -211,6 +214,13 @@ class MenuGeneratorApp(MDApp):
         meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
         
         self.root.ids.screen_manager.transition = NoTransition()
+        Window.bind(on_keyboard=self.events)
+        self.manager_open = False
+        self.file_manager = MDFileManager(
+            exit_manager=self.exit_manager,
+            select_path=self.select_path,
+            preview=True
+        )
 
         # Create Menu object        
         self.menu = Menu()
@@ -636,7 +646,72 @@ class MenuGeneratorApp(MDApp):
         self.dialog.open()
 
     def open_gallery(self):
-        print("gallery")
+        self.file_manager_open()
+        '''
+        Found out on android.developers that actually for "All files" is needed the permission MANAGE_EXTERNAL_STORAGE.
+
+Just put in buildozer.spec file MANAGE_EXTERNAL_STORAGE also:
+
+(list) Permissions
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE No need to put it in the py code as you mnetioned for the other other permissions. they are ok in the code to avoit asking for the permission every time the app is launched.
+
+But, after the app is installed you'll have to go on the app permission to all the management of all files allow permission
+
+Worked for me, hope it helps.
+You need to change self.file_manager.show('/') to
+
+self.file_manager.show(primary_ext_storage)
+where primary_ext_storage is the file directory on your android phone. You also need to declare below.
+
+from android.storage import primary_external_storage_path
+primary_ext_storage = primary_external_storage_path()
+primary_external_storage_path() returns Android’s so-called “primary external storage”, often found at /sdcard/ and potentially accessible to any other app. It compares best to the Documents directory on Windows.
+
+On top of that, you need to add the following code in your script to ensure there is permission to access to the storage on the phone.
+
+from android.permissions import request_permissions, Permission
+request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE])
+Do not be confused by the name of primary_ext_storage . It is not referring to your android phone SD card. Instead, it will be pointing to your internal storage.
+
+For external storage on android phone, you can use
+
+from android.storage import secondary_external_storage_path
+secondary_ext_storage = secondary_external_storage_path()
+        '''
+
+    def file_manager_open(self):
+        path = os.path.join(os.path.dirname(__file__), "img/")
+        self.file_manager.show(path)  # output manager to the screen
+        self.manager_open = True
+
+    def select_path(self, path):
+        '''It will be called when you click on the file name
+        or the catalog selection button.
+
+        :type path: str;
+        :param path: path to the selected directory or file;
+        '''
+
+        self.exit_manager()
+        self.setRecipeImage(path)
+
+    def setRecipeImage(self, path):
+        if os.path.isfile(path):
+            self.root.ids.editRecipeScroll.children[0].ids.recipeImg.source = path
+
+    def exit_manager(self, *args):
+        '''Called when the user reaches the root of the directory tree.'''
+
+        self.manager_open = False
+        self.file_manager.close()
+
+    def events(self, instance, keyboard, keycode, text, modifiers):
+        '''Called when buttons are pressed on the mobile device.'''
+
+        if keyboard in (1001, 27):
+            if self.manager_open:
+                self.file_manager.back()
+        return True
 
     def open_camera(self):
         print("camera")
