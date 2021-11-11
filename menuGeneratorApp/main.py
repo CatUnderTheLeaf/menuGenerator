@@ -11,6 +11,7 @@ from classes.classRecipe import Recipe
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.relativelayout import MDRelativeLayout
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarIconListItem
@@ -90,6 +91,10 @@ class DrawerList(ThemableBehavior, MDList):
                 break
         instance_item.text_color = self.theme_cls.primary_color
 
+class dialogItem(OneLineIconListItem):
+    divider = None
+    icon = StringProperty()
+
 class ContentNavigationDrawer(MDBoxLayout):
     screen_manager = ObjectProperty()
     nav_drawer = ObjectProperty()
@@ -103,7 +108,6 @@ class Tab(MDFloatLayout, MDTabsBase):
 class RecipeListItem(TwoLineAvatarIconListItem):
     text = StringProperty()
     secondary_text = StringProperty()
-    source = StringProperty()
     recipe = ObjectProperty()    
 
 class RecipeSelectionList(MDSelectionList):
@@ -132,6 +136,9 @@ class RecipeWidget(MDBoxLayout):
 
 class MenuGeneratorApp(MDApp):  
     overlay_color = get_color_from_hex("#6042e4")
+    dialog = None
+    custom_sheet = None
+
     """ 
     Generate Menu tabs for n days
     delete previous tabs and load content to the first new tab
@@ -179,7 +186,7 @@ class MenuGeneratorApp(MDApp):
                             OneLineListItem(text=f"{meal}")
                         )
                         img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
-                        img_box.add_widget(FitImage(source="menuGeneratorApp\img\Hot_meal.jpg"))
+                        img_box.add_widget(FitImage(source=recipe.img))
                         instance_tab.ids.box.add_widget(img_box)
                 
                         panel = MDExpansionPanel(
@@ -269,7 +276,6 @@ class MenuGeneratorApp(MDApp):
         list_item = RecipeListItem(
                         text=f"{recipe}",
                         secondary_text=f"{', '.join(recipe.ingridients)}",
-                        source="menuGeneratorApp\img\Hot_meal.jpg",
                         recipe = recipe
                     )
         self.root.ids.recipe_scroll.add_widget(list_item)
@@ -473,7 +479,6 @@ class MenuGeneratorApp(MDApp):
     def redrawRecipeWidget(self, parentWidget, newRecipe):
         parentWidget.text=f"{newRecipe}"
         parentWidget.secondary_text=f"{', '.join(newRecipe.ingridients)}"
-                    # source="menuGeneratorApp\img\Hot_meal.jpg",
         parentWidget.recipe = newRecipe
 
     '''
@@ -618,7 +623,32 @@ class MenuGeneratorApp(MDApp):
         self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
         self.custom_sheet.open()
 
+    def show_simple_dialog(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Set recipe image",
+                type="simple",
+                items=[
+                    dialogItem(text="Choose from gallery", icon='image'),
+                    dialogItem(text="Take a picture", icon='camera')
+                ],
+            )
+        self.dialog.open()
+
+    def open_gallery(self):
+        print("gallery")
+
+    def open_camera(self):
+        print("camera")
+
         
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
+
+# TODO
+# add images to all recipes
+# user can add/change recipe img
+# add recipe descriptions 
+# maybe use MDToggleButton
+# maybe use updated MDChip

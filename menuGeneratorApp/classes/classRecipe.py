@@ -6,6 +6,7 @@ class Recipe:
     """ 
     id: recipe id in db 
     title: name of the Recipe
+    img: path to the image
     ingridients: list of products
     food_class: list of food classes, 'fat', 'fruit', 'cereal', etc
     nutrients: list of nutrients, 'carb', 'protein', etc
@@ -14,11 +15,10 @@ class Recipe:
     tags: breakfast/dinner, dough food, etc
     repeat: True/False, if a dish can be prepared for more than one day
      """
-    def __init__(self, id='', title="", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
+    def __init__(self, id='', title="", img="menuGeneratorApp\img\\no_image.png", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
         self.id = id
         self.title = title
-        # TODO later implement, now it is not so important
-        # self.img = img
+        self.img = img
         self.ingridients = ingridients
         self.food_class = food_class
         self.nutrients = nutrients

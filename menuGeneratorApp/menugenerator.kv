@@ -102,7 +102,7 @@
     on_release: app.edit_recipe(root) if not root.parent.selected and not root.parent.owner.selected_mode else root.parent.on_touch_down
     
     ImageLeftWidget:
-        source: root.source
+        source: root.recipe.img
 
 <ButtonWithCross>:  
     id: box
@@ -185,6 +185,14 @@
         spacing: dp(5)
         id: chooseIngridients
 
+<dialogItem>
+    on_release:
+        app.dialog.dismiss()
+        app.open_gallery() if root.icon=='image' else app.open_camera()
+
+    IconLeftWidget:
+        icon: root.icon
+
 <RecipeWidget>:
     id: editRecipe
     orientation: "vertical"
@@ -192,6 +200,13 @@
     padding: dp(48)
     spacing: dp(15)
     
+    SmartTile:
+        source: root.recipe.img
+        size_hint_y: None
+        height: dp(200)
+        box_color: (0, 0, 0, 0)
+        on_release: app.show_simple_dialog()
+
     MDTextField:
         id: recipeTitle
         hint_text: "Title"
