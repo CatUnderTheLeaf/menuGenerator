@@ -98,11 +98,12 @@
     id: listItem
     text: root.text
     secondary_text: root.secondary_text
+    img_source: root.recipe.img
     _no_ripple_effect: True
     on_release: app.edit_recipe(root) if not root.parent.selected and not root.parent.owner.selected_mode else root.parent.on_touch_down
     
     ImageLeftWidget:
-        source: root.recipe.img
+        source: root.img_source
 
 <ButtonWithCross>:  
     id: box

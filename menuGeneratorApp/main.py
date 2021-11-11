@@ -110,6 +110,7 @@ class Tab(MDFloatLayout, MDTabsBase):
 class RecipeListItem(TwoLineAvatarIconListItem):
     text = StringProperty()
     secondary_text = StringProperty()
+    img_source = StringProperty()
     recipe = ObjectProperty()    
 
 class RecipeSelectionList(MDSelectionList):
@@ -457,6 +458,7 @@ class MenuGeneratorApp(MDApp):
             recipeWidget.ids.recipeTitle.focus = True
         else:
             recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
+            recipeWidget.recipe.img = recipeWidget.ids.recipeImg.source
             recipeWidget.recipe.ingridients = []
             for ingridient in recipeWidget.ids.recipeIngridients.children:
                 recipeWidget.recipe.ingridients.append(ingridient.text)
@@ -488,6 +490,7 @@ class MenuGeneratorApp(MDApp):
     '''    
     def redrawRecipeWidget(self, parentWidget, newRecipe):
         parentWidget.text=f"{newRecipe}"
+        parentWidget.img_source = newRecipe.img
         parentWidget.secondary_text=f"{', '.join(newRecipe.ingridients)}"
         parentWidget.recipe = newRecipe
 
@@ -723,7 +726,6 @@ if __name__ == '__main__':
 
 # TODO
 # add images to all recipes
-# user can add/change recipe img
 # add recipe descriptions 
 # maybe use MDToggleButton
 # maybe use updated MDChip

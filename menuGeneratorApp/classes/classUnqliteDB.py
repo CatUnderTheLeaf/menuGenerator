@@ -123,6 +123,7 @@ class UnqliteDB:
     def makeRecipeFromRecord(self, record):
         return Recipe(id = record['__id'],
                         title=record['title'], 
+                        img=record['img'],
                         ingridients=record['ingridients'], 
                         food_class=record['food_class'], 
                         nutrients=record['nutrients'], 
@@ -142,6 +143,7 @@ class UnqliteDB:
 
         recipe = {}
         recipe['title'] = recipeObj.title
+        recipe['img'] = recipeObj.img
         recipe['ingridients'] = recipeObj.ingridients
         recipe['prepareTime'] = recipeObj.prepareTime
         recipe['tags'] = recipeObj.tags
@@ -172,6 +174,7 @@ class UnqliteDB:
 
         recipe = {}
         recipe['title'] = recipeObj.title
+        recipe['img'] = recipeObj.img
         recipe['ingridients'] = recipeObj.ingridients
         recipe['prepareTime'] = recipeObj.prepareTime
         recipe['tags'] = recipeObj.tags
