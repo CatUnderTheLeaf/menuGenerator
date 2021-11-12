@@ -17,7 +17,7 @@ class Recipe:
      """
     def __init__(self, id='', title="", img="menuGeneratorApp\img\\no_image.png", ingridients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
         self.id = id
-        self.title = title
+        self.title = title.capitalize()
         self.img = img
         self.ingridients = ingridients
         self.food_class = food_class

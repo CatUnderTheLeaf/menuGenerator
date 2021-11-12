@@ -71,6 +71,8 @@ class MyExpansionPanel(MDExpansionPanel):
                 if button_with_cross.text==instance_chip.text:
                     self.ingridientWidget.remove_widget(button_with_cross)
         
+class DescriptionContent(MDBoxLayout):
+    text = StringProperty()
 
 class ContentCustomSheet(MDBoxLayout):    
     rows = NumericProperty()
@@ -184,24 +186,28 @@ class MenuGeneratorApp(MDApp):
      """
     def fillTabs(self, instance_tab):
         for meal in self.menu.mpd:
-                    recipe = self.menu.menu[instance_tab.day][meal]
-                    if (recipe is not None):
-                        instance_tab.ids.box.add_widget(
-                            OneLineListItem(text=f"{meal}")
-                        )
-                        img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
-                        img_box.add_widget(FitImage(source=recipe.img))
-                        instance_tab.ids.box.add_widget(img_box)
+            recipe = self.menu.menu[instance_tab.day][meal]
+            if (recipe is not None):
+                instance_tab.ids.box.add_widget(
+                    OneLineListItem(text=f"{meal}")
+                )
+                img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
+                img_box.add_widget(FitImage(source=recipe.img))
+                instance_tab.ids.box.add_widget(img_box)
+                icon = "clock-time-one-outline"
+                if recipe.prepareTime=="medium":
+                    icon = "clock-time-five-outline"
+                elif recipe.prepareTime=="long":
+                    icon = "clock-time-nine-outline"
                 
-                        panel = MDExpansionPanel(
-                            icon= 'language-python',
-                            content=Content(text=f"Recipe instructions for recipe {recipe}"),
-                            panel_cls=MDExpansionPanelTwoLine(
-                                text=f"{recipe}",
-                                secondary_text=f"{', '.join(recipe.ingridients)}"
-                            )
-                        )
-                        instance_tab.ids.box.add_widget(panel)     
+                instance_tab.ids.box.add_widget(MDExpansionPanel(
+                    icon=icon,
+                    content = DescriptionContent(text=recipe.description),
+                    panel_cls=MDExpansionPanelTwoLine(
+                        text="Text",
+                        secondary_text="Secondary text"
+                    )
+                ))     
 
     """ 
     Set transition between Screens
@@ -725,7 +731,10 @@ if __name__ == '__main__':
     MenuGeneratorApp().run()
 
 # TODO
-# add images to all recipes
+# make some tasks on Github
 # add recipe descriptions 
+# rewrite readme
+# refactor
+# rewwrite tests
 # maybe use MDToggleButton
 # maybe use updated MDChip

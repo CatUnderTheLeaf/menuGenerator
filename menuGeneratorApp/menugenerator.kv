@@ -73,6 +73,19 @@
                 adaptive_height: True
                 id: box
 
+<DescriptionContent>:
+    padding: dp(20), dp(20), dp(20), 0
+    size_hint_y: None
+    height: self.minimum_height
+    width: app.root.width
+    
+    MDTextField:
+        id: recipe_text
+        text: root.text
+        disabled: True
+        multiline: True
+        width: root.width
+
 <Content>:
     size_hint_y: None
     height: recipe_text.height
@@ -186,7 +199,7 @@
         spacing: dp(5)
         id: chooseIngridients
 
-<dialogItem>
+<dialogItem>:
     on_release:
         app.dialog.dismiss()
         app.open_gallery() if root.icon=='image' else app.open_camera()
