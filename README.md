@@ -1,5 +1,12 @@
 # menuGenerator
-A script to generate menu for n days.
+An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month.
+
+My app has a Navigation drawer with only three destinations, first loaded screen is "Menu":
+
+<p align="center">
+  <img src="pictures/Screenshot 2021-11-15 152839.jpg" width="350" height="600" title="hover text">
+  <img src="pictures/Screenshot 2021-11-15 152510.jpg" width="350" height="600" title="hover text">
+</p>
 
 When I plan a menu I have a bunch of rules ([ ] are not implemented):
 - [x] on Working days I don't have much time for cooking
@@ -14,104 +21,6 @@ When I plan a menu I have a bunch of rules ([ ] are not implemented):
 - [x] no same dishes in one day
 - [ ] I can eat one main dish with different sidedishes
 - [ ] often I need to cook several sidedishes because not all family members eat the same
-
-03.09.2021
-The most important features are implemented, so now I will make a branch to work on an application for Android. I'm going to try [Kivy](https://kivy.org/). Also I plan to write some tests.
-
-- Step ? (ideas for future):
-  - [ ] there are main dishes and multiple sidedishes
-  - [ ] maybe add vegan/vegetarian, fasting , etc
-  - [ ] I can prepare a big load of meat balls, freeze them and use it
-  - [ ] lunch is only for me, but dinner is for the whole family
-
-- Step 7:
-  - [x] I can eat one dish today at dinner and tomorrow at lunch
-  - [x] no same dishes in one day
-
-- Step 6:
-  - [x] add day names to generating
-  - [x] add prepareTime to recipes
-  - [x] add new rules for days of week
-  - [x] on Sunday I eat pancakes and order food from cafe
-  - [x] in recipe I want to use "Capsicum" along "Red Capsicum" or "Green Capsicum"
-  - [x] Avocado is fat and low_carb
->   !!!-----------------generated menu----------------!!!
-> 
-> Wednesday:
-> Breakfast - oat porridge  -  ['breakfast']
-> Lunch - sandwich  -  ['dinner']
-> Dinner - eggs with mayo  -  ['dinner']
-> 
-> Thursday:
-> Breakfast - pancakes  -  ['breakfast', 'dough food']
-> Lunch - salad  -  ['dinner']
-> Dinner - meat balls  -  ['dinner']
-> 
-> Friday:
-> Breakfast - pancakes  -  ['breakfast', 'dough food']
-> Lunch - pizza  -  ['dinner']
-> Dinner - omelette  -  ['dinner']
-> 
-> Saturday:
-> Breakfast - pancakes  -  ['breakfast', 'dough food']
-> Lunch - youghurt  -  ['breakfast']
-> Dinner - eggs with mayo  -  ['dinner']
-> 
-> Sunday:
-> Breakfast - pancakes  -  ['breakfast', 'dough food']
-> Lunch - fruit salad  -  ['breakfast']
-> Dinner - vienne steak  -  ['dinner']
-> 
-> Monday:
-> Breakfast - fruit salad  -  ['breakfast']
-> Lunch - pancakes  -  ['breakfast', 'dough food']
-> Dinner - youghurt  -  ['breakfast']
-> 
-> Tuesday:
-> Breakfast - musli  -  ['breakfast']
-> Lunch - fruit salad  -  ['breakfast']
-> Dinner - eggs with mayo  -  ['dinner']
-
-- Step 5:
-  - [x] load anew when there are changes in products lists
-  - [x] make difference between low and high carbs
-  - [x] rename category to tags
-  - [x] why pancakes are not whole carb?
-
-- Step 4:
-  - [x] add products to recipes
-  - [x] add rules for categorizing recipes (carbs, protein, fats)
-  - [x] add new menu rules and generate menu
-> Breakfast
-> ['carb', 'fat', 'free']
-> ['oat porridge', 'musli', 'fruit salad', 'oat porridge', 'fruit salad', 'musli', 'oat porridge']
-> 
-> Lunch
-> ['carb', 'protein', 'fat', 'free']
-> ['cake', 'ragout', 'ragout', 'cous-cous', 'fried fish', 'fried fish', 'salad']
-> 
-> Dinner
-> ['protein', 'fat', 'free']
-> ['vienne steak', 'eggs with mayo', 'omelette', 'meat balls', 'eggs with mayo', 'chicken wings', 'vienne steak']
-
-- Step 3:
-  - [x] rename class RecipeList to Menu
-  - [x] add some rules for generating
-  - [x] generate simple menu
-
-- Step 2:
-  - [x] add tags to the class (breakfast, dinner, etc.)
-  - [x] add a RecipeList class with filter functions
-  - [x] choose 7/14/21... items with criteria
-
-- Step 1:
-  - [x] create a Recipe class
-  - [x] dump and load Recipe objects to a file
-
-- Step 0:
-  - [x] read menu items from file
-  - [x] randomize
-  - [x] choose 7/14/21... items
 
 There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm. See articles about PuLP [one](https://towardsdatascience.com/roster-optimization-using-python-85b26d58e806) and [two](https://www.pythonstart.com/solving-linear-programming-problems-in-python-with-pulp)
 
