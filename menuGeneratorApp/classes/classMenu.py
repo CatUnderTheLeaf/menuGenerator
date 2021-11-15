@@ -32,7 +32,6 @@ class Menu:
         self.n = 1
         self.timePeriod = "day"
         self.repeatDishes = True
-        # TODO what if db is not set???
 
     def connectDB(self, db_type, db_path):
         self.db = MenuDB(db_type, db_path)

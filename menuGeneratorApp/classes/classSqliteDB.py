@@ -13,8 +13,7 @@ class SqliteDB:
         
         # print(dic)
         # self.title = title
-        # # TODO later implement, now it is not so important
-        # # self.img = img
+        # self.img = img
         # self.ingridients = ingridients
         # self.food_class = food_class
         # self.nutrients = nutrients

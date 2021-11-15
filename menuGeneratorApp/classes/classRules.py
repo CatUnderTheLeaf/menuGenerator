@@ -55,7 +55,6 @@ class Rules:
      """
     def readRules(self, rule):
         if ' serve only ' in rule:
-            # TODO think what it should really imply: rule OR or AND
             meals, tags = rule.split(' serve only ')
             meals = meals[len('At '):].split(', ')
             for meal in meals:

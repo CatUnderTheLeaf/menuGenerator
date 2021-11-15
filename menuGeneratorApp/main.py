@@ -150,9 +150,7 @@ class MenuGeneratorApp(MDApp):
     delete previous tabs and load content to the first new tab
     
      """
-    def generateMenuTabs(self):
-        # TODO as tabs now has no problems with load do I need spinner???
-        # self.root.ids.spinner.active = True
+    def generateMenuTabs(self):        
         # old tabs to remove if exist 
         # because I can't delete all tabs but one 
         del_tabs = self.root.ids.tabs.get_tab_list()
@@ -177,7 +175,6 @@ class MenuGeneratorApp(MDApp):
 
         # fill first tab with content
         self.fillTabs(self.root.ids.tabs.get_tab_list()[0].tab)
-        # TODO if there are many tabs carousel doesn't slide back to the first tab
 
     """ 
     Fill the content of a tab
@@ -353,7 +350,6 @@ class MenuGeneratorApp(MDApp):
         if value=="week":
             self.menu.n = 7
             self.menu.timePeriod = "week"
-        # TODO set n based on which month is now
         if value=="month":
             self.menu.n = 30
             self.menu.timePeriod = "month"    
@@ -726,18 +722,7 @@ secondary_ext_storage = secondary_external_storage_path()
 
     def open_camera(self):
         print("camera")
-
         
 
 if __name__ == '__main__':    
     MenuGeneratorApp().run()
-
-# TODO
-# make some tasks on Github
-# rewrite readme
-# refactor
-# rewwrite tests
-# maybe use MDToggleButton
-# maybe use updated MDChip
-# problem with ingridients in bottom sheet with widget width not height
-# change details in recipe -> change in menu

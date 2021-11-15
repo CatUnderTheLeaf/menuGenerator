@@ -456,14 +456,10 @@ class Test(MDApp):
 
     def open_gallery(self):
         print("gallery")
-        # TODO get storage permission
-        # Be careful! To use the / path on Android devices, you need special permissions. 
-        # Therefore, you are likely to get an error.
         self.file_manager_open()
 
     def open_camera(self):
         print("camera")
-        # TODO how to take pictures with pc camera
         # cam = Camera()
 
 Test().run()
