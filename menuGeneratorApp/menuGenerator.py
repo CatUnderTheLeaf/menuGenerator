@@ -39,7 +39,7 @@ products = menu.db.db.products
         # products[rule['__id']] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': rule['name']}
     # print(rule)
 
-recipes = menu.db.db.recipesCollection
+recipes = menu.db.getRecipes()
 for recipe in recipes:
     # menu.db.updateRecipe(recipe)
     print(recipe)

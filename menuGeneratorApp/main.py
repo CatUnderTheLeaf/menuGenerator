@@ -42,34 +42,34 @@ from kivy.storage.jsonstore import JsonStore
 
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
-    ingridientWidget = ObjectProperty()
+    ingredientWidget = ObjectProperty()
     
     def on_open(self):
-        if len(self.content.ids.chooseIngridients.children)<1:
-            ingridients = []
-            for button_with_cross in self.ingridientWidget.children:
-                ingridients.append(button_with_cross.text)
+        if len(self.content.ids.chooseIngredients.children)<1:
+            ingredients = []
+            for button_with_cross in self.ingredientWidget.children:
+                ingredients.append(button_with_cross.text)
             for product in self.products:
                 chip = MDChip(text=product, check=True, icon='')
-                chip.bind(on_release=self.markIngridient)
-                if product in ingridients and not len(chip.ids.box_check.children):
+                chip.bind(on_release=self.markIngredient)
+                if product in ingredients and not len(chip.ids.box_check.children):
                     chip.ids.box_check.add_widget(MDIcon(
                                 icon="check",
                                 size_hint=(None, None),
                                 size=("26dp", "26dp"),
                                 font_size=sp(20),
                             ))
-                self.content.ids.chooseIngridients.add_widget(chip)
+                self.content.ids.chooseIngredients.add_widget(chip)
     
-    def markIngridient(self, instance_chip):
+    def markIngredient(self, instance_chip):
         if not len(instance_chip.ids.box_check.children):
-            self.ingridientWidget.add_widget(ButtonWithCross(
+            self.ingredientWidget.add_widget(ButtonWithCross(
                                             text=instance_chip.text,
-                                            parentId=self.ingridientWidget))
+                                            parentId=self.ingredientWidget))
         else:
-            for button_with_cross in self.ingridientWidget.children:
+            for button_with_cross in self.ingredientWidget.children:
                 if button_with_cross.text==instance_chip.text:
-                    self.ingridientWidget.remove_widget(button_with_cross)
+                    self.ingredientWidget.remove_widget(button_with_cross)
         
 class DescriptionContent(MDBoxLayout):
     text = StringProperty()
@@ -204,7 +204,7 @@ class MenuGeneratorApp(MDApp):
                     content = content,
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingridients)}"
+                        secondary_text=f"{', '.join(recipe.ingredients)}"
                     )
                 ))
 
@@ -291,7 +291,7 @@ class MenuGeneratorApp(MDApp):
     def addRecipeInList(self, recipe):
         list_item = RecipeListItem(
                         text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingridients)}",
+                        secondary_text=f"{', '.join(recipe.ingredients)}",
                         recipe = recipe
                     )
         self.root.ids.recipe_scroll.add_widget(list_item)
@@ -425,11 +425,11 @@ class MenuGeneratorApp(MDApp):
             recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
             recipe = instance.recipe        
             recipeWidget.ids.recipeTitle.text = recipe.title
-            # load new ingridients
-            for ingridient in recipe.ingridients:
-                recipeWidget.ids.recipeIngridients.add_widget(ButtonWithCross(
-                                            text=ingridient,
-                                            parentId=recipeWidget.ids.recipeIngridients))
+            # load new ingredients
+            for ingredient in recipe.ingredients:
+                recipeWidget.ids.recipeIngredients.add_widget(ButtonWithCross(
+                                            text=ingredient,
+                                            parentId=recipeWidget.ids.recipeIngredients))
                 
             # set recipe prepare
             self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
@@ -463,9 +463,9 @@ class MenuGeneratorApp(MDApp):
         else:
             recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
             recipeWidget.recipe.img = recipeWidget.ids.recipeImg.source
-            recipeWidget.recipe.ingridients = []
-            for ingridient in recipeWidget.ids.recipeIngridients.children:
-                recipeWidget.recipe.ingridients.append(ingridient.text)
+            recipeWidget.recipe.ingredients = []
+            for ingredient in recipeWidget.ids.recipeIngredients.children:
+                recipeWidget.recipe.ingredients.append(ingredient.text)
             recipeWidget.recipe.prepareTime = ''
             for prepareTime in recipeWidget.ids.recipePrepareTime.children:
                 if len(prepareTime.ids.box_check.children):
@@ -495,7 +495,7 @@ class MenuGeneratorApp(MDApp):
     def redrawRecipeWidget(self, parentWidget, newRecipe):
         parentWidget.text=f"{newRecipe}"
         parentWidget.img_source = newRecipe.img
-        parentWidget.secondary_text=f"{', '.join(newRecipe.ingridients)}"
+        parentWidget.secondary_text=f"{', '.join(newRecipe.ingredients)}"
         parentWidget.recipe = newRecipe
 
     '''
@@ -617,7 +617,7 @@ class MenuGeneratorApp(MDApp):
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
 
-    def show_example_list_bottom_sheet(self, ingridients, ingridientWidget):
+    def show_example_list_bottom_sheet(self, ingredients, ingredientWidget):
         products = self.menu.db.getProducts()
         custom_sheet = BottomCustomSheet()   
         for category in products:
@@ -630,7 +630,7 @@ class MenuGeneratorApp(MDApp):
                 cat_text = category.capitalize()
             panel = MyExpansionPanel(
                         products=products[category],
-                        ingridientWidget=ingridientWidget,
+                        ingredientWidget=ingredientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
                             text=f"{cat_text}"

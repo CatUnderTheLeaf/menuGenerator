@@ -53,23 +53,23 @@ KV = '''
         helper_text_mode: "on_error"
 
     MDLabel:
-        text: "Ingridients"
+        text: "Ingredients"
 
     MDStackLayout:
         adaptive_height: True
         spacing: dp(5)
-        id: recipeIngridients
+        id: recipeIngredients
 
         MDChip:
-            text: "Ingridient1"
+            text: "Ingredient1"
             check: True
 
         MDChip:
-            text: "Ingridient2"
+            text: "Ingredient2"
             check: True
 
         MDChip:
-            text: "Ingridient3"
+            text: "Ingredient3"
             check: True
     
     MDIconButton:
@@ -196,7 +196,7 @@ KV = '''
         adaptive_height: True
         # height: 0
         spacing: dp(5)
-        id: chooseIngridients
+        id: chooseIngredients
 
 <ClickableTextFieldRound>:
     size_hint_y: None
@@ -283,9 +283,9 @@ class dialogItem(OneLineIconListItem):
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
     def on_open(self):
-        if len(self.content.ids.chooseIngridients.children)<1:
+        if len(self.content.ids.chooseIngredients.children)<1:
             for product in self.products:
-                self.content.ids.chooseIngridients.add_widget(MDChip(
+                self.content.ids.chooseIngredients.add_widget(MDChip(
                                             text=product, check=True))
         
 

@@ -42,13 +42,13 @@ class UnqliteDB:
 
     """ 
     identify to which food class 
-    belong ingridients
+    belong ingredients
 
     :param recipe: a single recipe
     :return: list of unique food classes    
      """
-    def identifyFoodClass(self, ingridients):            
-        food = self.products.filter(lambda ingridient: (ingridient['name'] in ingridients)==True)
+    def identifyFoodClass(self, ingredients):            
+        food = self.products.filter(lambda ingredient: (ingredient['name'] in ingredients)==True)
         foodClass = set(x['food_class'] for x in food)
         
         return list(foodClass)
@@ -124,7 +124,7 @@ class UnqliteDB:
         return Recipe(id = record['__id'],
                         title=record['title'], 
                         img=record['img'],
-                        ingridients=record['ingridients'], 
+                        ingredients=record['ingredients'], 
                         food_class=record['food_class'], 
                         nutrients=record['nutrients'], 
                         prepareTime=record['prepareTime'], 
@@ -144,7 +144,7 @@ class UnqliteDB:
         recipe = {}
         recipe['title'] = recipeObj.title
         recipe['img'] = recipeObj.img
-        recipe['ingridients'] = recipeObj.ingridients
+        recipe['ingredients'] = recipeObj.ingredients
         recipe['prepareTime'] = recipeObj.prepareTime
         recipe['tags'] = recipeObj.tags
         recipe['repeat'] = recipeObj.repeat
@@ -175,7 +175,7 @@ class UnqliteDB:
         recipe = {}
         recipe['title'] = recipeObj.title
         recipe['img'] = recipeObj.img
-        recipe['ingridients'] = recipeObj.ingridients
+        recipe['ingredients'] = recipeObj.ingredients
         recipe['prepareTime'] = recipeObj.prepareTime
         recipe['tags'] = recipeObj.tags
         recipe['repeat'] = recipeObj.repeat

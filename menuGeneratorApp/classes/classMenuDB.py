@@ -65,7 +65,7 @@ class MenuDB:
     :param recipeObj: Recipe object to update  
      """
     def updateRecipe(self, recipeObj):
-        recipeObj.food_class = self.identifyFoodClass(recipeObj.ingridients)
+        recipeObj.food_class = self.identifyFoodClass(recipeObj.ingredients)
         recipeObj.nutrients = self.identifyNutrients(recipeObj.food_class, recipeObj.tags)
         if recipeObj.id=='':
             self.db.insertRecipe(recipeObj)
@@ -177,13 +177,13 @@ class MenuDB:
 
     """ 
     identify to which food class 
-    belong ingridients
+    belong ingredients
 
     :param recipe: a single recipe
     :return: list of unique food classes    
      """
-    def identifyFoodClass(self, ingridients):        
-        return self.db.identifyFoodClass(ingridients)
+    def identifyFoodClass(self, ingredients):        
+        return self.db.identifyFoodClass(ingredients)
 
     """ 
     identify to which nutrient type 

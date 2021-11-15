@@ -188,7 +188,7 @@
 <ContentCustomSheet>:
     orientation: "vertical"
     padding: dp(20), dp(20), dp(20), 0
-    height: chooseIngridients.height
+    height: chooseIngredients.height
     adaptive_height: True
         
     MDGridLayout:
@@ -197,7 +197,7 @@
         adaptive_height: True
         height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
         spacing: dp(5)
-        id: chooseIngridients
+        id: chooseIngredients
 
 <dialogItem>:
     on_release:
@@ -229,12 +229,12 @@
         helper_text_mode: "on_error"
 
     MDLabel:
-        text: "Ingridients"
+        text: "Ingredients"
 
     MDStackLayout:
         adaptive_height: True
         spacing: dp(5)
-        id: recipeIngridients
+        id: recipeIngredients
         height: 0
     
     MDIconButton:
@@ -242,7 +242,7 @@
         theme_text_color: "Custom"
         md_bg_color: app.theme_cls.primary_color
         user_font_size: "20sp"
-        on_release: app.show_example_list_bottom_sheet(root.recipe.ingridients, root.ids.recipeIngridients)
+        on_release: app.show_example_list_bottom_sheet(root.recipe.ingredients, root.ids.recipeIngredients)
 
     MDSeparator:
 

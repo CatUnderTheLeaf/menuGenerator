@@ -162,7 +162,7 @@ class Rules:
     from recipe food classes identify 
     to which nutrient type belongs recipe
 
-    :param food_classes: list of food classes of ingridients in recipe
+    :param food_classes: list of food classes of ingredients in recipe
     :param tags: list of recipe tags
     :return: nutrient type
     """
