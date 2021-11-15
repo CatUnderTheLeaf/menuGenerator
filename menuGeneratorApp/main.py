@@ -200,14 +200,16 @@ class MenuGeneratorApp(MDApp):
                 elif recipe.prepareTime=="long":
                     icon = "clock-time-nine-outline"
                 
+                content = DescriptionContent()
+                content.ids.recipe_text.text = recipe.description
                 instance_tab.ids.box.add_widget(MDExpansionPanel(
                     icon=icon,
-                    content = DescriptionContent(text=recipe.description),
+                    content = content,
                     panel_cls=MDExpansionPanelTwoLine(
-                        text="Text",
-                        secondary_text="Secondary text"
+                        text=f"{recipe}",
+                        secondary_text=f"{', '.join(recipe.ingridients)}"
                     )
-                ))     
+                ))
 
     """ 
     Set transition between Screens
@@ -732,9 +734,10 @@ if __name__ == '__main__':
 
 # TODO
 # make some tasks on Github
-# add recipe descriptions 
 # rewrite readme
 # refactor
 # rewwrite tests
 # maybe use MDToggleButton
 # maybe use updated MDChip
+# problem with ingridients in bottom sheet with widget width not height
+# change details in recipe -> change in menu
