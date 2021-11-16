@@ -4,11 +4,29 @@ An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyM
 My app has a Navigation drawer with only three destinations, first loaded screen is "Menu":
 
 <p align="center">
-  <img src="pictures/Screenshot 2021-11-15 152839.jpg" width="350" height="600" title="hover text">
-  <img src="pictures/Screenshot 2021-11-15 152510.jpg" width="350" height="600" title="hover text">
+  <img src="pictures/Screenshot 2021-11-15 152839.jpg" width="350" height="600" title="Navigation drawer">
+  <img src="pictures/Screenshot 2021-11-15 152510.jpg" width="350" height="600" title="Menu">
 </p>
 
-When I plan a menu I have a bunch of rules ([ ] are not implemented):
+In "Settings" user can select time period of generated menu, what meals per day are included and if dishes can be prepared for several days. Rules part will be implemented later:
+<p align="center">
+  <img src="pictures/Screenshot 2021-11-15 152614.jpg" width="350" height="600" title="Settings">
+</p>
+
+In "All Recipes" user can view all recipes in a list, on long click can select and delete selected recipes, with a click on "Plus" add a new recipe:
+<p align="center">
+  <img src="pictures/Screenshot 2021-11-15 152636.jpg" width="350" height="600" title="All Recipes">
+</p>
+
+When user wants to edit recipe or create a new one, forth screen opens, here user can add picture, choose ingredients and add existing tags or create new ones:
+<p align="center">
+  <img src="pictures/Screenshot 2021-11-15 152728.jpg" width="350" height="600" title="Edit/Add new">
+  <img src="pictures/Screenshot 2021-11-15 153204.jpg" width="350" height="600" title="Set image">
+  <img src="pictures/Screenshot 2021-11-15 153108.jpg" width="350" height="600" title="Choose ingredients">
+  <img src="pictures/Screenshot 2021-11-15 153137.jpg" width="350" height="600" title="Add tags">
+</p>
+
+Under the hood application uses Rules:
 - [x] on Working days I don't have much time for cooking
 - [x] at weekend I can prepare dishes with long cooking time
 - [x] only at breakfast I eat 'breakfast' dishes
@@ -21,6 +39,9 @@ When I plan a menu I have a bunch of rules ([ ] are not implemented):
 - [x] no same dishes in one day
 - [ ] I can eat one main dish with different sidedishes
 - [ ] often I need to cook several sidedishes because not all family members eat the same
+
+
+### My initial thoughts
 
 There are many ways to generate a menu. One can try MIP (mixed-integer programming) or genetic algorithm. See articles about PuLP [one](https://towardsdatascience.com/roster-optimization-using-python-85b26d58e806) and [two](https://www.pythonstart.com/solving-linear-programming-problems-in-python-with-pulp)
 
