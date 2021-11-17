@@ -422,6 +422,7 @@ class MenuGeneratorApp(MDApp):
         self.root.ids.editRecipeScroll.clear_widgets()
         # form new recipe
         if instance:
+            self.root.ids.editRecipeBar.title = "Edit recipe"
             recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
             recipe = instance.recipe        
             recipeWidget.ids.recipeTitle.text = recipe.title
@@ -446,6 +447,7 @@ class MenuGeneratorApp(MDApp):
             
             recipeWidget.ids.recipeDescription.text = recipe.description
         else:
+            self.root.ids.editRecipeBar.title = "Add new recipe"
             recipeWidget = RecipeWidget(recipe = Recipe())
 
         # add recipeWidget
