@@ -4,26 +4,27 @@ An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyM
 My app has a Navigation drawer with only three destinations, first loaded screen is "Menu":
 
 <p align="center">
-  <img src="pictures/Screenshot 2021-11-15 152839.jpg" width="350" height="600" title="Navigation drawer">
-  <img src="pictures/Screenshot 2021-11-15 152510.jpg" width="350" height="600" title="Menu">
+  <img src="pictures/Navigation_Drawer.jpg" width="350" title="Navigation drawer">
+  <img src="pictures/Menu.jpg" width="350" title="Menu">
 </p>
 
 In "Settings" user can select time period of generated menu, what meals per day are included and if dishes can be prepared for several days. Rules part will be implemented later:
 <p align="center">
-  <img src="pictures/Screenshot 2021-11-15 152614.jpg" width="350" height="600" title="Settings">
+  <img src="pictures/Settings.jpg" width="350" title="Settings">
 </p>
 
 In "All Recipes" user can view all recipes in a list, on long click can select and delete selected recipes, with a click on "Plus" add a new recipe:
 <p align="center">
-  <img src="pictures/Screenshot 2021-11-15 152636.jpg" width="350" height="600" title="All Recipes">
+  <img src="pictures/All_recipes.jpg" width="350" title="All Recipes">
+  <img src="pictures/Delete_recipes.jpg" width="350" title="Delete Recipes">
 </p>
 
 When user wants to edit recipe or create a new one, forth screen opens, here user can add picture, choose ingredients and add existing tags or create new ones:
 <p align="center">
-  <img src="pictures/Screenshot 2021-11-15 152728.jpg" width="350" height="600" title="Edit/Add new">
-  <img src="pictures/Screenshot 2021-11-15 153204.jpg" width="350" height="600" title="Set image">
-  <img src="pictures/Screenshot 2021-11-15 153108.jpg" width="350" height="600" title="Choose ingredients">
-  <img src="pictures/Screenshot 2021-11-15 153137.jpg" width="350" height="600" title="Add tags">
+  <img src="pictures/Add_new_recipe.jpg" width="350" title="Edit/Add new">
+  <img src="pictures/Set_picture.jpg" width="350" title="Set image">
+  <img src="pictures/Add_ingredients.jpg" width="350" title="Choose ingredients">
+  <img src="pictures/Add_tags.jpg" width="350" title="Add tags">
 </p>
 
 Under the hood application uses Rules:
