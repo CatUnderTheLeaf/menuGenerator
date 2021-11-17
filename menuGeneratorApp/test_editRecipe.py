@@ -1,10 +1,11 @@
 import re
 import os
+import math
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.uix.camera import Camera
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, ColorProperty, ListProperty
+from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, ColorProperty, ListProperty, NumericProperty
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.theming import ThemableBehavior
@@ -77,7 +78,7 @@ KV = '''
         theme_text_color: "Custom"
         md_bg_color: app.theme_cls.primary_color
         user_font_size: "20sp"
-        on_release: app.show_example_list_bottom_sheet()
+        on_release: app.show_example_list_bottom_sheet(root.ids.recipeIngredients)
 
     MDSeparator:
 
@@ -174,11 +175,11 @@ KV = '''
         multiline: True
         hint_text: "Prepare instructions"
 
-<ContentCustomSheet>:
+<BottomCustomSheet>:
     orientation: "vertical"
     size_hint_y: None
     height: "400dp"
-    padding: dp(48)
+    padding: dp(20)
     
     ScrollView:
         
@@ -187,14 +188,17 @@ KV = '''
             adaptive_height: True
             id: custom_sheet_grid
         
-<CustomSheetContent>:
-    padding: dp(20)
-    size_hint_y: None
+<ContentCustomSheet>:
+    orientation: "vertical"
+    padding: dp(20), dp(20), dp(20), 0
+    height: chooseIngredients.height
     adaptive_height: True
-    
-    MDStackLayout:
+        
+    MDGridLayout:
+        cols: 2
+        orientation: 'tb-lr'
         adaptive_height: True
-        # height: 0
+        height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
         spacing: dp(5)
         id: chooseIngredients
 
@@ -289,8 +293,8 @@ class MyExpansionPanel(MDExpansionPanel):
                                             text=product, check=True))
         
 
-class ContentCustomSheet(MDBoxLayout):
-    pass
+class BottomCustomSheet(MDBoxLayout):
+    text = StringProperty()
 
 class ClickableTextFieldRound(MDRelativeLayout):
     text = StringProperty()
@@ -313,7 +317,10 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
         ]
     )
 
-class CustomSheetContent(MDBoxLayout):
+class ContentCustomSheet(MDBoxLayout):    
+    rows = NumericProperty()
+
+class BottomCustomSheet(MDBoxLayout):
     text = StringProperty()
 
 class Test(MDApp):
@@ -400,7 +407,7 @@ class Test(MDApp):
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
     
-    def show_example_list_bottom_sheet(self):
+    def show_example_list_bottom_sheet(self, ingredientWidget):
         products = {'cereals_grains_pasta_bread_vegan': ['Cereals', 'Bulgur', 'Cornmeal', 'Pasta', 'Rice', 'Wheat', 
         'Bread', 'Oat', 'Vegan Milk', 'Cous-cous', 'Sugar'], 
         'dairy': ['Milk', 'Buttermilk', 'Yogurt'], 
@@ -424,18 +431,24 @@ class Test(MDApp):
   'Horseradish', 'Mustard', 'Vinegar', 'Basil', 'Lemon Pepper', 'Celery Seeds', 'Lime', 'Cinnamon', 'Lime Juice', 
   'Chili Powder', 'Mint', 'Chives', 'Onion Powder', 'Curry', 'Oregano', 'Dill', 'Paprika', 'Vanilla Extract', 
   'Pepper', 'Garlic', 'Pimento', 'Garlic Powder', 'Spices', 'Herbs', 'Soy Sauce']}
-        custom_sheet = ContentCustomSheet()
+        custom_sheet = BottomCustomSheet()   
         for category in products:
-            custom_content = CustomSheetContent()
+            cat_text = ''
+            if ',' in category:
+                cat_text = ', '.join(w[0].upper() + w[1:] for w in category.split(','))
+            elif '_' in category:
+                cat_text = ' '.join(category.split('_')).capitalize()
+            else:
+                cat_text = category.capitalize()
             panel = MyExpansionPanel(
                         products=products[category],
-                        content=custom_content,
+                        ingredientWidget=ingredientWidget,
+                        content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
                         panel_cls=MDExpansionPanelOneLine(
-                            text=f"{category}"
+                            text=f"{cat_text}"
                         )
                     )
             custom_sheet.ids.custom_sheet_grid.add_widget(panel)
-
         self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
         self.custom_sheet.open()
 

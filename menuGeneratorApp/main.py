@@ -633,7 +633,7 @@ class MenuGeneratorApp(MDApp):
             panel = MyExpansionPanel(
                         products=products[category],
                         ingredientWidget=ingredientWidget,
-                        content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
+                        content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)), 
                         panel_cls=MDExpansionPanelOneLine(
                             text=f"{cat_text}"
                         )

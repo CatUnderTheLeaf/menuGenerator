@@ -77,7 +77,7 @@
     padding: dp(20), dp(20), dp(20), 0
     size_hint_y: None
     height: self.minimum_height
-    width: app.root.width
+    width: Window.width
     
     MDTextField:
         id: recipe_text
@@ -188,14 +188,16 @@
 <ContentCustomSheet>:
     orientation: "vertical"
     padding: dp(20), dp(20), dp(20), 0
-    height: chooseIngredients.height
+    # height: chooseIngredients.height
     adaptive_height: True
+    width: Window.width
         
     MDGridLayout:
         cols: 2
         orientation: 'tb-lr'
         adaptive_height: True
         height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
+        width: root.width
         spacing: dp(5)
         id: chooseIngredients
 
