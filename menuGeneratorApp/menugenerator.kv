@@ -256,24 +256,21 @@
         spacing: dp(5)
         id: recipePrepareTime
 
-        MDChip:
+        MyToggleButton:
             text: "short"
             icon: "clock-time-one-outline"
-            on_release: app.on_choseChip_check(self, self.text)
-            check: True
-
-        MDChip:
+            group: "recipePrepareTime"
+        
+        MyToggleButton:
             text: "medium"
             icon: "clock-time-five-outline"
-            on_release: app.on_choseChip_check(self, self.text)
-            check: True
+            group: "recipePrepareTime"
 
-        MDChip:
+        MyToggleButton:
             text: "long"
             icon: "clock-time-nine-outline"
-            on_release: app.on_choseChip_check(self, self.text)
-            check: True
-
+            group: "recipePrepareTime"
+        
     MDSeparator:
 
     MDGridLayout:
@@ -391,29 +388,23 @@ MDScreen:
                                     spacing: dp(5)
                                     id: timePeriod
 
-                                    MDChip:
+                                    MyToggleButton:
                                         text: "day"
                                         icon: "calendar-today"
-                                        on_release: 
-                                            app.on_choseChip_check(self, self.text)
-                                            app.set_n_days(self.text)
-                                        check: True
-
-                                    MDChip:
+                                        group: "timePeriod"
+                                        on_release: app.set_n_days(self.text)
+                                    
+                                    MyToggleButton:
                                         text: "week"
                                         icon: "calendar-week"
-                                        on_release: 
-                                            app.on_choseChip_check(self, self.text)
-                                            app.set_n_days(self.text)
-                                        check: True
-
-                                    MDChip:
+                                        group: "timePeriod"
+                                        on_release: app.set_n_days(self.text)
+                                    
+                                    MyToggleButton:
                                         text: "month"
                                         icon: "calendar-month"
-                                        on_release: 
-                                            app.on_choseChip_check(self, self.text)
-                                            app.set_n_days(self.text)
-                                        check: True
+                                        group: "timePeriod"
+                                        on_release: app.set_n_days(self.text)
                                 
                                 MDSeparator:
                                 

@@ -22,6 +22,8 @@ from kivymd.theming import ThemableBehavior
 from kivymd.icon_definitions import md_icons
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.chip import MDChip
+from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
+from kivymd.uix.button import MDFillRoundFlatIconButton
 
 from kivy.metrics import dp, sp
 from kivy.properties import (
@@ -39,6 +41,11 @@ from kivymd.utils.fitimage import FitImage
 from kivy.utils import get_color_from_hex
 
 from kivy.storage.jsonstore import JsonStore
+
+class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
+    def __init__(self, **kwargs):
+        self.background_down = MDApp.get_running_app().theme_cls.primary_dark
+        super().__init__(**kwargs)
 
 class MyExpansionPanel(MDExpansionPanel):
     products = ListProperty()
@@ -315,13 +322,8 @@ class MenuGeneratorApp(MDApp):
     def setChooseChip(self, id, value):
         chips = id.children
         for chip in chips:
-            if chip.text==value and not len(chip.ids.box_check.children):
-                chip.ids.box_check.add_widget(MDIcon(
-                            icon="check",
-                            size_hint=(None, None),
-                            size=("26dp", "26dp"),
-                            font_size=sp(20),
-                        ))
+            if chip.text==value:
+                chip.state = 'down'
 
     '''Check meal chip as it was saved in settings
 
@@ -353,18 +355,6 @@ class MenuGeneratorApp(MDApp):
         if value=="month":
             self.menu.n = 30
             self.menu.timePeriod = "month"    
-
-    '''Called when checking chips.
-
-    :param instance: kivymd.uix.chip.MDChip
-    :param value: text of the chip;
-    '''
-    def on_choseChip_check(self, instance, value):
-        # remove all other checks except instance
-        for chip in instance.parent.children:
-            if chip.text!=value and len(chip.ids.box_check.children):
-                check = chip.ids.box_check.children[0]
-                chip.ids.box_check.remove_widget(check)
 
     '''Called when clicking on repeat Switch in settings.
 
@@ -434,7 +424,6 @@ class MenuGeneratorApp(MDApp):
                 
             # set recipe prepare
             self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
-            self.on_choseChip_check(recipeWidget.ids.recipePrepareTime.children[0], recipe.prepareTime)
             
             # set if recipe can be used on two consecutive days
             recipeWidget.ids.recipeRepeatDish.active = recipe.repeat
@@ -468,9 +457,9 @@ class MenuGeneratorApp(MDApp):
             recipeWidget.recipe.ingredients = []
             for ingredient in recipeWidget.ids.recipeIngredients.children:
                 recipeWidget.recipe.ingredients.append(ingredient.text)
-            recipeWidget.recipe.prepareTime = ''
+            recipeWidget.recipe.prepareTime = "short"
             for prepareTime in recipeWidget.ids.recipePrepareTime.children:
-                if len(prepareTime.ids.box_check.children):
+                if prepareTime.state=='down':
                     recipeWidget.recipe.prepareTime = prepareTime.text
             recipeWidget.recipe.tags = []
             for tag in recipeWidget.ids.recipeTags.children:
