@@ -1,69 +1,131 @@
+from kivy.animation import Animation
 from kivy.lang import Builder
 
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.chip import MDChip
 from kivymd.app import MDApp
-from kivy.metrics import dp
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
-from kivy.properties import StringProperty, BooleanProperty, ObjectProperty, ColorProperty, ListProperty, NumericProperty
-from kivymd import images_path
+from kivy.properties import (
+    BooleanProperty,
+    ColorProperty,
+    ListProperty,
+    StringProperty,
+    ObjectProperty,
+    NumericProperty
+)
 
 KV = '''
-<DescriptionContent>:
-    padding: dp(20), dp(20), dp(20), 0
-    size_hint_y: None
-    height: self.minimum_height
-    width: app.root.width
-    
-    MDTextField:
-        id: recipe_text
-        text: root.text
-        disabled: True
-        multiline: True
-        width: root.width
 
+<MyChip>:
+    # icon_check_color: (0, 0, 0, 1)
+    # text_color: (0, 0, 0, 0.5)
+    # _no_ripple_effect: True
+    check: True
+    # on_active:
+    #     self.set_chip_bg_color
+    #     self.set_chip_text_color
 
-MDScreen:
-
+<MyScreen>
     MDBoxLayout:
         orientation: "vertical"
+        adaptive_size: True
+        spacing: "12dp"
+        padding: "56dp"
+        pos_hint: {"center_x": .5, "center_y": .5}
 
-        MDToolbar:
-            title: "Expansion panel"
-            elevation: 10
+        MDLabel:
+            text: "Multiple choice"
+            bold: True
+            font_style: "H5"
+            adaptive_size: True
 
-        ScrollView:
+        MDBoxLayout:
+            id: chip_box
+            adaptive_size: True
+            spacing: "8dp"
+            
+            MyChip:
+                text: "Elevator"
+                on_press: if self.active: root.removes_marks_all_chips()
 
-            MDGridLayout:
-                cols: 1
-                adaptive_height: True
-                id: box
+            MyChip:
+                text: "Washer / Dryer"
+                on_press: if self.active: root.removes_marks_all_chips()
+
+            MyChip:
+                text: "Fireplace"
+                on_press: if self.active: root.removes_marks_all_chips()
+
+
+ScreenManager:
+
+    MyScreen:
+    
 '''
 
 
-class DescriptionContent(MDBoxLayout):
-    text = StringProperty()
+class MyChip(MDChip):
+    active = BooleanProperty(False)
+    icon_check_color = (0, 0, 0, 1)
+    text_color = (0, 0, 0, 0.5)
+    _no_ripple_effect = True
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.bind(active=self.set_chip_bg_color)
+        self.bind(active=self.set_chip_text_color)
+
+    def on_long_touch(self, *args):
+        if self.active:
+            return
+        self.active = True if not self.active else False
+
+    def on_active(self, instance_check, active_value: bool):
+        if active_value:
+            self.do_animation_check((0, 0, 0, 0.4), 1)
+        else:
+            self.do_animation_check((0, 0, 0, 0), 0)
+
+    def on_press(self, *args):
+        if self.active:
+            self.active = False
+
+    def set_chip_bg_color(self, instance_chip, active_value: int):
+        '''
+        Will be called every time the chip is activated/deactivated.
+        Sets the background color of the chip.
+        '''
+        print("hrllo")
+        self.md_bg_color = (
+            (0, 0, 0, 0.4)
+            if active_value
+            else (
+                self.theme_cls.bg_darkest
+                if self.theme_cls.theme_style == "Light"
+                else (
+                    self.theme_cls.bg_light
+                    if not self.disabled
+                    else self.theme_cls.disabled_hint_text_color
+                )
+            )
+        )
+
+    def set_chip_text_color(self, instance_chip, active_value: int):
+        Animation(
+            color=(0, 0, 0, 1) if active_value else (0, 0, 0, 0.5), d=0.2
+        ).start(self.ids.label)
+
+
+class MyScreen(MDScreen):
+    pass
+    def removes_marks_all_chips(self):
+        for instance_chip in self.ids.chip_box.children:
+            if instance_chip.active:
+                instance_chip.active = False
+
 
 class Test(MDApp):
     def build(self):
         return Builder.load_string(KV)
-
-    def on_start(self):
-        text = ["Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Imperdiet sed euismod nisi porta lorem mollis aliquam. Massa tincidunt dui ut ornare lectus sit amet est. Mauris cursus mattis molestie a iaculis at. Nunc sed velit dignissim sodales. Enim neque volutpat ac tincidunt vitae semper quis. Eget mauris pharetra et ultrices neque ornare aenean euismod. Libero id faucibus nisl tincidunt eget nullam non. Velit laoreet id donec ultrices tincidunt. Id volutpat lacus laoreet non curabitur gravida arcu. Arcu dictum varius duis at consectetur. Dignissim enim sit amet venenatis. Convallis posuere morbi leo urna. Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor",
-                "Lorem ipsum dolor sit amet, consectetur ancididunt ut labore et dolor",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor tempor incididunt ut labore et dolore magna aliqua. Imperdiet sed euismod nisi porta lorem",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolor tempor incididunt ut labore et dolore magna aliqua. Imperdiet sed euismod nisi porta lorem tempor incididunt ut labore et dolore magna aliqua. Imperdiet sed euismod nisi porta lorem"]
-        for i in range(5):
-            self.root.ids.box.add_widget(MDExpansionPanel(
-                    icon="clock-time-one-outline",
-                    content = DescriptionContent(text=text[i]),
-                    panel_cls=MDExpansionPanelTwoLine(
-                        text="Text",
-                        secondary_text="Secondary text"
-                    )
-                )
-                
-            )
 
 
 Test().run()
