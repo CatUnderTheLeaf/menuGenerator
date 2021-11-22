@@ -1,6 +1,4 @@
 from datetime import date, timedelta
-import re
-from logging import raiseExceptions
 import os
 import yaml
 import math
@@ -8,143 +6,25 @@ import math
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
-from kivymd.app import MDApp
+from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
+from myWidgetClasses.buttonWithCross import ButtonWithCross
+from myWidgetClasses.otherWidgetClasses import *
+
 from kivy.core.window import Window
-from kivymd.uix.filemanager import MDFileManager
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.tab import MDTabsBase
-from kivymd.uix.list import OneLineListItem, MDList, OneLineIconListItem, TwoLineAvatarIconListItem
 from kivy.uix.screenmanager import NoTransition
-from kivymd.theming import ThemableBehavior
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.bottomsheet import MDCustomBottomSheet
-from kivymd.uix.chip import MDChip
-from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-from kivymd.uix.button import MDFillRoundFlatIconButton
-
 from kivy.metrics import dp, sp
-from kivy.properties import (
-    BooleanProperty,
-    ColorProperty,
-    ListProperty,
-    StringProperty,
-    ObjectProperty,
-    NumericProperty
-)
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelOneLine
-from kivymd.uix.label import MDIcon
-from kivymd.uix.selection import MDSelectionList
-from kivymd.utils.fitimage import FitImage
 from kivy.utils import get_color_from_hex
-
 from kivy.storage.jsonstore import JsonStore
 
-class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
-    def __init__(self, **kwargs):
-        self.background_down = MDApp.get_running_app().theme_cls.primary_dark
-        super().__init__(**kwargs)
-
-class MyExpansionPanel(MDExpansionPanel):
-    products = ListProperty()
-    ingredientWidget = ObjectProperty()
-    
-    def on_open(self):
-        if len(self.content.ids.chooseIngredients.children)<1:
-            ingredients = []
-            for button_with_cross in self.ingredientWidget.children:
-                ingredients.append(button_with_cross.text)
-            for product in self.products:
-                chip = MDChip(text=product, check=True, icon='')
-                chip.bind(on_release=self.markIngredient)
-                if product in ingredients and not len(chip.ids.box_check.children):
-                    chip.ids.box_check.add_widget(MDIcon(
-                                icon="check",
-                                size_hint=(None, None),
-                                size=("26dp", "26dp"),
-                                font_size=sp(20),
-                            ))
-                self.content.ids.chooseIngredients.add_widget(chip)
-    
-    def markIngredient(self, instance_chip):
-        if not len(instance_chip.ids.box_check.children):
-            self.ingredientWidget.add_widget(ButtonWithCross(
-                                            text=instance_chip.text,
-                                            parentId=self.ingredientWidget))
-        else:
-            for button_with_cross in self.ingredientWidget.children:
-                if button_with_cross.text==instance_chip.text:
-                    self.ingredientWidget.remove_widget(button_with_cross)
-        
-class DescriptionContent(MDBoxLayout):
-    text = StringProperty()
-
-class ContentCustomSheet(MDBoxLayout):    
-    rows = NumericProperty()
-
-class BottomCustomSheet(MDBoxLayout):
-    text = StringProperty()
-
-class ItemDrawer(OneLineIconListItem):
-    icon = StringProperty()
-    text_color = ListProperty((0, 0, 0, 1))
-
-class DrawerList(ThemableBehavior, MDList):
-    def set_color_item(self, instance_item):
-        """Called when tap on a menu item."""
-
-        # Set the color of the icon and text for the menu item.
-        for item in self.children:
-            if item.text_color == self.theme_cls.primary_color:
-                item.text_color = self.theme_cls.text_color
-                break
-        instance_item.text_color = self.theme_cls.primary_color
-
-class dialogItem(OneLineIconListItem):
-    divider = None
-    icon = StringProperty()
-
-class ContentNavigationDrawer(MDBoxLayout):
-    screen_manager = ObjectProperty()
-    nav_drawer = ObjectProperty()
-
-class Content(MDBoxLayout):
-    text = StringProperty()
-
-class Tab(MDFloatLayout, MDTabsBase):
-    day = ObjectProperty()
-
-class RecipeListItem(TwoLineAvatarIconListItem):
-    text = StringProperty()
-    secondary_text = StringProperty()
-    img_source = StringProperty()
-    recipe = ObjectProperty()    
-
-class RecipeSelectionList(MDSelectionList):
-    last_selected = BooleanProperty()
-
-class ButtonWithCross(MDBoxLayout, ThemableBehavior):
-    color = ColorProperty(None)
-    parentId = ObjectProperty()
-    text = StringProperty()
-    icon = StringProperty("close")
-    text_color = ColorProperty(None)
-    radius = ListProperty(
-        [
-            dp(12),
-        ]
-    )
-
-class ClickableTextFieldRound(MDRelativeLayout):
-    text = StringProperty()
-    hint_text = StringProperty()
-    focus = BooleanProperty()
-
-class RecipeWidget(MDBoxLayout):
-    recipe = ObjectProperty()
-    parentWidget = ObjectProperty()
+from kivymd.app import MDApp
+from kivymd.uix.filemanager import MDFileManager
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.bottomsheet import MDCustomBottomSheet
+from kivymd.uix.list import OneLineListItem
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelOneLine
+from kivymd.uix.label import MDIcon
+from kivymd.utils.fitimage import FitImage
 
 class MenuGeneratorApp(MDApp):  
     overlay_color = get_color_from_hex("#6042e4")
@@ -608,7 +488,7 @@ class MenuGeneratorApp(MDApp):
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
 
-    def show_example_list_bottom_sheet(self, ingredients, ingredientWidget):
+    def show_ingredients_bottom_sheet(self, ingredients, ingredientWidget):
         products = self.menu.db.getProducts()
         custom_sheet = BottomCustomSheet()   
         for category in products:
@@ -619,7 +499,7 @@ class MenuGeneratorApp(MDApp):
                 cat_text = ' '.join(category.split('_')).capitalize()
             else:
                 cat_text = category.capitalize()
-            panel = MyExpansionPanel(
+            panel = IngredientsExpansionPanel(
                         products=products[category],
                         ingredientWidget=ingredientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)), 

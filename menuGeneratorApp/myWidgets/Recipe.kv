@@ -1,0 +1,116 @@
+#:kivy 2.0.0
+<RecipeWidget>:
+    id: editRecipe
+    orientation: "vertical"
+    adaptive_height: True
+    padding: dp(48)
+    spacing: dp(15)
+    
+    SmartTile:
+        id: recipeImg
+        source: root.recipe.img
+        size_hint_y: None
+        height: dp(200)
+        box_color: (0, 0, 0, 0)
+        on_release: app.show_simple_dialog()
+
+    MDTextField:
+        id: recipeTitle
+        hint_text: "Title"
+        required: True
+        helper_text_mode: "on_error"
+
+    MDLabel:
+        text: "Ingredients"
+
+    MDStackLayout:
+        adaptive_height: True
+        spacing: dp(5)
+        id: recipeIngredients
+        height: 0
+    
+    MDIconButton:
+        icon: "plus"
+        theme_text_color: "Custom"
+        md_bg_color: app.theme_cls.primary_color
+        user_font_size: "20sp"
+        on_release: app.show_ingredients_bottom_sheet(root.recipe.ingredients, root.ids.recipeIngredients)
+
+    MDSeparator:
+
+    MDLabel:
+        text: "Prepare time"
+
+    MDStackLayout:
+        adaptive_height: True
+        spacing: dp(5)
+        id: recipePrepareTime
+
+        MyToggleButton:
+            text: "short"
+            icon: "clock-time-one-outline"
+            group: "recipePrepareTime"
+        
+        MyToggleButton:
+            text: "medium"
+            icon: "clock-time-five-outline"
+            group: "recipePrepareTime"
+
+        MyToggleButton:
+            text: "long"
+            icon: "clock-time-nine-outline"
+            group: "recipePrepareTime"
+        
+    MDSeparator:
+
+    MDGridLayout:
+        cols: 2
+        adaptive_height: True                            
+
+        MDLabel:
+            text: "Repeat dish?"
+
+        MDSwitch:
+            id: recipeRepeatDish
+
+    MDSeparator:
+
+    MDTextField:
+        id: recipeDescription
+        multiline: True
+        hint_text: "Prepare instructions"
+    
+    MDLabel:
+        text: "Tags"   
+
+    MDStackLayout:
+        adaptive_height: True
+        spacing: dp(5)
+        id: recipeTags
+        height: 0
+
+    MDBoxLayout:
+        adaptive_height: True
+        padding: dp(11), 0, 0, 0            
+
+        ClickableTextFieldRound:
+            id: click_text_field
+            size_hint_x: None
+            width: "200dp"
+            hint_text: "Add new tag"
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_height: True
+        height: 0
+
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'            
+
+            RecycleBoxLayout:
+                default_size: dp(200), dp(48)
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'

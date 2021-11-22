@@ -1,0 +1,62 @@
+#:kivy 2.0.0
+<ContentNavigationDrawer>:
+    orientation: "vertical"
+    padding: "8dp"
+    spacing: "8dp"
+    screen_manager: root.screen_manager
+    nav_drawer: root.nav_drawer
+
+    AnchorLayout:
+        anchor_x: "left"
+        size_hint_y: None
+        height: avatar.height
+
+        Image:
+            id: avatar
+            size_hint: None, None
+            size: "56dp", "56dp"
+            source: "data/logo/kivy-icon-256.png"
+
+    MDLabel:
+        text: "Menu Generator"
+        font_style: "Button"
+        adaptive_height: True
+
+    ScrollView:
+        screen_manager: root.screen_manager
+        nav_drawer: root.nav_drawer
+
+        DrawerList:
+            id: md_list
+            screen_manager: root.screen_manager
+            nav_drawer: root.nav_drawer
+            
+            ItemDrawer:
+                text: "Menu"
+                text_color: app.theme_cls.primary_color
+                cur_screen: "scr1"
+                icon: "book-open-variant"
+
+            ItemDrawer:
+                text: "Settings"
+                cur_screen: "scr2"
+                icon: "cog"
+
+            ItemDrawer:
+                text: "Recipes"
+                cur_screen: "scr3"
+                icon: "nutrition"
+                on_press: app.get_recipes()
+               
+<ItemDrawer>:
+    theme_text_color: "Custom"
+    on_press:
+        self.parent.set_color_item(self)
+        self.parent.nav_drawer.set_state("close")
+        self.parent.screen_manager.current = root.cur_screen
+        
+
+    IconLeftWidget:
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: root.text_color

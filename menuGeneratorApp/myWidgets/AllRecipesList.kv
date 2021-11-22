@@ -1,0 +1,20 @@
+#:kivy 2.0.0
+<RecipeSelectionList>:
+    id: root.id
+    last_selected: False    
+    overlay_color: app.overlay_color[:-1] + [.2]
+    icon_bg_color: app.overlay_color
+    on_selected: app.on_selected(*args)
+    on_unselected: app.on_unselected(*args)
+    on_selected_mode: app.set_selection_mode(*args)
+
+<RecipeListItem>:
+    id: listItem
+    text: root.text
+    secondary_text: root.secondary_text
+    img_source: root.recipe.img
+    _no_ripple_effect: True
+    on_release: app.edit_recipe(root) if not root.parent.selected and not root.parent.owner.selected_mode else root.parent.on_touch_down
+    
+    ImageLeftWidget:
+        source: root.img_source

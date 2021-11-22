@@ -1,0 +1,8 @@
+#:kivy 2.0.0
+<dialogItem>:
+    on_release:
+        app.dialog.dismiss()
+        app.open_gallery() if root.icon=='image' else app.open_camera()
+
+    IconLeftWidget:
+        icon: root.icon

@@ -78,7 +78,7 @@ KV = '''
         theme_text_color: "Custom"
         md_bg_color: app.theme_cls.primary_color
         user_font_size: "20sp"
-        on_release: app.show_example_list_bottom_sheet(root.ids.recipeIngredients)
+        on_release: app.show_ingredients_bottom_sheet(root.ids.recipeIngredients)
 
     MDSeparator:
 
@@ -284,7 +284,7 @@ class dialogItem(OneLineIconListItem):
     divider = None
     icon = StringProperty()
 
-class MyExpansionPanel(MDExpansionPanel):
+class IngredientsExpansionPanel(MDExpansionPanel):
     products = ListProperty()
     def on_open(self):
         if len(self.content.ids.chooseIngredients.children)<1:
@@ -407,7 +407,7 @@ class Test(MDApp):
                                                 text=text,
                                                 parentId=recipeWidget.ids.recipeTags))
     
-    def show_example_list_bottom_sheet(self, ingredientWidget):
+    def show_ingredients_bottom_sheet(self, ingredientWidget):
         products = {'cereals_grains_pasta_bread_vegan': ['Cereals', 'Bulgur', 'Cornmeal', 'Pasta', 'Rice', 'Wheat', 
         'Bread', 'Oat', 'Vegan Milk', 'Cous-cous', 'Sugar'], 
         'dairy': ['Milk', 'Buttermilk', 'Yogurt'], 
@@ -440,7 +440,7 @@ class Test(MDApp):
                 cat_text = ' '.join(category.split('_')).capitalize()
             else:
                 cat_text = category.capitalize()
-            panel = MyExpansionPanel(
+            panel = IngredientsExpansionPanel(
                         products=products[category],
                         ingredientWidget=ingredientWidget,
                         content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)),            
