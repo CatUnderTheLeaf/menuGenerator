@@ -8,11 +8,12 @@ from classes.classRecipe import Recipe
 
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.buttonWithCross import ButtonWithCross
+from myWidgetClasses.menuSettings import MenuSettings
 from myWidgetClasses.otherWidgetClasses import *
 
 from kivy.core.window import Window
 from kivy.uix.screenmanager import NoTransition
-from kivy.metrics import dp, sp
+from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivy.storage.jsonstore import JsonStore
 
@@ -23,7 +24,6 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.list import OneLineListItem
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelOneLine
-from kivymd.uix.label import MDIcon
 from kivymd.utils.fitimage import FitImage
 
 class MenuGeneratorApp(MDApp):  
@@ -141,11 +141,6 @@ class MenuGeneratorApp(MDApp):
         for key in meals:
             self.menu.update_mpd(int(key), meals[key])
 
-        # set settings on the screen
-        self.setChooseChip(self.root.ids.timePeriod, timePeriod)
-        self.root.ids.repeatDishes.active = repeatDishes
-        self.setMealChipColor(meals)
-
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
     
@@ -158,6 +153,15 @@ class MenuGeneratorApp(MDApp):
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
+
+    """
+    Add Settings widget on the screen
+    """
+    def add_settingsWidget(self):
+        if not len(self.root.ids.menuSettings.children):
+            self.root.ids.menuSettings.add_widget(MenuSettings(timePeriod=self.menu.timePeriod, 
+                                                                repeat=self.menu.repeatDishes,
+                                                                meals=self.menu._mpd))
 
     """ 
     Load all recipes to the Recipe list scroll
@@ -204,22 +208,7 @@ class MenuGeneratorApp(MDApp):
         for chip in chips:
             if chip.text==value:
                 chip.state = 'down'
-
-    '''Check meal chip as it was saved in settings
-
-    :param meals: dict (chip.value: chip.text)
-    '''
-    def setMealChipColor(self, meals):
-        chips = self.root.ids.meals.children
-        for chip in chips:
-            if str(chip.value) in meals:
-                chip.ids.box_check.add_widget(MDIcon(
-                            icon="check",
-                            size_hint=(None, None),
-                            size=("26dp", "26dp"),
-                            font_size=sp(20),
-                        ))
-
+  
     '''
     Set number of days and timeperiod
 

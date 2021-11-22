@@ -10,7 +10,7 @@ from kivy.properties import (
 )
 from kivy.metrics import dp
 
-class ButtonWithCross(MDBoxLayout, ThemableBehavior):
+class ButtonWithCross(MDBoxLayout, ThemableBehavior):    
     color = ColorProperty(None)
     parentId = ObjectProperty()
     text = StringProperty()
@@ -22,6 +22,9 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
         ]
     )
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
-    #   super().__init__(**kwargs)
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
