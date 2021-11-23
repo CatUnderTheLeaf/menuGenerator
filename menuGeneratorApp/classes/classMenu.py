@@ -21,11 +21,8 @@ class Menu:
         sorted_keys = sorted(self._mpd.keys())
         return [self._mpd[key] for key in sorted_keys]
 
-    def update_mpd(self, value, text):
-        if value in self._mpd:
-            del self._mpd[value]
-        else:
-            self._mpd[value] = text
+    def update_mpd(self, meals):
+        self._mpd = meals
 
     def __init__(self):
         self._mpd = {}

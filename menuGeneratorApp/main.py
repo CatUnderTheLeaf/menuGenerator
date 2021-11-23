@@ -20,6 +20,7 @@ from kivy.storage.jsonstore import JsonStore
 from kivymd.app import MDApp
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.list import OneLineListItem
@@ -136,10 +137,7 @@ class MenuGeneratorApp(MDApp):
             meals = self.store.get('settings')['meals']
         
         # set settings in the menu
-        self.set_n_days(timePeriod)
-        self.menu.repeatDishes = repeatDishes
-        for key in meals:
-            self.menu.update_mpd(int(key), meals[key])
+        self.setSettingsInMenu(timePeriod, repeatDishes, meals)
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
@@ -155,13 +153,63 @@ class MenuGeneratorApp(MDApp):
         self.menu.disconnectDB()
 
     """
+    Set settings in Menu object
+
+    :param timePeriod: str
+    :param repeatDishes: Bool
+    :param meals: Dict
+    """
+    def setSettingsInMenu(self, timePeriod, repeatDishes, meals):
+        self.set_n_days(timePeriod)
+        self.menu.repeatDishes = repeatDishes
+        self.menu.update_mpd(meals)
+
+    """
     Add Settings widget on the screen
     """
     def add_settingsWidget(self):
-        if not len(self.root.ids.menuSettings.children):
-            self.root.ids.menuSettings.add_widget(MenuSettings(timePeriod=self.menu.timePeriod, 
-                                                                repeat=self.menu.repeatDishes,
-                                                                meals=self.menu._mpd))
+        if not len(self.root.ids.settingsScroll.children):
+            initValues = {
+                'timePeriod': self.menu.timePeriod,
+                'repeat': self.menu.repeatDishes,
+                'meals': self.menu._mpd,
+            }
+            self.root.ids.settingsScroll.add_widget(MenuSettings(initValues = initValues))
+
+    """
+    Show dialog if there were made changes in Settings
+
+    :param settings: MenuSettings object
+    """
+    def saveSettingsDialog(self, settings):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Apply changes?",
+                text="Settings were changed. In order to save them please click on 'Apply and regenerate' button. Else your changes will not be saved.",
+                buttons=[
+                    MDFlatButton(
+                        text="Apply and regenerate",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release=lambda x: (
+                            self.dialog.dismiss(),
+                            self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals),
+                            settings.updateInitValues(settings.timePeriod, settings.repeat, settings.meals),
+                            self.generateMenuTabs(),
+                            self.root.ids.nav_drawer.set_state("open"))
+                    ),
+                    MDFlatButton(
+                        text="Discard",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release=lambda x: (
+                            self.dialog.dismiss(), 
+                            settings.setInitialValues(),
+                            self.root.ids.nav_drawer.set_state("open"))
+                    ),
+                ],
+            )
+        self.dialog.open()
 
     """ 
     Load all recipes to the Recipe list scroll
@@ -224,25 +272,6 @@ class MenuGeneratorApp(MDApp):
         if value=="month":
             self.menu.n = 30
             self.menu.timePeriod = "month"    
-
-    '''Called when clicking on repeat Switch in settings.
-
-    :param checkbox: kivymd.uix.chip.MDChip.checkbox
-    :param value: text of the chip;
-    '''
-    def on_repeat_switch(self, checkbox, value):
-        if value:
-            self.menu.repeatDishes = True
-        else:
-            self.menu.repeatDishes = False
-
-    '''Called when checking meals in settings.
-
-    :param instance: kivymd.uix.chip.MDChip
-    :param value: text of the chip;
-    '''
-    def on_meal_check(self, instance, value):
-        self.menu.update_mpd(value, instance.text)
      
     '''remove widget from its parent
 

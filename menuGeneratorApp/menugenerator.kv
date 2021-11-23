@@ -43,16 +43,17 @@ MDScreen:
                     MDBoxLayout:
                         orientation: "vertical"
                         spacing: dp(5)
+                        id: settingsBox
 
                         MDToolbar:
                             id: settings
                             pos_hint: {"top": 1}
                             title: "Settings"
-                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            left_action_items: [["menu", lambda x: app.saveSettingsDialog(settingsScroll.children[0]) if settingsScroll.children[0].hasChanged() else nav_drawer.set_state("open")]]
 
                         # MenuSettings:
                         ScrollView:
-                            id: menuSettings
+                            id: settingsScroll
 
                 MDScreen:
                     name: "scr3"
