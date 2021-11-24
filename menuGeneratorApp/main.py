@@ -152,6 +152,9 @@ class MenuGeneratorApp(MDApp):
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
 
+    def changeScreen(self, name):
+        self.root.ids.screen_manager.current = name
+
     """
     Set settings in Menu object
 
@@ -304,7 +307,7 @@ class MenuGeneratorApp(MDApp):
         if instance and instance.parent.owner.last_selected:
             instance.parent.owner.last_selected = False
             return
-        self.root.ids.screen_manager.current = "scr4"
+        self.changeScreen("EditRecipe")
         
         # remove old widget
         self.root.ids.editRecipeScroll.clear_widgets()
@@ -367,7 +370,7 @@ class MenuGeneratorApp(MDApp):
             self.menu.db.updateRecipe(recipeWidget.recipe)
 
             # return to recipeList screen
-            self.root.ids.screen_manager.current = "scr3"
+            self.changeScreen("AllRecipes")
             # redraw recipe widget in scrollview
             # or add a new one list item
             if recipeWidget.parentWidget:
@@ -391,7 +394,7 @@ class MenuGeneratorApp(MDApp):
     return back to recipe list without saving
     '''    
     def returnBack(self):
-        self.root.ids.screen_manager.current = "scr3"
+        self.changeScreen("AllRecipes")
 
     '''
     switch the selection mode "on" or "off"
