@@ -64,7 +64,3 @@ class ClickableTextFieldRound(MDRelativeLayout):
     text = StringProperty()
     hint_text = StringProperty()
     focus = BooleanProperty()
-
-class RecipeWidget(MDBoxLayout):
-    recipe = ObjectProperty()
-    parentWidget = ObjectProperty()

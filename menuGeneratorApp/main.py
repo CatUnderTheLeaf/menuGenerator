@@ -9,6 +9,7 @@ from classes.classRecipe import Recipe
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.buttonWithCross import ButtonWithCross
 from myWidgetClasses.menuSettings import MenuSettings
+from myWidgetClasses.RecipeWidget import RecipeWidget
 from myWidgetClasses.otherWidgetClasses import *
 
 from kivy.core.window import Window
@@ -248,18 +249,7 @@ class MenuGeneratorApp(MDApp):
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):        
         if len(instance_tab.ids.box.children)<1:
             self.fillTabs(instance_tab)
-    
-    '''Check chip as it was saved in settings
-
-    :param id: widget id, container of chips
-    :param value: text of the chip;
-    '''
-    def setChooseChip(self, id, value):
-        chips = id.children
-        for chip in chips:
-            if chip.text==value:
-                chip.state = 'down'
-  
+      
     '''
     Set number of days and timeperiod
 
@@ -314,28 +304,7 @@ class MenuGeneratorApp(MDApp):
         # form new recipe
         if instance:
             self.root.ids.editRecipeBar.title = "Edit recipe"
-            recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)
-            recipe = instance.recipe        
-            recipeWidget.ids.recipeTitle.text = recipe.title
-            # load new ingredients
-            for ingredient in recipe.ingredients:
-                recipeWidget.ids.recipeIngredients.add_widget(ButtonWithCross(
-                                            text=ingredient,
-                                            parentId=recipeWidget.ids.recipeIngredients))
-                
-            # set recipe prepare
-            self.setChooseChip(recipeWidget.ids.recipePrepareTime, recipe.prepareTime)
-            
-            # set if recipe can be used on two consecutive days
-            recipeWidget.ids.recipeRepeatDish.active = recipe.repeat
-
-            # load new tags
-            for tag in recipe.tags:
-                recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
-                                            text=tag,
-                                            parentId=recipeWidget.ids.recipeTags))
-            
-            recipeWidget.ids.recipeDescription.text = recipe.description
+            recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)           
         else:
             self.root.ids.editRecipeBar.title = "Add new recipe"
             recipeWidget = RecipeWidget(recipe = Recipe())
@@ -348,27 +317,9 @@ class MenuGeneratorApp(MDApp):
     :param recipeWidget: a Widget with recipe;
     '''    
     def saveRecipe(self, recipeWidget):
-        # form recipe data
-        if recipeWidget.ids.recipeTitle.text=='':
-            recipeWidget.ids.recipeTitle.error = True
-            recipeWidget.ids.recipeTitle.focus = True
-        else:
-            recipeWidget.recipe.title = recipeWidget.ids.recipeTitle.text
-            recipeWidget.recipe.img = recipeWidget.ids.recipeImg.source
-            recipeWidget.recipe.ingredients = []
-            for ingredient in recipeWidget.ids.recipeIngredients.children:
-                recipeWidget.recipe.ingredients.append(ingredient.text)
-            recipeWidget.recipe.prepareTime = "short"
-            for prepareTime in recipeWidget.ids.recipePrepareTime.children:
-                if prepareTime.state=='down':
-                    recipeWidget.recipe.prepareTime = prepareTime.text
-            recipeWidget.recipe.tags = []
-            for tag in recipeWidget.ids.recipeTags.children:
-                recipeWidget.recipe.tags.append(tag.text)
-            recipeWidget.recipe.repeat = recipeWidget.ids.recipeRepeatDish.active
-            recipeWidget.recipe.description = recipeWidget.ids.recipeDescription.text
+        if recipeWidget.saveRecipe():
             self.menu.db.updateRecipe(recipeWidget.recipe)
-
+            
             # return to recipeList screen
             self.changeScreen("AllRecipes")
             # redraw recipe widget in scrollview
