@@ -75,7 +75,7 @@ class UnqliteDB:
     def getTags(self):
         if (self._tags is None):   
             allTags = set()                
-            for recipe in self._recipes:
+            for recipe in self.getRecipes():
                 allTags.update(recipe.tags)
             self._tags = allTags
         return self._tags
@@ -88,17 +88,6 @@ class UnqliteDB:
     def updateTags(self, recipeObj):        
         self.getTags()
         self._tags.update(recipeObj.tags)
-
-    """ 
-    get tags from the DB that are not in the recipe
-
-    :param tags: set of recipe tags
-    :return: list of tags
-  
-     """
-    def getUnusedTags(self, tags):
-        allTags = self.getTags()
-        return list(allTags - set(tags))
 
     """ 
     fetch all recipes from the collection

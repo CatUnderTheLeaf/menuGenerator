@@ -41,16 +41,6 @@ class MenuDB:
         return self.db.getTags()
 
     """ 
-    get tags from the DB that are not in the recipe
-
-    :param tags: set of recipe tags
-    :return: list of tags
-  
-     """
-    def getUnusedTags(self, tags):
-        return self.db.getUnusedTags(tags)
-
-    """ 
     ret all recipes
 
     :return: list of Recipe objects 

@@ -92,7 +92,7 @@ MDScreen:
                             id: editRecipeBar
                             pos_hint: {"top": 1} 
                             title: "Edit recipe"
-                            left_action_items: [["arrow-left", lambda x: app.returnBack()]]
+                            left_action_items: [["arrow-left", lambda x: app.changeScreen("AllRecipes")]]
                             right_action_items: [["check", lambda x: app.saveRecipe(editRecipeScroll.children[0]), "save"]]
 
 

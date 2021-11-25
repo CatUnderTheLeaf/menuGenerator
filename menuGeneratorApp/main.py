@@ -1,19 +1,18 @@
 from datetime import date, timedelta
 import os
 import yaml
-import math
 
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
-from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
+
 from myWidgetClasses.buttonWithCross import ButtonWithCross
 from myWidgetClasses.menuSettings import MenuSettings
 from myWidgetClasses.RecipeWidget import RecipeWidget
+from myWidgetClasses.RecipeSelectionList import RecipeListItem, RecipeSelectionList
 from myWidgetClasses.otherWidgetClasses import *
 
 from kivy.uix.screenmanager import NoTransition
-from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivy.storage.jsonstore import JsonStore
 
@@ -21,15 +20,16 @@ from kivymd.app import MDApp
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.list import OneLineListItem
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine, MDExpansionPanelOneLine
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.utils.fitimage import FitImage
 
 class MenuGeneratorApp(MDApp):  
     overlay_color = get_color_from_hex("#6042e4")
     dialog = None
     custom_sheet = None
+    # Create Menu object        
+    menu = Menu()
     
 
     """ 
@@ -107,10 +107,7 @@ class MenuGeneratorApp(MDApp):
         meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
         
         self.root.ids.screen_manager.transition = NoTransition()
-        
-        # Create Menu object        
-        self.menu = Menu()
-
+     
         # load db_type and db_path
         with open(os.path.join(os.path.dirname(__file__), "app_settings.yml"), 'r') as stream:
             data_loaded = yaml.safe_load(stream)
@@ -144,6 +141,10 @@ class MenuGeneratorApp(MDApp):
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
 
+    """ 
+    Change Screen by name
+    
+     """
     def changeScreen(self, name):
         self.root.ids.screen_manager.current = name
 
@@ -213,22 +214,10 @@ class MenuGeneratorApp(MDApp):
      """
     def get_recipes(self):
         if not len(self.root.ids.recipe_scroll.children):
+            self.root.ids.recipe_scroll.tags = self.menu.db.getTags()
+            self.root.ids.recipe_scroll.products = self.menu.db.getProducts()
             for recipe in self.menu.db.getRecipes():
-                self.addRecipeInList(recipe)
-
-    """ 
-    add one recipe to the Recipe list scroll
-
-    :param recipe: Recipe object
- 
-     """
-    def addRecipeInList(self, recipe):
-        list_item = RecipeListItem(
-                        text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingredients)}",
-                        recipe = recipe
-                    )
-        self.root.ids.recipe_scroll.add_widget(list_item)
+                self.root.ids.recipe_scroll.addRecipeInList(recipe)
 
     '''Called when switching tabs.
 
@@ -257,27 +246,20 @@ class MenuGeneratorApp(MDApp):
             self.menu.n = 30
             self.menu.timePeriod = "month"    
      
-    '''remove widget from its parent
-
-    :param parentId: parent id of the Widget to remove
-    :param instance: a Widget to remove;
-    '''
-    def removeCustomWidget(self, parentId, instance):
-        parentId.remove_widget(instance)
-
     '''Remove recipeWidget and
     remove recipe from db 
 
-    :param instance: a Widget with recipe;
+    :param instance_recipe_scroll: RecipeSelectionList
     '''
-    def deleteRecipes(self, recipes):
+    def deleteRecipes(self, instance_recipe_scroll):
+        recipes = instance_recipe_scroll.get_selected_list_items()
         ids = []
         for recipeWidget in recipes:
             ids.append(recipeWidget.instance_item.recipe.id)
-            self.removeCustomWidget(self.root.ids.recipe_scroll, recipeWidget)
-        self.root.ids.recipe_scroll.selected_mode = False
+            instance_recipe_scroll.remove_widget(recipeWidget)     
+        instance_recipe_scroll.selected_mode = False
+        print(ids)
         self.menu.db.deleteRecipes(ids)
-
 
     '''Load edit recipe screen
     and all recipe info to edit 
@@ -295,10 +277,10 @@ class MenuGeneratorApp(MDApp):
         # form new recipe
         if instance:
             self.root.ids.editRecipeBar.title = "Edit recipe"
-            recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance)           
+            recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance, recipe_scroll=self.root.ids.recipe_scroll)           
         else:
             self.root.ids.editRecipeBar.title = "Add new recipe"
-            recipeWidget = RecipeWidget(recipe = Recipe())
+            recipeWidget = RecipeWidget(recipe = Recipe(), recipe_scroll=self.root.ids.recipe_scroll)
 
         # add recipeWidget
         self.root.ids.editRecipeScroll.add_widget(recipeWidget)
@@ -309,37 +291,22 @@ class MenuGeneratorApp(MDApp):
     '''    
     def saveRecipe(self, recipeWidget):
         if recipeWidget.saveRecipe():
-            self.menu.db.updateRecipe(recipeWidget.recipe)
-            
+            self.menu.db.updateRecipe(recipeWidget.recipe)            
             # return to recipeList screen
             self.changeScreen("AllRecipes")
             # redraw recipe widget in scrollview
             # or add a new one list item
             if recipeWidget.parentWidget:
-                self.redrawRecipeWidget(recipeWidget.parentWidget, recipeWidget.recipe)
-            else:
-                self.addRecipeInList(recipeWidget.recipe)
-
-    '''redraw recipeWidget in the scrollview
-    with new recipe info 
-
-    :param parentWidget: a Widget in the scrollview
-    :param newRecipe: new recipe info
-    '''    
-    def redrawRecipeWidget(self, parentWidget, newRecipe):
-        parentWidget.text=f"{newRecipe}"
-        parentWidget.img_source = newRecipe.img
-        parentWidget.secondary_text=f"{', '.join(newRecipe.ingredients)}"
-        parentWidget.recipe = newRecipe
-
-    '''
-    return back to recipe list without saving
-    '''    
-    def returnBack(self):
-        self.changeScreen("AllRecipes")
-
+                recipeWidget.parentWidget.redrawRecipeListItem(recipeWidget.recipe)
+            else:                
+                self.root.ids.recipe_scroll.addRecipeInList(recipeWidget.recipe)
+                
+    
     '''
     switch the selection mode "on" or "off"
+
+    :param instance_recipe_scroll: RecipeSelectionList
+    :param mode: Bool
     '''
     def set_selection_mode(self, instance_recipe_scroll, mode):
         if mode:
@@ -347,10 +314,10 @@ class MenuGeneratorApp(MDApp):
             left_action_items = [
                 [
                     "close",
-                    lambda x: self.unselectAllRecipes(),
+                    lambda x: self.unselectAllRecipes(instance_recipe_scroll),
                 ]
             ]
-            right_action_items = [["trash-can", lambda x: self.deleteRecipes(instance_recipe_scroll.get_selected_list_items())]]
+            right_action_items = [["trash-can", lambda x: self.deleteRecipes(instance_recipe_scroll)]]
         else:
             md_bg_color = (0, 0, 0, 1)
             left_action_items = [["menu", lambda x: self.root.ids.nav_drawer.set_state("open")]]
@@ -363,15 +330,17 @@ class MenuGeneratorApp(MDApp):
     '''
     unselect all Recipes
     and mark that all was unselected
+
+    :param instance_recipe_scroll: RecipeSelectionList
     '''
-    def unselectAllRecipes(self):
-        self.root.ids.recipe_scroll.unselected_all()
-        self.root.ids.recipe_scroll.last_selected = False
+    def unselectAllRecipes(self, instance_recipe_scroll):
+        instance_recipe_scroll.unselected_all()
+        instance_recipe_scroll.last_selected = False
 
     '''
     add or increase number of selected items in the toolbar
 
-    :param instance_recipe_scroll: MDSelectionList with recipes
+    :param instance_recipe_scroll: RecipeSelectionList with recipes
     :param instance_selection_item: selected item
     '''
     def on_selected(self, instance_recipe_scroll, instance_selection_item):
@@ -390,7 +359,7 @@ class MenuGeneratorApp(MDApp):
     so you click on it, selected_mode is false, item is not selected,
     and it goes straight to RecipeListItem.on_release and opens 'edit' Screen)
 
-    :param instance_recipe_scroll: MDSelectionList with recipes
+    :param instance_recipe_scroll: RecipeSelectionList with recipes
     :param instance_selection_item: selected item
     '''
     def on_unselected(self, instance_recipe_scroll, instance_selection_item):
@@ -400,79 +369,6 @@ class MenuGeneratorApp(MDApp):
             )
         else:
             instance_recipe_scroll.last_selected = True
-
-    '''
-    refresh dropdown items for tag search
-
-    :param textField: tags text field
-    :param recipeWidget: recipe Widget with recycle view
-    '''
-    def refresh(self, text, textField, recipeWidget):
-        def add_tag_item(tag):
-            recipeWidget.ids.rv.data.append(
-                {
-                    "viewclass": "OneLineListItem",
-                    "text": tag,
-                    "on_release": lambda x=tag: self.set_item(x, textField, recipeWidget)
-                }
-            )
-
-        if len(text) > 0:
-            recipeWidget.ids.rv.data = []
-            currentTags = []
-            for tag in recipeWidget.ids.recipeTags.children:
-                currentTags.append(tag.text)
-            for tag in self.menu.db.getUnusedTags(currentTags):
-                if text in tag:
-                    add_tag_item(tag)            
-        else:
-            recipeWidget.ids.rv.data = []
-        
-        if recipeWidget.ids.rv.data:
-                recipeWidget.ids.rv.parent.height = dp(205)
-        else:
-            recipeWidget.ids.rv.parent.height = 0
-            
-    '''
-    add new tag to the tags stackLayout
-
-    :param text__item: string text
-    :param textField: tags text field
-    :param recipeWidget: recipe Widget with recycle view
-    '''
-    def set_item(self, text__item, textField, recipeWidget):
-        text = ' '.join(text__item.split())
-        if len(text):
-            textField.focus = False
-            textField.text = ''
-            recipeWidget.ids.rv.data = []
-            recipeWidget.ids.rv.parent.height = 0
-            recipeWidget.ids.recipeTags.add_widget(ButtonWithCross(
-                                                text=text,
-                                                parentId=recipeWidget.ids.recipeTags))
-
-    def show_ingredients_bottom_sheet(self, ingredients, ingredientWidget):
-        products = self.menu.db.getProducts()
-        custom_sheet = BottomCustomSheet()   
-        for category in products:
-            cat_text = ''
-            if ',' in category:
-                cat_text = ', '.join(w[0].upper() + w[1:] for w in category.split(','))
-            elif '_' in category:
-                cat_text = ' '.join(category.split('_')).capitalize()
-            else:
-                cat_text = category.capitalize()
-            panel = IngredientsExpansionPanel(
-                        products=products[category],
-                        ingredientWidget=ingredientWidget,
-                        content=ContentCustomSheet(rows=math.ceil(len(products[category])/2)), 
-                        panel_cls=MDExpansionPanelOneLine(
-                            text=f"{cat_text}"
-                        )
-                    )
-            custom_sheet.ids.custom_sheet_grid.add_widget(panel)
-        self.custom_sheet = MDCustomBottomSheet(screen=custom_sheet, radius_from="top")
-        self.custom_sheet.open()
  
 if __name__ == '__main__':    
     MenuGeneratorApp().run()

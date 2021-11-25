@@ -8,11 +8,11 @@
         hint_text: root.hint_text
         text: root.text
         color_active: app.theme_cls.primary_light
-        on_text: if self.focus: app.refresh(self.text, self, root.parent.parent)
+        on_text: if self.focus: root.parent.parent.refresh(self.text, self)
 
     MDIconButton:
         icon: "plus"
         ripple_scale: .5
         pos_hint: {"center_y": .5}
         pos: text_field.width - self.width + dp(8), 0
-        on_release: app.set_item(text_field.text, text_field, root.parent.parent)
+        on_release: root.parent.parent.set_item(text_field.text, text_field)

@@ -5,8 +5,7 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.tab import MDTabsBase
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.list import MDList, OneLineIconListItem, TwoLineAvatarIconListItem
-from kivymd.uix.selection import MDSelectionList
+from kivymd.uix.list import MDList, OneLineIconListItem
 from kivy.properties import (
     BooleanProperty,
     ListProperty,
@@ -50,16 +49,6 @@ class ContentNavigationDrawer(MDBoxLayout):
 
 class Tab(MDFloatLayout, MDTabsBase):
     day = ObjectProperty()
-
-class RecipeListItem(TwoLineAvatarIconListItem):
-    text = StringProperty()
-    secondary_text = StringProperty()
-    img_source = StringProperty()
-    recipe = ObjectProperty()    
-
-class RecipeSelectionList(MDSelectionList):
-    last_selected = BooleanProperty()
-
 
 class ClickableTextFieldRound(MDRelativeLayout):
     text = StringProperty()
