@@ -25,6 +25,14 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+    '''remove widget from its parent
+
+    :param parentId: parent id of the Widget to remove
+    :param instance: a Widget to remove;
+    '''
+    def removeCustomWidget(self, parentId, instance):
+        parentId.remove_widget(instance)
+
 class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

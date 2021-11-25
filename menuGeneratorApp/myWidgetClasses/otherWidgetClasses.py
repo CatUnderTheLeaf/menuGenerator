@@ -42,6 +42,7 @@ class DrawerList(ThemableBehavior, MDList):
 class dialogItem(OneLineIconListItem):
     divider = None
     icon = StringProperty()
+    parentWidget = ObjectProperty()
 
 class ContentNavigationDrawer(MDBoxLayout):
     screen_manager = ObjectProperty()

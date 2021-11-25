@@ -33,7 +33,7 @@
         theme_text_color: "Custom"
         adaptive_size: True
         pos_hint: {"center_y": .5}
-        on_release: app.removeCustomWidget(root.parentId, root)
+        on_release: root.removeCustomWidget(root.parentId, root)
 
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
