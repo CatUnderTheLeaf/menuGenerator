@@ -46,6 +46,13 @@ class Rules:
                 self.readRules(line)
         else:
             print('path to DB is empty')
+
+        self.icons = {
+        'low_carb': 'leaf',
+        'high_carb': 'barley',
+        'fat': 'peanut',
+        'protein': 'fish',
+        'free': 'shaker'}
         # print(self.rules)
                 
     """ 

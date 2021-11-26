@@ -3,11 +3,94 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
 from kivymd.uix.button import MDFillRoundFlatIconButton
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 
 KV = '''
 
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
+
+<RulesWidget>:
+    cols: 1
+    adaptive_height: True
+    # spacing: dp(5)
+    # padding: dp(5)
+
+<RulesContent@MDGridLayout>:
+    cols: 1
+    adaptive_height: True
+    # spacing: dp(5)
+    padding: dp(10)
+
+    MDLabel:
+        text: "For Breakfast use:"
+
+    MDStackLayout:
+        adaptive_height: True
+        id: meal_nutrient 
+        
+        MDIconButton:
+            icon: "leaf"
+        
+        MDIconButton:
+            icon: "barley"
+        
+        MDIconButton:
+            icon: "peanut"
+        
+        MDIconButton:
+            icon: "fish"
+        
+        MDIconButton:
+            icon: "shaker"
+    
+    MDLabel:
+        text: "For Lunch use:"
+
+    MDStackLayout:
+        adaptive_height: True
+        id: meal_nutrient 
+        
+        MDIconButton:
+            icon: "leaf"
+        
+        MDIconButton:
+            icon: "barley"
+        
+        MDIconButton:
+            icon: "peanut"
+        
+        MDIconButton:
+            icon: "fish"
+        
+        MDIconButton:
+            icon: "shaker"
+
+    MDLabel:
+        text: "For Dinner use:"
+
+    MDStackLayout:
+        adaptive_height: True
+        id: meal_nutrient 
+        
+        MDIconButton:
+            icon: "leaf"
+        
+        MDIconButton:
+            icon: "barley"
+        
+        MDIconButton:
+            icon: "peanut"
+        
+        MDIconButton:
+            icon: "fish"
+        
+        MDIconButton:
+            icon: "shaker"
+        
+
+
 
 MDScreen:
 
@@ -42,6 +125,9 @@ MDScreen:
                                 
                                 MDLabel:
                                     text: "Time period"
+                                    theme_text_color: "Custom"
+                                    text_color: app.theme_cls.primary_dark
+                                    font_style: 'H6'
                                     
                                 Widget:
                                     size_hint_y: None
@@ -78,6 +164,9 @@ MDScreen:
 
                                     MDLabel:
                                         text: "Repeat dishes"
+                                        theme_text_color: "Custom"
+                                        text_color: app.theme_cls.primary_dark
+                                        font_style: 'H6'
 
                                     MDSwitch:
                                         id: repeatDishes
@@ -91,6 +180,9 @@ MDScreen:
                             
                                 MDLabel:
                                     text: "Meals"
+                                    theme_text_color: "Custom"
+                                    text_color: app.theme_cls.primary_dark
+                                    font_style: 'H6'
 
                                 Widget:
                                     size_hint_y: None
@@ -138,22 +230,46 @@ MDScreen:
                                         check: True                                
                                 
                                 MDSeparator:
+                                
+                                Widget:
+                                    size_hint_y: None
+                                    height: dp(5)
+                            
+                                MDLabel:
+                                    text: "Rules"
+                                    theme_text_color: "Custom"
+                                    text_color: app.theme_cls.primary_dark
+                                    font_style: 'H6'
+
+                                Widget:
+                                    size_hint_y: None
+                                    height: dp(5)
+
+                                RulesWidget:
+                                    id: settingsRules
 '''
 
 
 class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     pass
-        
 
+class RulesWidget(MDGridLayout):
+    pass        
+
+class RulesContent(MDGridLayout):
+    pass
 
 class Test(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_string(KV)
-        # for child in self.screen.ids.box.children:
-        #     if child.text=="Show ads":
-        #         child.state = 'down'
-        #     print(child.state)
+        self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
+                    content = RulesContent(),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Nutritions per meal' rules"
+                    )
+                ))
+
 
     def build(self):
         return self.screen
