@@ -2,14 +2,36 @@ from kivy.lang import Builder
 
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-from kivymd.uix.button import MDFillRoundFlatIconButton
+from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatIconButton, MDIconButton
 from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.stacklayout import MDStackLayout
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+from kivy.uix.behaviors import ToggleButtonBehavior
+from kivymd.uix.label import MDLabel
+from kivy.metrics import dp
+from kivy.properties import (
+    BooleanProperty,
+    StringProperty,
+    ObjectProperty,
+    ListProperty,
+    DictProperty,
+    ColorProperty,
+    NumericProperty
+)
 
 KV = '''
 
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
+
+<IconToggleButton>:
+    background_down: app.theme_cls.primary_dark
+    background_normal: app.theme_cls.primary_color
+    theme_text_color: "Custom"            
+    md_bg_color: self.background_normal
+    text_color: 1, 1, 1, 1
+    text: " "
+    on_release: app.set_n_days(self)
 
 <RulesWidget>:
     cols: 1
@@ -17,81 +39,13 @@ KV = '''
     # spacing: dp(5)
     # padding: dp(5)
 
-<RulesContent@MDGridLayout>:
+<RulesContent>:
     cols: 1
     adaptive_height: True
-    # spacing: dp(5)
-    padding: dp(10)
-
-    MDLabel:
-        text: "For Breakfast use:"
-
-    MDStackLayout:
-        adaptive_height: True
-        id: meal_nutrient 
-        
-        MDIconButton:
-            icon: "leaf"
-        
-        MDIconButton:
-            icon: "barley"
-        
-        MDIconButton:
-            icon: "peanut"
-        
-        MDIconButton:
-            icon: "fish"
-        
-        MDIconButton:
-            icon: "shaker"
+    spacing: dp(20)
+    padding: 0, dp(20), 0, 0
+    width: Window.width
     
-    MDLabel:
-        text: "For Lunch use:"
-
-    MDStackLayout:
-        adaptive_height: True
-        id: meal_nutrient 
-        
-        MDIconButton:
-            icon: "leaf"
-        
-        MDIconButton:
-            icon: "barley"
-        
-        MDIconButton:
-            icon: "peanut"
-        
-        MDIconButton:
-            icon: "fish"
-        
-        MDIconButton:
-            icon: "shaker"
-
-    MDLabel:
-        text: "For Dinner use:"
-
-    MDStackLayout:
-        adaptive_height: True
-        id: meal_nutrient 
-        
-        MDIconButton:
-            icon: "leaf"
-        
-        MDIconButton:
-            icon: "barley"
-        
-        MDIconButton:
-            icon: "peanut"
-        
-        MDIconButton:
-            icon: "fish"
-        
-        MDIconButton:
-            icon: "shaker"
-        
-
-
-
 MDScreen:
 
     MDBoxLayout:
@@ -253,18 +207,49 @@ MDScreen:
 class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     pass
 
+class IconToggleButton(MDIconButton, ToggleButtonBehavior):
+    def __init__(self, **kwargs):
+            super(IconToggleButton, self).__init__(**kwargs)            
+
+    def on_state(self, widget, value):
+        if value == 'down':
+            self.md_bg_color = self.background_down
+        else:
+            self.md_bg_color = self.background_normal
+    background_normal = ColorProperty(None)
+    background_down = ColorProperty(None)
+
+
 class RulesWidget(MDGridLayout):
     pass        
 
 class RulesContent(MDGridLayout):
-    pass
+    rules = DictProperty()
+    icons = DictProperty({
+        'low_carb': 'leaf',
+        'high_carb': 'barley',
+        'fat': 'peanut',
+        'protein': 'fish',
+        'free': 'shaker'})
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for meal in self.rules:
+            self.add_widget(MDLabel(text=f"For {meal} use:"))
+            iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
+            for icon in self.icons:
+                iconsStack.add_widget(IconToggleButton(icon=self.icons[icon]))
+            self.add_widget(iconsStack)
 
 class Test(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_string(KV)
+        rules = {'Breakfast': ['low_carb', 'high_carb', 'fat', 'free'], 
+                'Lunch': ['low_carb', 'high_carb', 'protein', 'fat', 'free'], 
+                'Dinner': ['protein', 'fat', 'free', 'low_carb']}
         self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesContent(),
+                    content = RulesContent(rules=rules),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Nutritions per meal' rules"
                     )
@@ -280,6 +265,7 @@ class Test(MDApp):
             print(child.state)
 
     def set_n_days(self, text):
+        print("hello")
         pass
 
 
