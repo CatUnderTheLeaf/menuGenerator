@@ -13,7 +13,7 @@ from kivy.properties import (
     ObjectProperty
 )
 
-from myWidgetClasses.buttonWithCross import ButtonWithCross
+from myWidgetClasses.customButtons import ButtonWithCross
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.otherWidgetClasses import dialogItem, BottomCustomSheet, ContentCustomSheet
 

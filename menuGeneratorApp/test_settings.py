@@ -238,7 +238,12 @@ class RulesContent(MDGridLayout):
             self.add_widget(MDLabel(text=f"For {meal} use:"))
             iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
             for icon in self.icons:
-                iconsStack.add_widget(IconToggleButton(icon=self.icons[icon]))
+                state = 'normal'
+                if icon in self.rules[meal]:
+                    state = 'down'
+                button = IconToggleButton(icon=self.icons[icon])
+                button.state = state
+                iconsStack.add_widget(button)
             self.add_widget(iconsStack)
 
 class Test(MDApp):

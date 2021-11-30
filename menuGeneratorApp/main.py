@@ -6,7 +6,7 @@ from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
 
-from myWidgetClasses.buttonWithCross import ButtonWithCross
+from myWidgetClasses.customButtons import *
 from myWidgetClasses.menuSettings import MenuSettings
 from myWidgetClasses.RecipeWidget import RecipeWidget
 from myWidgetClasses.RecipeSelectionList import RecipeListItem, RecipeSelectionList
@@ -169,6 +169,7 @@ class MenuGeneratorApp(MDApp):
                 'timePeriod': self.menu.timePeriod,
                 'repeat': self.menu.repeatDishes,
                 'meals': self.menu._mpd,
+                'rules': self.menu.db.getRules()
             }
             self.root.ids.settingsScroll.add_widget(MenuSettings(initValues = initValues))
 

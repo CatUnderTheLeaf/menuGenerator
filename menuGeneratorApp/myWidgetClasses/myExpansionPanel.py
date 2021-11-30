@@ -7,7 +7,7 @@ from kivy.properties import (
 )
 from kivy.metrics import sp
 
-from myWidgetClasses.buttonWithCross import ButtonWithCross
+from myWidgetClasses.customButtons import ButtonWithCross
 
 class IngredientsExpansionPanel(MDExpansionPanel):
     products = ListProperty()

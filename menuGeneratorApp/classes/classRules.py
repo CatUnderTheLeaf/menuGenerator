@@ -40,6 +40,7 @@ class Rules:
         self.rules['day_time'] = {}
         self.rules['day_discard_meal'] = {}
         print("load rules")
+        
 
         if not db_rules=='':            
             for line in db_rules:
@@ -47,14 +48,6 @@ class Rules:
         else:
             print('path to DB is empty')
 
-        self.icons = {
-        'low_carb': 'leaf',
-        'high_carb': 'barley',
-        'fat': 'peanut',
-        'protein': 'fish',
-        'free': 'shaker'}
-        # print(self.rules)
-                
     """ 
     Read a line and add it to rules dictionary
 
