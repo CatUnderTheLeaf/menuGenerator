@@ -48,12 +48,16 @@ class Rules:
         else:
             print('path to DB is empty')
 
+        print(self.rules)
+
     """ 
     Read a line and add it to rules dictionary
 
     :param line: string line from file
      """
-    def readRules(self, rule):
+    def readRules(self, line):
+        rule, id = line
+        print(rule)
         if ' serve only ' in rule:
             meals, tags = rule.split(' serve only ')
             meals = meals[len('At '):].split(', ')
@@ -64,7 +68,7 @@ class Rules:
             self.rules['class_nutrient'][product_class] = nutrients.split(', ')
         elif ' use ' in rule:
             product_class, nutrients = rule.split(' use ')
-            self.rules['meal_nutrient'][product_class[len('For '):]] = nutrients.split(', ')                    
+            self.rules['meal_nutrient'][product_class[len('For '):]] = (nutrients.split(', '), id)                    
         elif ' ignore ' in rule:
             tag, nutrients = rule.split(' ignore ')
             self.rules['tag_ignore_nutrient'][tag[len('For '):]] = nutrients.split(', ')
@@ -120,7 +124,8 @@ class Rules:
     def filterByNutrient(self, meal_type):
         if meal_type in self.rules['meal_nutrient']:
             # print("Nutrients apply rule from Rules")
-            return self.rules['meal_nutrient'][meal_type]
+            nutrients, id = self.rules['meal_nutrient'][meal_type]
+            return nutrients
         else:
             # print("there is no such rule in Rules")
             return None

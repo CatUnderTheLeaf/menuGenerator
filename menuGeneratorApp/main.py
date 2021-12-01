@@ -151,14 +151,13 @@ class MenuGeneratorApp(MDApp):
     """
     Set settings in Menu object
 
-    :param timePeriod: str
-    :param repeatDishes: Bool
-    :param meals: Dict
+    :param settings: MenuSettings object
     """
-    def setSettingsInMenu(self, timePeriod, repeatDishes, meals):
+    def setSettingsInMenu(self, timePeriod, repeatDishes, meals, rules=None):
         self.set_n_days(timePeriod)
         self.menu.repeatDishes = repeatDishes
         self.menu.update_mpd(meals)
+        self.menu.db.updateRules(rules)
 
     """
     Add Settings widget on the screen
@@ -169,7 +168,7 @@ class MenuGeneratorApp(MDApp):
                 'timePeriod': self.menu.timePeriod,
                 'repeat': self.menu.repeatDishes,
                 'meals': self.menu._mpd,
-                'rules': self.menu.db.getRules()
+                'rules': self.menu.db.getRules().rules
             }
             self.root.ids.settingsScroll.add_widget(MenuSettings(initValues = initValues))
 
@@ -189,11 +188,12 @@ class MenuGeneratorApp(MDApp):
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
-                            self.dialog.dismiss(),
-                            self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals),
-                            settings.updateInitValues(settings.timePeriod, settings.repeat, settings.meals),
-                            self.generateMenuTabs(),
-                            self.root.ids.nav_drawer.set_state("open"))
+                            self.dialog.dismiss()
+                            # self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals, settings.rules),
+                            # settings.updateInitValues(settings.timePeriod, settings.repeat, settings.meals),
+                            # self.generateMenuTabs(),
+                            # self.root.ids.nav_drawer.set_state("open")
+                        )
                     ),
                     MDFlatButton(
                         text="Discard",

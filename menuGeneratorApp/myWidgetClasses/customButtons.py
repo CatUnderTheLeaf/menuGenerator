@@ -7,7 +7,8 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     StringProperty,
-    ObjectProperty
+    ObjectProperty,
+    DictProperty
 )
 from kivy.metrics import dp
 
@@ -42,9 +43,11 @@ class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
 class IconToggleButton(MDIconButton, ToggleButtonBehavior):    
     background_normal = ColorProperty(None)
     background_down = ColorProperty(None)
+    value = ObjectProperty(None)
+    parentWidget = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-            super(IconToggleButton, self).__init__(**kwargs)            
+        super(IconToggleButton, self).__init__(**kwargs)            
 
     def on_state(self, widget, value):
         if value == 'down':

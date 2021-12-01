@@ -63,6 +63,9 @@ class MenuDB:
             self.db.updateRecipe(recipeObj.id, recipeObj)
         self.updateTags(recipeObj)
 
+    def updateRules(self, rules):
+        print(rules)
+
     """ 
     update tags in the db
 

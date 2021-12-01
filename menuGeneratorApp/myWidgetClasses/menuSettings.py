@@ -17,7 +17,6 @@ class MenuSettings(MDGridLayout):
     repeat = BooleanProperty(False)
     meals = DictProperty()
     initValues = DictProperty()
-    rules = ObjectProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -32,7 +31,6 @@ class MenuSettings(MDGridLayout):
         self.timePeriod = self.initValues['timePeriod']
         self.repeat = self.initValues['repeat']
         self.meals = self.initValues['meals']
-        self.rules = self.initValues['rules']
         # Check timePeriod chip as it was saved in settings
         chips = self.ids.timePeriod.children
         for chip in chips:
@@ -50,12 +48,14 @@ class MenuSettings(MDGridLayout):
                             font_size=sp(20)
                         ))
 
-        self.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesContent(rules=self.rules.rules['meal_nutrient']),
-                    panel_cls=MDExpansionPanelOneLine(
-                        text="'Nutritions per meal' rules"
-                    )
-                ))
+        if not 'settingsRules' in self.ids:
+            rulesWidget = RulesWidget(initRules=self.initValues['rules'])
+            self.add_widget(rulesWidget)
+            # add to self.ids
+            self.ids['settingsRules'] = rulesWidget
+
+        print(self.ids)
+        
 
     """
     Update initial values if changes were saved
@@ -68,6 +68,7 @@ class MenuSettings(MDGridLayout):
         self.initValues['timePeriod'] = timePeriod
         self.initValues['repeat'] = repeat
         self.initValues['meals'] = meals
+        
 
     """
     Update meals dictionary on chip-click
@@ -86,12 +87,28 @@ class MenuSettings(MDGridLayout):
     :return: Bool
     """
     def hasChanged(self):
+        print(self.meals)
+        print(self.initValues['meals'])
         return ((self.timePeriod != self.initValues['timePeriod']) 
             or (self.repeat != self.initValues['repeat']) 
-            or (self.meals != self.initValues['meals']))
+            or (self.meals != self.initValues['meals'])
+            or (self.ids.settingsRules.hasChanged(self.initValues['rules'])))
 
 class RulesWidget(MDGridLayout):
-    pass        
+    initRules = DictProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        meal_nutrients = self.initRules['meal_nutrient']
+        self.add_widget(MDExpansionPanel(
+                    content = RulesContent(rules=meal_nutrients),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Nutritions per meal' rules"
+                    )
+                ))
+    def hasChanged(self, initRules):
+        print(initRules)
+        return(True)
 
 class RulesContent(MDGridLayout):
     rules = DictProperty()
@@ -107,10 +124,30 @@ class RulesContent(MDGridLayout):
         for meal in self.rules:
             self.add_widget(MDLabel(text=f"For {meal} use:"))
             iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
-            for icon in self.icons:
-                button = IconToggleButton(icon=self.icons[icon])
-                if icon in self.rules[meal]:
+            for nutrient in self.icons:
+                button = IconToggleButton(icon=self.icons[nutrient])
+                button.parentWidget=self
+                nutrients, id = self.rules[meal]
+                button.value={id: nutrient}                
+                if nutrient in nutrients:
                     button.state = 'down'
                 iconsStack.add_widget(button)
             self.add_widget(iconsStack)
+    
+        """
+    Update rules dictionary on icon-click
+
+    :param chip: meals MDChip
+    """
+    def updateNutrientRules(self, value):
+        for meal in self.rules:
+            nutrients, id = self.rules[meal]
+            for rule_id in value:
+                if id==rule_id:
+                    if value[rule_id] in nutrients:
+                        nutrients.remove(value[rule_id])
+                    else:
+                        nutrients.append(value[rule_id])
+        print(self.rules)
+    
  

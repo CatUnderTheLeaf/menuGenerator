@@ -13,6 +13,7 @@ db = data_loaded['DB_TYPE']
 db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB'])
 
 menu = Menu()
+
 menu.connectDB(db, db_path)
 
 # generate menu for n+1 days applying rules
@@ -20,10 +21,10 @@ n = 10
 sdate = date.today()
 edate = sdate + timedelta(days=n)
 meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
-for key in meals:
-    menu.update_mpd(int(key), meals[key])
+# for key in meals:
+#     menu.update_mpd(int(key), meals[key])
 
-# menu.generateDailyMenu(sdate, edate)
+menu.generateDailyMenu(sdate, edate)
 # print(menu)
 rules = menu.db.db.rulesCollection
 # for rule in rules:
@@ -40,9 +41,9 @@ products = menu.db.db.products
     # print(rule)
 
 recipes = menu.db.getRecipes()
-for recipe in recipes:
-    # menu.db.updateRecipe(recipe)
-    print(recipe)
+# for recipe in recipes:
+#     # menu.db.updateRecipe(recipe)
+#     print(recipe)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
 # print(food_class)
