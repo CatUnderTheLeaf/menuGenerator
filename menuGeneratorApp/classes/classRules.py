@@ -48,7 +48,7 @@ class Rules:
         else:
             print('path to DB is empty')
 
-        print(self.rules)
+        # print(self.rules)
 
     """ 
     Read a line and add it to rules dictionary
@@ -68,7 +68,7 @@ class Rules:
             self.rules['class_nutrient'][product_class] = nutrients.split(', ')
         elif ' use ' in rule:
             product_class, nutrients = rule.split(' use ')
-            self.rules['meal_nutrient'][product_class[len('For '):]] = (nutrients.split(', '), id)                    
+            self.rules['meal_nutrient'][product_class[len('For '):]] = (set(nutrients.split(', ')), id)                    
         elif ' ignore ' in rule:
             tag, nutrients = rule.split(' ignore ')
             self.rules['tag_ignore_nutrient'][tag[len('For '):]] = nutrients.split(', ')

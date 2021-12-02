@@ -63,7 +63,6 @@ class UnqliteDB:
     def getRules(self):
         if (self._rules is None):            
             all = self.rulesCollection.all()
-            print(all)
             self._rules = Rules([(x['rule'], x['__id']) for x in all])
         return self._rules
 

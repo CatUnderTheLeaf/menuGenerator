@@ -153,11 +153,14 @@ class MenuGeneratorApp(MDApp):
 
     :param settings: MenuSettings object
     """
-    def setSettingsInMenu(self, timePeriod, repeatDishes, meals, rules=None):
+    def setSettingsInMenu(self, timePeriod, repeatDishes, meals):
         self.set_n_days(timePeriod)
         self.menu.repeatDishes = repeatDishes
         self.menu.update_mpd(meals)
-        self.menu.db.updateRules(rules)
+
+    def updateRules(self, settings):
+        if settings.changedRules:
+            self.menu.db.updateRules(settings.changedRules)
 
     """
     Add Settings widget on the screen
@@ -188,21 +191,22 @@ class MenuGeneratorApp(MDApp):
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
-                            self.dialog.dismiss()
-                            # self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals, settings.rules),
-                            # settings.updateInitValues(settings.timePeriod, settings.repeat, settings.meals),
-                            # self.generateMenuTabs(),
-                            # self.root.ids.nav_drawer.set_state("open")
+                            self.dialog.dismiss(),
+                            self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals),
+                            self.updateRules(settings),
+                            settings.updateInitValues(),
+                            self.generateMenuTabs(),
+                            self.changeScreen("Menu")
                         )
                     ),
                     MDFlatButton(
-                        text="Discard",
+                        text="Discard all changes",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
                             self.dialog.dismiss(), 
-                            settings.setInitialValues(),
-                            self.root.ids.nav_drawer.set_state("open"))
+                            settings.setInitialValues()
+                            )
                     ),
                 ],
             )
@@ -259,7 +263,6 @@ class MenuGeneratorApp(MDApp):
             ids.append(recipeWidget.instance_item.recipe.id)
             instance_recipe_scroll.remove_widget(recipeWidget)     
         instance_recipe_scroll.selected_mode = False
-        print(ids)
         self.menu.db.deleteRecipes(ids)
 
     '''Load edit recipe screen
