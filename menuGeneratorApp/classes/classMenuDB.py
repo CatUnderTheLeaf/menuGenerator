@@ -63,8 +63,13 @@ class MenuDB:
             self.db.updateRecipe(recipeObj.id, recipeObj)
         self.updateTags(recipeObj)
 
+    """ 
+    update rules in the collection
+
+    :param rules: rules to update  
+     """
     def updateRules(self, rules):
-        print(rules)
+        self.db.updateRules(rules)
 
     """ 
     update tags in the db

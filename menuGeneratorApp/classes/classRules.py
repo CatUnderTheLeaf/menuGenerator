@@ -84,6 +84,25 @@ class Rules:
                 else:
                     self.rules['day_discard_meal'][day] = set(meal.split(', '))
     
+    """ 
+    form rules to update in db
+
+    :param rules: rules to update 
+
+    :return: Dict of string rules for db 
+     """
+    def formRules(self, rules):
+        updateRules = {}
+        for cat in rules:
+            if (cat == 'meal_nutrient'):
+                for meal_rule in rules[cat]:
+                    nutrients, id = rules[cat][meal_rule]
+                    rule = 'For '+ meal_rule + ' use ' + ', '.join(nutrients)
+                    updateRules[id] = rule
+        print(updateRules)
+        return updateRules
+
+
 
     """
      check if there are 

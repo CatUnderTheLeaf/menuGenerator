@@ -158,9 +158,14 @@ class MenuGeneratorApp(MDApp):
         self.menu.repeatDishes = repeatDishes
         self.menu.update_mpd(meals)
 
-    def updateRules(self, settings):
-        if settings.changedRules:
-            self.menu.db.updateRules(settings.changedRules)
+    """
+    update Rules in db 
+
+    :param changedRules: Dict of changed rules
+    """
+    def updateRules(self, changedRules):
+        if changedRules:
+            self.menu.db.updateRules(changedRules)
 
     """
     Add Settings widget on the screen
@@ -193,7 +198,7 @@ class MenuGeneratorApp(MDApp):
                         on_release=lambda x: (
                             self.dialog.dismiss(),
                             self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals),
-                            self.updateRules(settings),
+                            self.updateRules(settings.changedRules),
                             settings.updateInitValues(),
                             self.generateMenuTabs(),
                             self.changeScreen("Menu")

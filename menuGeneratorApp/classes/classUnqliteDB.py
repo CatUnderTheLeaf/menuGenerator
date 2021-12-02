@@ -175,6 +175,18 @@ class UnqliteDB:
         self.recipesCollection.store(recipe)
 
     """ 
+    update rules in the collection
+
+    :param rules: rules to update  
+     """
+    def updateRules(self, rules):
+        updateRules = self.getRules().formRules(rules)
+        for id in updateRules:
+            rule = {}
+            rule['rule'] = updateRules[id]
+            self.rulesCollection.update(id, rule)
+
+    """ 
     filter recipes by tags, nutrients and preparation time
 
     :param tag: tags of recipe ('breakfast', etc)
