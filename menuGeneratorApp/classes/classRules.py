@@ -30,6 +30,7 @@ class Rules:
         # rules['meal_nutrient']: dict of nutrients per meal
         # rules['tag_ignore_nutrient']: dict of ignored nutrients for tags
         # rules['day_time']: dict of preparation times for weekdays
+        # rules['time_days']: dict of weekdays for preparation time
         # rules['day_discard_meal']: dict of discarded meals for specified weekdays
           
         self.rules = {}
@@ -38,6 +39,7 @@ class Rules:
         self.rules['meal_nutrient'] = {}
         self.rules['tag_ignore_nutrient'] = {}
         self.rules['day_time'] = {}
+        self.rules['time_days'] = {}
         self.rules['day_discard_meal'] = {}
         print("load rules")
         
@@ -48,7 +50,7 @@ class Rules:
         else:
             print('path to DB is empty')
 
-        # print(self.rules)
+        print(self.rules)
 
     """ 
     Read a line and add it to rules dictionary
@@ -57,7 +59,7 @@ class Rules:
      """
     def readRules(self, line):
         rule, id = line
-        print(rule)
+        # print(rule)
         if ' serve only ' in rule:
             meals, tags = rule.split(' serve only ')
             meals = meals[len('At '):].split(', ')
@@ -76,6 +78,11 @@ class Rules:
             times, days = rule.split(' prepareTime on ')
             for day in days.split(', '):
                 self.rules['day_time'][day] = tuple(times.split(', '))
+            for time in times.split(', '):
+                if time in self.rules['time_days']:
+                    self.rules['time_days'][time].update(days.split(', '))
+                else:
+                    self.rules['time_days'][time] = set(days.split(', '))
         elif ' discard ' in rule:
             days, meal = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
@@ -155,7 +162,7 @@ class Rules:
     :return: array of all possible prepareTimes grouped by day of week
      """
     def getDayTimes(self):
-        times_list = [self.rules['day_time'][key] if key in self.rules['day_time'] else None for key in calendar.day_abbr]
+        times_list = [self.rules['day_time'][key] if key in self.rules['day_time'] else None for key in calendar.day_name]
         times_groups = [k for k, g in itertools.groupby(times_list)]
         
         return times_groups
@@ -167,7 +174,7 @@ class Rules:
     :return: dict of prepareTimes per date
      """
     def getPrepTimes(self, dates):
-        days = [day.strftime("%a") for day in dates]
+        days = [day.strftime("%A") for day in dates]
         prepForDay = {date: self.rules['day_time'][day] if day in self.rules['day_time'] else None for (day,date) in zip(days, dates)}
         return prepForDay
 

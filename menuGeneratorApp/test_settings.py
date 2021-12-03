@@ -1,22 +1,29 @@
 from kivy.lang import Builder
+from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-from kivymd.uix.button import MDFillRoundFlatIconButton, MDFillRoundFlatIconButton, MDIconButton
-from kivymd.uix.gridlayout import MDGridLayout
-from kivymd.uix.stacklayout import MDStackLayout
-from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
+from kivymd.uix.button import MDRectangleFlatButton, MDFillRoundFlatIconButton, BaseButton
 from kivy.uix.behaviors import ToggleButtonBehavior
-from kivymd.uix.label import MDLabel
+from kivymd.uix.gridlayout import MDGridLayout
+from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from kivy.metrics import dp
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    CircularElevationBehavior,
+    CircularRippleBehavior,
+    CommonElevationBehavior,
+    FakeRectangularElevationBehavior,
+    RectangularRippleBehavior,
+)
 from kivy.properties import (
     BooleanProperty,
-    StringProperty,
-    ObjectProperty,
-    ListProperty,
-    DictProperty,
     ColorProperty,
-    NumericProperty
+    DictProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
 )
 
 KV = '''
@@ -24,28 +31,6 @@ KV = '''
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
 
-<IconToggleButton>:
-    background_down: app.theme_cls.primary_dark
-    background_normal: app.theme_cls.primary_color
-    theme_text_color: "Custom"            
-    md_bg_color: self.background_normal
-    text_color: 1, 1, 1, 1
-    text: " "
-    on_release: app.set_n_days(self)
-
-<RulesWidget>:
-    cols: 1
-    adaptive_height: True
-    # spacing: dp(5)
-    # padding: dp(5)
-
-<RulesContent>:
-    cols: 1
-    adaptive_height: True
-    spacing: dp(20)
-    padding: 0, dp(20), 0, 0
-    width: Window.width
-    
 MDScreen:
 
     MDBoxLayout:
@@ -201,77 +186,160 @@ MDScreen:
 
                                 RulesWidget:
                                     id: settingsRules
+
+<RulesDayTime>    
+    cols: 1
+    orientation: 'tb-lr'
+    adaptive_height: True
+    spacing: dp(5)
+    padding: 0, dp(20), 0, 0
+    width: Window.width
+
+    MDStackLayout:
+        adaptive_height: True
+        id: rulesPrepareTime
+
+        MyToggleButton:
+            text: "short"
+            icon: "clock-time-one-outline"
+            group: "rulesPrepareTime"
+            state: "down"
+        
+        MyToggleButton:
+            text: "medium"
+            icon: "clock-time-five-outline"
+            group: "rulesPrepareTime"
+
+        MyToggleButton:
+            text: "long"
+            icon: "clock-time-nine-outline"
+            group: "rulesPrepareTime"
+
+    MDStackLayout:
+        adaptive_height: True
+        id: rulesPrepareTimeDays
+
+        TextRoundButton:            
+            value: "Monday"
+        TextRoundButton:
+            value: "Tuesday"
+        TextRoundButton:
+            value: "Wednesday"
+        TextRoundButton:
+            value: "Thursday"
+        TextRoundButton:
+            value: "Friday"
+        TextRoundButton:
+            value: "Saturday"
+        TextRoundButton:
+            value: "Sunday"
+
+
+<TextRoundButton>
+    background_down: app.theme_cls.primary_dark
+    background_normal: app.theme_cls.primary_color
+    theme_text_color: "Custom"       
+    text_color: 1, 1, 1, 1     
+    md_bg_color: self.background_normal
+    user_font_size: '24sp'
+    value: ""
+    text: self.value[:2]
+
+    canvas:
+        Clear
+        Color:
+            rgba: root.md_bg_color
+        Ellipse:
+            size: self.size
+            pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
+
+    size: "48dp", "48dp"
+    padding: (0, 0, 0, 0)
+
+    MDLabel:
+        adaptive_size: True
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
+        id: label
+        text: root.text
+        size_hint_x: None
+        width: self.texture_size[0]
+        color: root.text_color if root.text_color else (root.theme_cls.text_color)
+        markup: True
+
+<RulesWidget>:
+    cols: 1
+    adaptive_height: True
+    # spacing: dp(5)
+    # padding: dp(5)
 '''
 
-
-class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
+class RulesDayTime(MDGridLayout):
+    rules = DictProperty()
     pass
 
-class IconToggleButton(MDIconButton, ToggleButtonBehavior):
+class RulesWidget(MDGridLayout):
+    pass
+
+class TextRoundButton(CircularRippleBehavior, BaseButton, ToggleButtonBehavior):
+
     def __init__(self, **kwargs):
-            super(IconToggleButton, self).__init__(**kwargs)            
+        super().__init__(**kwargs)
+        self.theme_cls.bind(primary_palette=self.update_md_bg_color)
+        Clock.schedule_once(self.set_size)
+        Clock.schedule_once(self.set_text_color)
+        self.on_md_bg_color(self, [0.0, 0.0, 0.0, 0.0])
+
+    def set_size(self, interval):
+        """
+        Sets the custom icon size if the value of the `user_font_size`
+        attribute is not zero. Otherwise, the icon size is set to `(48, 48)`.
+        """
+
+        self.width = (
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+        )
+        self.height = (
+            "48dp" if not self.user_font_size else dp(self.user_font_size + 23)
+        )
+
+    def update_md_bg_color(self, instance, value):
+        if self.md_bg_color != [0.0, 0.0, 0.0, 0.0]:
+            self.md_bg_color = self.theme_cls._get_primary_color()
+
+    def set_text_color(self, interval):
+        if not self.text_color:
+            self.text_color = self.theme_cls._get_text_color()
 
     def on_state(self, widget, value):
         if value == 'down':
             self.md_bg_color = self.background_down
         else:
             self.md_bg_color = self.background_normal
-    background_normal = ColorProperty(None)
-    background_down = ColorProperty(None)
 
 
-class RulesWidget(MDGridLayout):
-    pass        
-
-class RulesContent(MDGridLayout):
-    rules = DictProperty()
-    icons = DictProperty({
-        'low_carb': 'leaf',
-        'high_carb': 'barley',
-        'fat': 'peanut',
-        'protein': 'fish',
-        'free': 'shaker'})
-    
+class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        for meal in self.rules:
-            self.add_widget(MDLabel(text=f"For {meal} use:"))
-            iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
-            for icon in self.icons:
-                state = 'normal'
-                if icon in self.rules[meal]:
-                    state = 'down'
-                button = IconToggleButton(icon=self.icons[icon])
-                button.state = state
-                iconsStack.add_widget(button)
-            self.add_widget(iconsStack)
+
 
 class Test(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_string(KV)
-        rules = {'Breakfast': ['low_carb', 'high_carb', 'fat', 'free'], 
-                'Lunch': ['low_carb', 'high_carb', 'protein', 'fat', 'free'], 
-                'Dinner': ['protein', 'fat', 'free', 'low_carb']}
+        rules = {'short': {'Monday', 'Thursday', 'Tuesday', 'Friday', 'Wednesday'}, 
+                'medium': {'Sunday', 'Monday', 'Thursday', 'Tuesday', 'Friday', 'Saturday', 'Wednesday'}, 
+                'long': {'Sunday', 'Saturday'}}
         self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesContent(rules=rules),
+                    content = RulesDayTime(rules=rules),
                     panel_cls=MDExpansionPanelOneLine(
-                        text="'Nutritions per meal' rules"
+                        text="'Prepare time per day' rules"
                     )
                 ))
 
-
     def build(self):
         return self.screen
-
-    def pr(self, widget):
-        print("hello")
-        for child in widget.children:
-            print(child.state)
-
-    def set_n_days(self, text):
-        print("hello")
-        pass
 
 
 Test().run()
