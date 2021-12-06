@@ -32,6 +32,7 @@ class Rules:
         # rules['day_time']: dict of preparation times for weekdays
         # rules['time_days']: dict of weekdays for preparation time
         # rules['day_discard_meal']: dict of discarded meals for specified weekdays
+        # rules['meal_discard_day']: dict of days per discarded meal
           
         self.rules = {}
         self.rules['meal_tag'] = {}
@@ -41,6 +42,7 @@ class Rules:
         self.rules['day_time'] = {}
         self.rules['time_days'] = {}
         self.rules['day_discard_meal'] = {}
+        self.rules['meal_discard_day'] = {}
         print("load rules")
         
 
@@ -85,12 +87,18 @@ class Rules:
                 else:
                     self.rules['time_days'][time] = (set(days.split(', ')), id)
         elif ' discard ' in rule:
-            days, meal = rule.split(' discard ')
+            days, meals = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
                 if day in self.rules['day_discard_meal']:
-                    self.rules['day_discard_meal'][day].update(meal.split(', '))
+                    self.rules['day_discard_meal'][day].update(meals.split(', '))
                 else:
-                    self.rules['day_discard_meal'][day] = set(meal.split(', '))
+                    self.rules['day_discard_meal'][day] = set(meals.split(', '))
+            for meal in meals.split(', '):
+                if meal in self.rules['meal_discard_day']:
+                    days, id = self.rules['meal_discard_day'][meal]
+                    days.update(days[len('On '):].split(', '))
+                else:
+                    self.rules['meal_discard_day'][meal] = (set(days[len('On '):].split(', ')), id)
     
     """ 
     form rules to update in db
@@ -195,6 +203,11 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
+        # indices = []
+        # for x in days:
+        #     if x.strftime("%a") in self.rules['day_discard_meal']:
+        #         days, id = self.rules['day_discard_meal'][x.strftime("%a")]
+        #         indices.append((x, days))
         indices = [(x, self.rules['day_discard_meal'][x.strftime("%a")]) for x in days if x.strftime("%a") in self.rules['day_discard_meal']]
         return indices
 

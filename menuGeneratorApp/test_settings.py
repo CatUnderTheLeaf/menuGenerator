@@ -3,11 +3,12 @@ from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
+from kivymd.uix.label import MDIcon
 from kivymd.uix.button import MDFillRoundFlatIconButton, BaseButton
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
-from kivy.metrics import dp
+from kivy.metrics import dp, sp
 from kivymd.uix.behaviors import (
     CircularRippleBehavior,
 )
@@ -128,6 +129,7 @@ MDScreen:
                                         value: 0
                                         on_release: app.on_meal_check(self, self.value)
                                         check: True
+                                        state: "down"
 
                                     MDChip:
                                         text: "Brunch"
@@ -142,6 +144,7 @@ MDScreen:
                                         value: 2
                                         on_release: app.on_meal_check(self, self.value)
                                         check: True
+                                        state: "down"
                                     
                                     MDChip:
                                         text: "Supper"
@@ -155,7 +158,8 @@ MDScreen:
                                         icon: "noodles"
                                         value: 4
                                         on_release: app.on_meal_check(self, self.value)
-                                        check: True                                
+                                        check: True  
+                                        state: "down"                              
                                 
                                 MDSeparator:
                                 
@@ -186,7 +190,7 @@ MDScreen:
 
     MDStackLayout:
         adaptive_height: True
-        id: rulesPrepareTime
+        id: rulesToggleButtons
 
         MyToggleButton:
             text: "short"
@@ -209,7 +213,7 @@ MDScreen:
 
     MDStackLayout:
         adaptive_height: True
-        id: rulesPrepareTimeDays
+        id: rulesDays
 
         TextRoundButton:            
             value: "Monday"
@@ -283,7 +287,7 @@ class RulesDayTime(MDGridLayout):
 
     def toggleTimePeriod(self, timePeriod):
         days = self.rules[timePeriod]
-        buttons = self.ids.rulesPrepareTimeDays.children
+        buttons = self.ids.rulesDays.children
         for button in buttons:
             if button.value in days:
                 button.state = "down"
@@ -292,7 +296,7 @@ class RulesDayTime(MDGridLayout):
 
     def toggleDay(self, button):
         selectedPeriod = "short"
-        for period in self.ids.rulesPrepareTime.children:
+        for period in self.ids.rulesToggleButtons.children:
             if period.state == "down":
                 selectedPeriod = period.text
         if button.state == "down":
@@ -361,6 +365,20 @@ class Test(MDApp):
                         text="'Prepare time per day' rules"
                     )
                 ))
+        
+        # Check meal chip as it was saved in settings
+        meals = ["0", "2", "4"]
+        meal_chips = self.screen.ids.meals.children
+        
+        for chip in meal_chips:
+            print(chip.value)
+            if str(chip.value) in meals and not len(chip.ids.box_check.children):
+                chip.ids.box_check.add_widget(MDIcon(
+                            icon="check",
+                            size_hint=(None, None),
+                            size=("26dp", "26dp"),
+                            font_size=sp(20)
+                        ))
 
     def build(self):
         return self.screen
