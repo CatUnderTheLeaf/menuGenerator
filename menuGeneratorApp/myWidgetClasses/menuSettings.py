@@ -72,6 +72,9 @@ class MenuSettings(MDGridLayout):
             for meal_rule in self.changedRules['meal_nutrient']:
                 nutrients, id = self.changedRules['meal_nutrient'][meal_rule]
                 self.initValues['rules']['meal_nutrient'][copy(meal_rule)] = (copy(nutrients), copy(id))
+            for period in self.changedRules['time_days']:
+                days, id = self.changedRules['time_days'][period]
+                self.initValues['rules']['time_days'][copy(period)] = (copy(days), copy(id))
             self.changedRules = {}
             
 
@@ -122,16 +125,29 @@ class RulesWidget(MDGridLayout):
     Set initital values
     """
     def setInitValues(self):
+        # copy rules, so we can have different dicts for old and new values
         self.rules['meal_nutrient'] = {}
         for meal_rule in self.initRules['meal_nutrient']:
             nutrients, id = self.initRules['meal_nutrient'][meal_rule]
             self.rules['meal_nutrient'][copy(meal_rule)] = (copy(nutrients), copy(id))
+
+        self.rules['time_days'] = {}
+        for period in self.initRules['time_days']:
+            days, id = self.initRules['time_days'][period]
+            self.rules['time_days'][copy(period)] = (copy(days), copy(id))
         
         self.clear_widgets()
         self.add_widget(MDExpansionPanel(
                     content = RulesContent(rules=self.rules['meal_nutrient']),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Nutritions per meal' rules"
+                    )
+                ))
+            
+        self.add_widget(MDExpansionPanel(
+                    content = RulesDayTime(rules=self.rules['time_days']),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Prepare time per day' rules"
                     )
                 ))
 
@@ -147,6 +163,11 @@ class RulesWidget(MDGridLayout):
         for meal_rule in self.initRules['meal_nutrient']:
             if self.initRules['meal_nutrient'][meal_rule] != self.rules['meal_nutrient'][meal_rule]:
                 changes['meal_nutrient'][meal_rule] = self.rules['meal_nutrient'][meal_rule]
+                hasChanged = True
+        changes['time_days'] = {}
+        for period in self.initRules['time_days']:
+            if self.initRules['time_days'][period] != self.rules['time_days'][period]:
+                changes['time_days'][period] = self.rules['time_days'][period]
                 hasChanged = True
         if hasChanged:
             return changes
@@ -191,3 +212,30 @@ class RulesContent(MDGridLayout):
                         nutrients.remove(value[rule_id])
                     else:
                         nutrients.add(value[rule_id])       
+                
+class RulesDayTime(MDGridLayout):
+    rules = DictProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.toggleTimePeriod("short")
+
+    def toggleTimePeriod(self, timePeriod):
+        days, id = self.rules[timePeriod]
+        buttons = self.ids.rulesPrepareTimeDays.children
+        for button in buttons:
+            if button.value in days:
+                button.state = "down"
+            else:
+                button.state = "normal"
+
+    def toggleDay(self, button):
+        selectedPeriod = "short"
+        for period in self.ids.rulesPrepareTime.children:
+            if period.state == "down":
+                selectedPeriod = period.text
+        days, id = self.rules[selectedPeriod]
+        if button.state == "down":
+            days.add(button.value)
+        else:
+            days.remove(button.value)

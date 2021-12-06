@@ -148,3 +148,60 @@
     spacing: dp(20)
     padding: 0, dp(20), 0, 0
     width: Window.width
+
+<RulesDayTime>:    
+    cols: 1
+    orientation: 'tb-lr'
+    adaptive_height: True
+    spacing: dp(5)
+    padding: 0, dp(20), 0, 0
+    width: Window.width
+
+    MDStackLayout:
+        adaptive_height: True
+        id: rulesPrepareTime
+
+        MyToggleButton:
+            text: "short"
+            icon: "clock-time-one-outline"
+            group: "rulesPrepareTime"
+            state: "down"
+            on_release: root.toggleTimePeriod(self.text)
+        
+        MyToggleButton:
+            text: "medium"
+            icon: "clock-time-five-outline"
+            group: "rulesPrepareTime"
+            on_release: root.toggleTimePeriod(self.text)
+
+        MyToggleButton:
+            text: "long"
+            icon: "clock-time-nine-outline"
+            group: "rulesPrepareTime"
+            on_release: root.toggleTimePeriod(self.text)
+
+    MDStackLayout:
+        adaptive_height: True
+        id: rulesPrepareTimeDays
+
+        TextRoundButton:            
+            value: "Monday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Tuesday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Wednesday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Thursday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Friday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Saturday"
+            on_release: root.toggleDay(self)
+        TextRoundButton:
+            value: "Sunday"
+            on_release: root.toggleDay(self)

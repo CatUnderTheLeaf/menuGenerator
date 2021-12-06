@@ -46,3 +46,36 @@
     text_color: 1, 1, 1, 1
     text: " "
     on_release: root.parentWidget.updateNutrientRules(root.value)
+
+<TextRoundButton>:
+    background_down: app.theme_cls.primary_dark
+    background_normal: app.theme_cls.primary_color
+    theme_text_color: "Custom"       
+    text_color: 1, 1, 1, 1     
+    md_bg_color: self.background_normal
+    user_font_size: '24sp'
+    value: ""
+    text: self.value[:2]
+
+    canvas:
+        Clear
+        Color:
+            rgba: root.md_bg_color
+        Ellipse:
+            size: self.size
+            pos: self.pos
+            source: self.source if hasattr(self, "source") else ""
+
+    size: "48dp", "48dp"
+    padding: (0, 0, 0, 0)
+
+    MDLabel:
+        adaptive_size: True
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
+        id: label
+        text: root.text
+        size_hint_x: None
+        width: self.texture_size[0]
+        color: root.text_color if root.text_color else (root.theme_cls.text_color)
+        markup: True

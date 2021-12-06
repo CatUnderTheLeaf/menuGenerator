@@ -80,9 +80,10 @@ class Rules:
                 self.rules['day_time'][day] = tuple(times.split(', '))
             for time in times.split(', '):
                 if time in self.rules['time_days']:
-                    self.rules['time_days'][time].update(days.split(', '))
+                    days, id = self.rules['time_days'][time]
+                    days.update(days.split(', '))
                 else:
-                    self.rules['time_days'][time] = set(days.split(', '))
+                    self.rules['time_days'][time] = (set(days.split(', ')), id)
         elif ' discard ' in rule:
             days, meal = rule.split(' discard ')
             for day in days[len('On '):].split(', '):
@@ -99,6 +100,8 @@ class Rules:
     :return: Dict of string rules for db 
      """
     def formRules(self, rules):
+        print("rules are ")
+        print(rules)
         updateRules = {}
         for cat in rules:
             if (cat == 'meal_nutrient'):
@@ -106,6 +109,12 @@ class Rules:
                     nutrients, id = rules[cat][meal_rule]
                     rule = 'For '+ meal_rule + ' use ' + ', '.join(nutrients)
                     updateRules[id] = rule
+            if (cat == 'time_days'):
+                for period in rules[cat]:
+                    days, id = rules[cat][period]
+                    rule = period + ' prepareTime on ' + ', '.join(days)
+                    updateRules[id] = rule
+        print("updated rules are ")
         print(updateRules)
         return updateRules
 

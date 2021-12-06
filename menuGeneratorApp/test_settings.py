@@ -3,27 +3,16 @@ from kivy.clock import Clock
 
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
-from kivymd.uix.button import MDRectangleFlatButton, MDFillRoundFlatIconButton, BaseButton
+from kivymd.uix.button import MDFillRoundFlatIconButton, BaseButton
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from kivy.metrics import dp
 from kivymd.uix.behaviors import (
-    BackgroundColorBehavior,
-    CircularElevationBehavior,
     CircularRippleBehavior,
-    CommonElevationBehavior,
-    FakeRectangularElevationBehavior,
-    RectangularRippleBehavior,
 )
 from kivy.properties import (
-    BooleanProperty,
-    ColorProperty,
     DictProperty,
-    NumericProperty,
-    ObjectProperty,
-    OptionProperty,
-    StringProperty,
 )
 
 KV = '''
@@ -204,16 +193,19 @@ MDScreen:
             icon: "clock-time-one-outline"
             group: "rulesPrepareTime"
             state: "down"
+            on_release: root.toggleTimePeriod(self.text)
         
         MyToggleButton:
             text: "medium"
             icon: "clock-time-five-outline"
             group: "rulesPrepareTime"
+            on_release: root.toggleTimePeriod(self.text)
 
         MyToggleButton:
             text: "long"
             icon: "clock-time-nine-outline"
             group: "rulesPrepareTime"
+            on_release: root.toggleTimePeriod(self.text)
 
     MDStackLayout:
         adaptive_height: True
@@ -221,18 +213,25 @@ MDScreen:
 
         TextRoundButton:            
             value: "Monday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Tuesday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Wednesday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Thursday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Friday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Saturday"
+            on_release: root.toggleDay(self)
         TextRoundButton:
             value: "Sunday"
+            on_release: root.toggleDay(self)
 
 
 <TextRoundButton>
@@ -277,7 +276,32 @@ MDScreen:
 
 class RulesDayTime(MDGridLayout):
     rules = DictProperty()
-    pass
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.toggleTimePeriod("short")
+
+    def toggleTimePeriod(self, timePeriod):
+        days = self.rules[timePeriod]
+        buttons = self.ids.rulesPrepareTimeDays.children
+        for button in buttons:
+            if button.value in days:
+                button.state = "down"
+            else:
+                button.state = "normal"
+
+    def toggleDay(self, button):
+        selectedPeriod = "short"
+        for period in self.ids.rulesPrepareTime.children:
+            if period.state == "down":
+                selectedPeriod = period.text
+        if button.state == "down":
+            self.rules[selectedPeriod].add(button.value)
+        else:
+            self.rules[selectedPeriod].remove(button.value)
+
+
+        
 
 class RulesWidget(MDGridLayout):
     pass

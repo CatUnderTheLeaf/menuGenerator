@@ -27,10 +27,12 @@ meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
 menu.generateDailyMenu(sdate, edate)
 # print(menu)
 rules = menu.db.db.rulesCollection
-# for rule in rules:
-#     print(rule)
+for rule in rules:
+    print(rule)
 # print(rules[1])
-# rules[1] = {'rule': 'medium, long prepareTime on Saturday, Sunday'}
+# rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
+# rules[0] = {'rule': 'short prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday'}
+# rules.store({'rule': 'medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday'})
 
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
