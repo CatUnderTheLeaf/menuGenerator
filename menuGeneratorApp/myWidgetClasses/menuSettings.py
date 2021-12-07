@@ -145,7 +145,7 @@ class RulesWidget(MDGridLayout):
                 ))
             
         self.add_widget(MDExpansionPanel(
-                    content = RulesDayTime(rules=self.rules['time_days']),
+                    content = RulesDayButtons(rules=self.rules['time_days']),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Prepare time per day' rules"
                     )
@@ -213,7 +213,7 @@ class RulesContent(MDGridLayout):
                     else:
                         nutrients.add(value[rule_id])       
                 
-class RulesDayTime(MDGridLayout):
+class RulesDayButtons(MDGridLayout):
     rules = DictProperty()
 
     def __init__(self, **kwargs):

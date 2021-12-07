@@ -14,6 +14,8 @@ from kivymd.uix.behaviors import (
 )
 from kivy.properties import (
     DictProperty,
+    StringProperty,
+    ObjectProperty
 )
 
 KV = '''
@@ -180,7 +182,7 @@ MDScreen:
                                 RulesWidget:
                                     id: settingsRules
 
-<RulesDayTime>    
+<RulesDayButtons>    
     cols: 1
     orientation: 'tb-lr'
     adaptive_height: True
@@ -191,26 +193,7 @@ MDScreen:
     MDStackLayout:
         adaptive_height: True
         id: rulesToggleButtons
-
-        MyToggleButton:
-            text: "short"
-            icon: "clock-time-one-outline"
-            group: "rulesPrepareTime"
-            state: "down"
-            on_release: root.toggleTimePeriod(self.text)
         
-        MyToggleButton:
-            text: "medium"
-            icon: "clock-time-five-outline"
-            group: "rulesPrepareTime"
-            on_release: root.toggleTimePeriod(self.text)
-
-        MyToggleButton:
-            text: "long"
-            icon: "clock-time-nine-outline"
-            group: "rulesPrepareTime"
-            on_release: root.toggleTimePeriod(self.text)
-
     MDStackLayout:
         adaptive_height: True
         id: rulesDays
@@ -274,35 +257,54 @@ MDScreen:
 <RulesWidget>:
     cols: 1
     adaptive_height: True
-    # spacing: dp(5)
-    # padding: dp(5)
 '''
 
-class RulesDayTime(MDGridLayout):
+class RulesDayButtons(MDGridLayout):
     rules = DictProperty()
+    group = StringProperty()
+    icons = DictProperty()
+    filter = DictProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.toggleTimePeriod("short")
+        if self.filter:
+            print("icons")
+            print(self.icons)
+            print("filter")
+            print(self.filter)
+        for text in self.icons:
+            button = MyToggleButton(text=text, icon=self.icons[text], group=self.group)
+            button.bind(on_release=self.toggleToggleButton)
+            self.ids.rulesToggleButtons.add_widget(button)
+        # toggle first button
+        self.ids.rulesToggleButtons.children[-1].state = "down"
+        self.toggleToggleButton(self.ids.rulesToggleButtons.children[-1])
 
-    def toggleTimePeriod(self, timePeriod):
-        days = self.rules[timePeriod]
-        buttons = self.ids.rulesDays.children
-        for button in buttons:
-            if button.value in days:
-                button.state = "down"
-            else:
+    def toggleToggleButton(self, widget):
+        buttons = self.ids.rulesDays.children            
+        if widget.text in self.rules:
+            days, id = self.rules[widget.text]
+            for button in buttons:
+                if button.value in days:
+                    button.state = "down"
+                else:
+                    button.state = "normal"
+        else:
+            for button in buttons:
                 button.state = "normal"
 
     def toggleDay(self, button):
-        selectedPeriod = "short"
+        selectedPeriod = self.ids.rulesToggleButtons.children[-1].text
         for period in self.ids.rulesToggleButtons.children:
             if period.state == "down":
                 selectedPeriod = period.text
+        if selectedPeriod not in self.rules:
+                self.rules[selectedPeriod] = (set(), None)
+        days, id = self.rules[selectedPeriod]
         if button.state == "down":
-            self.rules[selectedPeriod].add(button.value)
+            days.add(button.value)
         else:
-            self.rules[selectedPeriod].remove(button.value)
+            days.remove(button.value)
 
 
         
@@ -356,18 +358,23 @@ class Test(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.screen = Builder.load_string(KV)
-        rules = {'short': {'Monday', 'Thursday', 'Tuesday', 'Friday', 'Wednesday'}, 
-                'medium': {'Sunday', 'Monday', 'Thursday', 'Tuesday', 'Friday', 'Saturday', 'Wednesday'}, 
-                'long': {'Sunday', 'Saturday'}}
+        rules = {'short': ({'Wednesday', 'Friday', 'Thursday', 'Monday', 'Tuesday'}, 0), 
+                'long': ({'Saturday', 'Sunday'}, 1), 
+                'medium': ({'Saturday', 'Wednesday', 'Friday', 'Sunday', 'Thursday', 'Monday', 'Tuesday'}, 17)}
+        icons = {
+            "short": "clock-time-one-outline",
+            "medium": "clock-time-five-outline",
+            "long": "clock-time-nine-outline"
+        }
         self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesDayTime(rules=rules),
+                    content = RulesDayButtons(rules=rules, group="rulesTimePeriod", icons=icons),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Prepare time per day' rules"
                     )
                 ))
         
         # Check meal chip as it was saved in settings
-        meals = ["0", "2", "4"]
+        meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
         meal_chips = self.screen.ids.meals.children
         
         for chip in meal_chips:
@@ -379,6 +386,21 @@ class Test(MDApp):
                             size=("26dp", "26dp"),
                             font_size=sp(20)
                         ))
+        rules = {'Lunch': ({'Sun'}, 16)}
+        icons = {
+            "Breakfast": "bowl-mix",
+            "Brunch": "food-variant",
+            "Lunch": "pasta",
+            "Supper": "pot-steam",
+            "Dinner": "noodles"
+        }
+
+        self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
+                    content = RulesDayButtons(rules=rules, group="rulesDiscardMeal", icons=icons, filter=meals),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Discarded meal per day' rules"
+                    )
+                ))
 
     def build(self):
         return self.screen

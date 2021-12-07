@@ -187,7 +187,7 @@ MDScreen:
                                 RulesWidget:
                                     id: settingsRules
 
-<RulesDayTime>    
+<RulesDayButtons>    
     cols: 1
     orientation: 'tb-lr'
     adaptive_height: True
@@ -275,7 +275,7 @@ MDScreen:
     # padding: dp(5)
 '''
 
-class RulesDayTime(MDGridLayout):
+class RulesDayButtons(MDGridLayout):
     rules = DictProperty()
     pass
 
@@ -332,7 +332,7 @@ class Test(MDApp):
                 'medium': {'Sun', 'Mon', 'Sat', 'Wed', 'Tue', 'Thu', 'Fri'}, 
                 'long': {'Sat', 'Sun'}}
         self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesDayTime(rules=rules),
+                    content = RulesDayButtons(rules=rules),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Prepare time per day' rules"
                     )
