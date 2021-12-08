@@ -32,7 +32,7 @@ for rule in rules:
 # print(rules[1])
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
 # rules[16] = {'rule': 'On Sunday discard Lunch'}
-# rules.store({'rule': 'On discard Supper'})
+# rules.store({'rule': 'At Dinner serve only '})
 
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}

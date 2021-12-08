@@ -65,8 +65,11 @@ class Rules:
         if ' serve only ' in rule:
             meals, tags = rule.split(' serve only ')
             meals = meals[len('At '):].split(', ')
+            serve_tags = set()
+            if len(tags):
+                serve_tags = set(tags.split(', '))
             for meal in meals:
-                self.rules['meal_tag'][meal] = tags.split(', ')
+                self.rules['meal_tag'][meal] = (serve_tags, id)
         elif ' is ' in rule:
             product_class, nutrients = rule.split(' is ')
             self.rules['class_nutrient'][product_class] = nutrients.split(', ')

@@ -17,6 +17,7 @@ from kivy.properties import (
     StringProperty,
     ObjectProperty
 )
+from kivymd.uix.list import MDList, OneLineListItem
 
 KV = '''
 
@@ -295,10 +296,6 @@ class RulesDayButtons(MDGridLayout):
         else:
             for button in buttons:
                 button.state = "normal"
-        
-        if self.filter:
-            print("filter")
-            print(self.filter.values())
 
     def toggleDay(self, button):
         selectedPeriod = self.ids.rulesToggleButtons.children[-1].text
@@ -313,7 +310,18 @@ class RulesDayButtons(MDGridLayout):
         else:
             days.remove(button.value)
 
+class RulesTagsList(MDList):
+    rules = DictProperty()
+    filter = DictProperty(None)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.setInitValues()
+
+    def setInitValues(self):
+        for meal in self.rules:
+            self.add_widget(OneLineListItem(text=meal))
+     
         
 
 class RulesWidget(MDGridLayout):
@@ -385,7 +393,6 @@ class Test(MDApp):
         meal_chips = self.screen.ids.meals.children
         
         for chip in meal_chips:
-            print(chip.value)
             if str(chip.value) in self.meals and not len(chip.ids.box_check.children):
                 chip.ids.box_check.add_widget(MDIcon(
                             icon="check",
@@ -412,6 +419,24 @@ class Test(MDApp):
         self.screen.ids.settingsRules.add_widget(rulesDiscardMeal)
         self.screen.ids['rulesDiscardMeal'] = rulesDiscardMeal
 
+
+        rules = {'Breakfast': ({'breakfast'}, 2), 
+                'Lunch': (set(), 21), 
+                'Brunch': (set(), 22), 
+                'Supper': (set(), 23), 
+                'Dinner': (set(), 24)}
+        
+        rulesTagsMeal = MDExpansionPanel(
+                    content = RulesTagsList(rules=rules, filter=self.meals),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Tags per meal' rules"
+                    )
+                )
+
+        self.screen.ids.settingsRules.add_widget(rulesTagsMeal)
+        self.screen.ids['rulesTagsMeal'] = rulesTagsMeal
+        # !!!!Don't forget in updateMeals() to set filter anew
+
     def build(self):
         return self.screen
 
@@ -422,6 +447,8 @@ class Test(MDApp):
             self.meals[chip.value] = chip.text
         self.screen.ids.rulesDiscardMeal.content.filter = self.meals
         self.screen.ids.rulesDiscardMeal.content.setInitValues()
+        self.screen.ids.rulesTagsMeal.content.filter = self.meals
+        self.screen.ids.rulesTagsMeal.content.setInitValues()
 
 
 Test().run()
