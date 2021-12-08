@@ -10,9 +10,20 @@ from kivy.properties import (
 )
 from kivy.metrics import sp, dp
 
-from myWidgetClasses.customButtons import IconToggleButton
+from myWidgetClasses.customButtons import IconToggleButton, MyToggleButton
 
+"""
+Class with all settings user can modify
+"""
 class MenuSettings(MDGridLayout):
+    """ 
+    timePeriod: time period to generate menu, day/week/month
+    repeat: can recipes be repeated
+    meals: meals to include in Menu
+    changedRules: all changes user has made
+    initValues: initial values
+    
+    """
     timePeriod = StringProperty()
     repeat = BooleanProperty(False)
     meals = DictProperty()
@@ -49,8 +60,9 @@ class MenuSettings(MDGridLayout):
                             font_size=sp(20)
                         ))
 
+        # add new RulesWidget or load it with initital values
         if not 'settingsRules' in self.ids:
-            rulesWidget = RulesWidget(initRules=self.initValues['rules'])
+            rulesWidget = RulesWidget(initRules=self.initValues['rules'], meals = self.meals)
             self.add_widget(rulesWidget)
             # add to self.ids
             self.ids['settingsRules'] = rulesWidget
@@ -60,9 +72,6 @@ class MenuSettings(MDGridLayout):
     """
     Update initial values if changes were saved
 
-    :param timePeriod: str
-    :param repeatDishes: Bool
-    :param meals: Dict 
     """
     def updateInitValues(self):
         self.initValues['timePeriod'] = copy(self.timePeriod)
@@ -75,9 +84,11 @@ class MenuSettings(MDGridLayout):
             for period in self.changedRules['time_days']:
                 days, id = self.changedRules['time_days'][period]
                 self.initValues['rules']['time_days'][copy(period)] = (copy(days), copy(id))
+            for period in self.changedRules['meal_discard_day']:
+                days, id = self.changedRules['meal_discard_day'][period]
+                self.initValues['rules']['meal_discard_day'][copy(period)] = (copy(days), copy(id))
             self.changedRules = {}
-            
-
+    
     """
     Update meals dictionary on chip-click
 
@@ -88,6 +99,9 @@ class MenuSettings(MDGridLayout):
             del self.meals[chip.value]
         else:
             self.meals[chip.value] = chip.text
+        # update meals set in Rules 
+        self.ids.settingsRules.ids.rulesDiscardMeal.content.filter = self.meals
+        self.ids.settingsRules.ids.rulesDiscardMeal.content.setInitValues()
 
     """
     Check if values were changed
@@ -112,9 +126,19 @@ class MenuSettings(MDGridLayout):
         else:
             return False
 
+"""
+    Class of rules
+"""
 class RulesWidget(MDGridLayout):
+    """ 
+    initRules: initial values
+    rules: all changes user has made
+    meals: meals to include in Menu
+    
+    """
     initRules = DictProperty(None)
     rules = DictProperty()
+    meals = DictProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -135,6 +159,11 @@ class RulesWidget(MDGridLayout):
         for period in self.initRules['time_days']:
             days, id = self.initRules['time_days'][period]
             self.rules['time_days'][copy(period)] = (copy(days), copy(id))
+
+        self.rules['meal_discard_day'] = {}
+        for period in self.initRules['meal_discard_day']:
+            days, id = self.initRules['meal_discard_day'][period]
+            self.rules['meal_discard_day'][copy(period)] = (copy(days), copy(id))
         
         self.clear_widgets()
         self.add_widget(MDExpansionPanel(
@@ -143,13 +172,33 @@ class RulesWidget(MDGridLayout):
                         text="'Nutritions per meal' rules"
                     )
                 ))
-            
+        icons = {
+            "short": "clock-time-one-outline",
+            "medium": "clock-time-five-outline",
+            "long": "clock-time-nine-outline"
+        }    
         self.add_widget(MDExpansionPanel(
-                    content = RulesDayButtons(rules=self.rules['time_days']),
+                    content = RulesDayButtons(rules=self.rules['time_days'], group="rulesTimePeriod", icons=icons),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Prepare time per day' rules"
                     )
                 ))
+        icons = {
+            "Breakfast": "bowl-mix",
+            "Brunch": "food-variant",
+            "Lunch": "pasta",
+            "Supper": "pot-steam",
+            "Dinner": "noodles"
+        }
+        rulesDiscardMeal = MDExpansionPanel(
+                    content = RulesDayButtons(rules=self.rules['meal_discard_day'], group="rulesDiscardMeal", icons=icons, filter=self.meals),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Discarded meal per day' rules"
+                    )
+                )
+
+        self.add_widget(rulesDiscardMeal)
+        self.ids['rulesDiscardMeal'] = rulesDiscardMeal
 
     """
     Check if rules were changed
@@ -169,12 +218,26 @@ class RulesWidget(MDGridLayout):
             if self.initRules['time_days'][period] != self.rules['time_days'][period]:
                 changes['time_days'][period] = self.rules['time_days'][period]
                 hasChanged = True
+        changes['meal_discard_day'] = {}
+        for period in self.initRules['meal_discard_day']:
+            if self.initRules['meal_discard_day'][period] != self.rules['meal_discard_day'][period]:
+                changes['meal_discard_day'][period] = self.rules['meal_discard_day'][period]
+                hasChanged = True
         if hasChanged:
             return changes
         else:
             return False
 
+"""
+Class for nutritions per day rules in MDExpansionPanel
+
+""" 
 class RulesContent(MDGridLayout):
+    """ 
+    rules: all changes user has made
+    icons: icons of nutrients
+    
+    """
     rules = DictProperty()
     icons = DictProperty({
         'low_carb': 'leaf',
@@ -198,7 +261,7 @@ class RulesContent(MDGridLayout):
                 iconsStack.add_widget(button)
             self.add_widget(iconsStack)
     
-        """
+    """
     Update rules dictionary on icon-click
 
     :param chip: meals MDChip
@@ -212,30 +275,81 @@ class RulesContent(MDGridLayout):
                         nutrients.remove(value[rule_id])
                     else:
                         nutrients.add(value[rule_id])       
-                
+
+"""
+Class for days per timePeriod/meal rules in MDExpansionPanel
+
+"""                 
 class RulesDayButtons(MDGridLayout):
+    """ 
+    rules: all changes user has made
+    group: toggle group
+    icons: icons of nutrients
+    filter: user sees in 'discarded meal' rules only 
+            meals which are checked in settings.meals
+    
+    """
     rules = DictProperty()
+    group = StringProperty()
+    icons = DictProperty()
+    filter = DictProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.toggleTimePeriod("short")
+        self.setInitValues()
 
-    def toggleTimePeriod(self, timePeriod):
-        days, id = self.rules[timePeriod]
-        buttons = self.ids.rulesPrepareTimeDays.children
-        for button in buttons:
-            if button.value in days:
-                button.state = "down"
-            else:
-                button.state = "normal"
+    """
+    Set initital values
+    """
+    def setInitValues(self):
+        self.ids.rulesToggleButtons.clear_widgets()
+        if self.filter:
+            icons = {x:self.icons[x] for x in self.icons if x in self.filter.values()}
+        else:
+            icons = self.icons
+        for text in icons:
+            button = MyToggleButton(text=text, icon=icons[text], group=self.group)
+            button.bind(on_release=self.toggleToggleButton)
+            self.ids.rulesToggleButtons.add_widget(button)
+        # toggle first button
+        self.ids.rulesToggleButtons.children[-1].state = "down"
+        self.toggleToggleButton(self.ids.rulesToggleButtons.children[-1])
 
+    """
+    toggle timePeriod/meal button in rules,
+    user see only days for pressed timePeriod/meal
+
+    :param widget: button which was toggled
+    """
+    def toggleToggleButton(self, widget):
+        buttons = self.ids.rulesDays.children            
+        if widget.text in self.rules:
+            days, id = self.rules[widget.text]
+            for button in buttons:
+                if button.value in days:
+                    button.state = "down"
+                else:
+                    button.state = "normal"
+        else:
+            for button in buttons:
+                button.state = "normal"       
+
+    """
+    toggle round day button in rules
+    adds day to the corresponding rule
+
+    :param button: button which was toggled
+    """
     def toggleDay(self, button):
-        selectedPeriod = "short"
-        for period in self.ids.rulesPrepareTime.children:
+        selectedPeriod = self.ids.rulesToggleButtons.children[-1].text
+        for period in self.ids.rulesToggleButtons.children:
             if period.state == "down":
                 selectedPeriod = period.text
+        if selectedPeriod not in self.rules:
+                self.rules[selectedPeriod] = (set(), None)
         days, id = self.rules[selectedPeriod]
         if button.state == "down":
             days.add(button.value)
         else:
             days.remove(button.value)
+        

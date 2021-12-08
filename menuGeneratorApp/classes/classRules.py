@@ -98,7 +98,10 @@ class Rules:
                     days, id = self.rules['meal_discard_day'][meal]
                     days.update(days[len('On '):].split(', '))
                 else:
-                    self.rules['meal_discard_day'][meal] = (set(days[len('On '):].split(', ')), id)
+                    disc_days = set()
+                    if len(days[len('On '):]):
+                        disc_days = set(days[len('On '):].split(', '))
+                    self.rules['meal_discard_day'][meal] = (disc_days, id)
     
     """ 
     form rules to update in db
@@ -121,6 +124,11 @@ class Rules:
                 for period in rules[cat]:
                     days, id = rules[cat][period]
                     rule = period + ' prepareTime on ' + ', '.join(days)
+                    updateRules[id] = rule
+            if (cat == 'meal_discard_day'):
+                for meal in rules[cat]:
+                    days, id = rules[cat][meal]
+                    rule = 'On ' + ', '.join(days) + ' discard ' + meal
                     updateRules[id] = rule
         print("updated rules are ")
         print(updateRules)

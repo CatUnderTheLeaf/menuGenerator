@@ -129,7 +129,7 @@ MDScreen:
                                         text: "Breakfast"                                    
                                         icon: "bowl-mix"
                                         value: 0
-                                        on_release: app.on_meal_check(self, self.value)
+                                        on_release: app.updateMeals(self)
                                         check: True
                                         state: "down"
 
@@ -137,14 +137,14 @@ MDScreen:
                                         text: "Brunch"
                                         icon: "food-variant"
                                         value: 1
-                                        on_release: app.on_meal_check(self, self.value)
+                                        on_release: app.updateMeals(self)
                                         check: True
 
                                     MDChip:
                                         text: "Lunch"
                                         icon: "pasta"
                                         value: 2
-                                        on_release: app.on_meal_check(self, self.value)
+                                        on_release: app.updateMeals(self)
                                         check: True
                                         state: "down"
                                     
@@ -152,14 +152,14 @@ MDScreen:
                                         text: "Supper"
                                         icon: "pot-steam"
                                         value: 3
-                                        on_release: app.on_meal_check(self, self.value)
+                                        on_release: app.updateMeals(self)
                                         check: True
 
                                     MDChip:
                                         text: "Dinner"
                                         icon: "noodles"
                                         value: 4
-                                        on_release: app.on_meal_check(self, self.value)
+                                        on_release: app.updateMeals(self)
                                         check: True  
                                         state: "down"                              
                                 
@@ -267,13 +267,16 @@ class RulesDayButtons(MDGridLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.setInitValues()
+
+    def setInitValues(self):
+        self.ids.rulesToggleButtons.clear_widgets()
         if self.filter:
-            print("icons")
-            print(self.icons)
-            print("filter")
-            print(self.filter)
-        for text in self.icons:
-            button = MyToggleButton(text=text, icon=self.icons[text], group=self.group)
+            icons = {x:self.icons[x] for x in self.icons if x in self.filter.values()}
+        else:
+            icons = self.icons
+        for text in icons:
+            button = MyToggleButton(text=text, icon=icons[text], group=self.group)
             button.bind(on_release=self.toggleToggleButton)
             self.ids.rulesToggleButtons.add_widget(button)
         # toggle first button
@@ -292,6 +295,10 @@ class RulesDayButtons(MDGridLayout):
         else:
             for button in buttons:
                 button.state = "normal"
+        
+        if self.filter:
+            print("filter")
+            print(self.filter.values())
 
     def toggleDay(self, button):
         selectedPeriod = self.ids.rulesToggleButtons.children[-1].text
@@ -374,19 +381,19 @@ class Test(MDApp):
                 ))
         
         # Check meal chip as it was saved in settings
-        meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
+        self.meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
         meal_chips = self.screen.ids.meals.children
         
         for chip in meal_chips:
             print(chip.value)
-            if str(chip.value) in meals and not len(chip.ids.box_check.children):
+            if str(chip.value) in self.meals and not len(chip.ids.box_check.children):
                 chip.ids.box_check.add_widget(MDIcon(
                             icon="check",
                             size_hint=(None, None),
                             size=("26dp", "26dp"),
                             font_size=sp(20)
                         ))
-        rules = {'Lunch': ({'Sun'}, 16)}
+        rules = {'Lunch': ({'Sunday'}, 16)}
         icons = {
             "Breakfast": "bowl-mix",
             "Brunch": "food-variant",
@@ -395,15 +402,26 @@ class Test(MDApp):
             "Dinner": "noodles"
         }
 
-        self.screen.ids.settingsRules.add_widget(MDExpansionPanel(
-                    content = RulesDayButtons(rules=rules, group="rulesDiscardMeal", icons=icons, filter=meals),
+        rulesDiscardMeal = MDExpansionPanel(
+                    content = RulesDayButtons(rules=rules, group="rulesDiscardMeal", icons=icons, filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Discarded meal per day' rules"
                     )
-                ))
+                )
+
+        self.screen.ids.settingsRules.add_widget(rulesDiscardMeal)
+        self.screen.ids['rulesDiscardMeal'] = rulesDiscardMeal
 
     def build(self):
         return self.screen
+
+    def updateMeals(self, chip):
+        if chip.value in self.meals:
+            del self.meals[chip.value]
+        else:
+            self.meals[chip.value] = chip.text
+        self.screen.ids.rulesDiscardMeal.content.filter = self.meals
+        self.screen.ids.rulesDiscardMeal.content.setInitValues()
 
 
 Test().run()

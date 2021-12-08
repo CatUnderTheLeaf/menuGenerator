@@ -149,7 +149,7 @@
     padding: 0, dp(20), 0, 0
     width: Window.width
 
-<RulesDayButtons>:    
+<RulesDayButtons>    
     cols: 1
     orientation: 'tb-lr'
     adaptive_height: True
@@ -159,30 +159,11 @@
 
     MDStackLayout:
         adaptive_height: True
-        id: rulesPrepareTime
-
-        MyToggleButton:
-            text: "short"
-            icon: "clock-time-one-outline"
-            group: "rulesPrepareTime"
-            state: "down"
-            on_release: root.toggleTimePeriod(self.text)
+        id: rulesToggleButtons
         
-        MyToggleButton:
-            text: "medium"
-            icon: "clock-time-five-outline"
-            group: "rulesPrepareTime"
-            on_release: root.toggleTimePeriod(self.text)
-
-        MyToggleButton:
-            text: "long"
-            icon: "clock-time-nine-outline"
-            group: "rulesPrepareTime"
-            on_release: root.toggleTimePeriod(self.text)
-
     MDStackLayout:
         adaptive_height: True
-        id: rulesPrepareTimeDays
+        id: rulesDays
 
         TextRoundButton:            
             value: "Monday"

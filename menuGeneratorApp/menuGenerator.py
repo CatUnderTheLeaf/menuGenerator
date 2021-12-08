@@ -31,8 +31,8 @@ for rule in rules:
     print(rule)
 # print(rules[1])
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
-# rules[0] = {'rule': 'short prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday'}
-# rules.store({'rule': 'medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday'})
+# rules[16] = {'rule': 'On Sunday discard Lunch'}
+# rules.store({'rule': 'On discard Supper'})
 
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
