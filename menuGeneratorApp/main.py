@@ -176,7 +176,8 @@ class MenuGeneratorApp(MDApp):
                 'timePeriod': self.menu.timePeriod,
                 'repeat': self.menu.repeatDishes,
                 'meals': self.menu._mpd,
-                'rules': self.menu.db.getRules().rules
+                'rules': self.menu.db.getRules().rules,
+                'tags': self.menu.db.getTags()
             }
             self.root.ids.settingsScroll.add_widget(MenuSettings(initValues = initValues))
 

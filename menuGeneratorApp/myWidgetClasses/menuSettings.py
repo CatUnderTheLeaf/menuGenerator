@@ -1,16 +1,19 @@
 from copy import copy
+from kivymd.uix import button
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.stacklayout import MDStackLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from kivy.properties import (
     DictProperty,
     StringProperty,
-    BooleanProperty
+    BooleanProperty,
+    ListProperty
 )
 from kivy.metrics import sp, dp
 
-from myWidgetClasses.customButtons import IconToggleButton, MyToggleButton
+from myWidgetClasses.customButtons import IconToggleButton, MyToggleButton, ButtonWithCross
 
 """
 Class with all settings user can modify
@@ -27,6 +30,7 @@ class MenuSettings(MDGridLayout):
     timePeriod = StringProperty()
     repeat = BooleanProperty(False)
     meals = DictProperty()
+    tags = ListProperty()
     changedRules = DictProperty(None)
     initValues = DictProperty()
 
@@ -62,7 +66,7 @@ class MenuSettings(MDGridLayout):
 
         # add new RulesWidget or load it with initital values
         if not 'settingsRules' in self.ids:
-            rulesWidget = RulesWidget(initRules=self.initValues['rules'], meals = self.meals)
+            rulesWidget = RulesWidget(initRules=self.initValues['rules'], meals = self.meals, tags=self.initValues['tags'])
             self.add_widget(rulesWidget)
             # add to self.ids
             self.ids['settingsRules'] = rulesWidget
@@ -102,6 +106,8 @@ class MenuSettings(MDGridLayout):
         # update meals set in Rules 
         self.ids.settingsRules.ids.rulesDiscardMeal.content.filter = self.meals
         self.ids.settingsRules.ids.rulesDiscardMeal.content.setInitValues()
+        self.screen.ids.rulesTagsMeal.content.filter = self.meals
+        self.screen.ids.rulesTagsMeal.content.setInitValues()
 
     """
     Check if values were changed
@@ -139,6 +145,7 @@ class RulesWidget(MDGridLayout):
     initRules = DictProperty(None)
     rules = DictProperty()
     meals = DictProperty()
+    tags = ListProperty()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -164,6 +171,11 @@ class RulesWidget(MDGridLayout):
         for period in self.initRules['meal_discard_day']:
             days, id = self.initRules['meal_discard_day'][period]
             self.rules['meal_discard_day'][copy(period)] = (copy(days), copy(id))
+
+        self.rules['meal_tag'] = {}
+        for meal in self.initRules['meal_tag']:
+            tags, id = self.initRules['meal_tag'][meal]
+            self.rules['meal_tag'][copy(meal)] = (copy(tags), copy(id))
         
         self.clear_widgets()
         self.add_widget(MDExpansionPanel(
@@ -200,6 +212,16 @@ class RulesWidget(MDGridLayout):
         self.add_widget(rulesDiscardMeal)
         self.ids['rulesDiscardMeal'] = rulesDiscardMeal
 
+        rulesTagsMeal = MDExpansionPanel(
+                    content = RulesTagsMeals(rules=self.rules['meal_tag'], filter=self.meals, allTags=self.tags),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text="'Tags per meal' rules"
+                    )
+                )
+
+        self.add_widget(rulesTagsMeal)
+        self.ids['rulesTagsMeal'] = rulesTagsMeal
+
     """
     Check if rules were changed
 
@@ -222,6 +244,13 @@ class RulesWidget(MDGridLayout):
         for period in self.initRules['meal_discard_day']:
             if self.initRules['meal_discard_day'][period] != self.rules['meal_discard_day'][period]:
                 changes['meal_discard_day'][period] = self.rules['meal_discard_day'][period]
+                hasChanged = True
+        changes['meal_tag'] = {}
+        print(self.initRules['meal_tag'])
+        print(self.rules['meal_tag'])
+        for period in self.initRules['meal_tag']:
+            if self.initRules['meal_tag'][period] != self.rules['meal_tag'][period]:
+                changes['meal_tag'][period] = self.rules['meal_tag'][period]
                 hasChanged = True
         if hasChanged:
             return changes
@@ -352,4 +381,112 @@ class RulesDayButtons(MDGridLayout):
             days.add(button.value)
         else:
             days.remove(button.value)
-        
+
+class RulesTagsMeals(MDBoxLayout):
+    rules = DictProperty()
+    filter = DictProperty(None)
+    allTags = ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.setInitValues()
+
+    def setInitValues(self):
+        print(self.filter)
+        print(self.rules)
+        self.clear_widgets()
+        if self.filter:
+            rules = {x:self.rules[x] for x in self.rules if x in self.filter.values()}
+        else:
+            rules = self.rules
+        for meal in rules:
+            tags, id = rules[meal]
+            self.add_widget(RulesTagsMealsBox(meal=meal, tags=tags, allTags=self.allTags))
+
+class RulesTagsMealsBox(MDBoxLayout):
+    text = StringProperty()
+    meal = StringProperty()
+    tags = ListProperty()
+    allTags = ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.setInitValues()
+
+    def setInitValues(self):
+        self.text = f"For {self.meal} serve only with these tags:"
+        for tag in self.tags:
+            self.ids.mealTags.add_widget(ButtonWithCross(
+                                            text=tag,
+                                            parentId=self.ids.mealTags))
+    
+    '''
+    get tags that are not used,
+    no need to show same tags
+
+    :param currentTags: tags used in recipe
+    '''
+    def getUnusedTags(self, currentTags):
+        return list(set(self.allTags) - set(currentTags))
+
+    '''
+    refresh dropdown items for tag search
+
+    :param textField: tags text field
+    :param recipeWidget: recipe Widget with recycle view
+    '''
+    def refresh(self, text, textField):
+        def add_tag_item(tag):
+            self.ids.rv.data.append(
+                {
+                    "viewclass": "OneLineListItem",
+                    "text": tag,
+                    "on_release": lambda x=tag: self.set_item(x, textField)
+                }
+            )
+
+        if len(text) > 0:
+            self.ids.rv.data = []
+            currentTags = []
+            for tag in self.ids.mealTags.children:
+                currentTags.append(tag.text)
+            for tag in self.getUnusedTags(currentTags):
+                if text in tag:
+                    add_tag_item(tag)            
+        else:
+            self.ids.rv.data = []
+        print(self.ids.rv.data)
+        if self.ids.rv.data:
+            self.ids.rv.parent.height = dp(48)
+            
+        else:
+            self.ids.rv.parent.height = 0
+    
+    '''
+    add new tag to the tags stackLayout
+
+    :param text__item: string text
+    :param textField: tags text field
+    :param recipeWidget: recipe Widget with recycle view
+    '''
+    def set_item(self, text__item, textField):
+        text = ' '.join(text__item.split())
+        if len(text):
+            textField.focus = False
+            textField.text = ''
+            self.ids.rv.data = []
+            self.ids.rv.parent.height = 0
+            # add new tags to rules
+            tags, id = self.parent.rules[self.meal]
+            tags.add(text)
+            button = ButtonWithCross(
+                                    text=text,
+                                    parentId=self.ids.mealTags)
+            button.ids.lbl_ic.bind(on_release=self.removeRuleTags)
+            self.ids.mealTags.add_widget(button)
+            
+            print(tags)
+    
+    def removeRuleTags(self, button):
+        tags, id = self.parent.rules[self.meal]
+        tags.remove(button.parent.text)

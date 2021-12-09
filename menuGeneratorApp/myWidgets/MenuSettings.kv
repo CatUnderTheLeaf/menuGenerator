@@ -149,7 +149,7 @@
     padding: 0, dp(20), 0, 0
     width: Window.width
 
-<RulesDayButtons>    
+<RulesDayButtons>:    
     cols: 1
     orientation: 'tb-lr'
     adaptive_height: True
@@ -186,3 +186,55 @@
         TextRoundButton:
             value: "Sunday"
             on_release: root.toggleDay(self)
+
+<RulesTagsMeals>:
+    orientation: 'vertical'
+    adaptive_height: True
+    padding: dp(15), dp(56), dp(15), dp(15)
+    spacing: dp(15)
+    width: Window.width    
+
+<RulesTagsMealsBox>:    
+    orientation: 'vertical'
+    adaptive_height: True
+    spacing: dp(10)
+    padding: 0, 0, 0, 0
+    width: Window.width
+
+    MDLabel:
+        text: root.text
+
+    MDStackLayout:
+        adaptive_height: True
+        id: mealTags
+        height: 0
+    
+    MDBoxLayout:
+        adaptive_height: True
+        padding: dp(11), 0, 0, 0            
+
+        ClickableTextFieldRound:
+            id: click_text_field
+            size_hint_x: None
+            width: "200dp"
+            hint_text: "Add new tag"
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        adaptive_height: True
+        height: 0
+        width: Window.width
+
+        RecycleView:
+            id: rv
+            key_viewclass: 'viewclass'
+            key_size: 'height'            
+
+            RecycleBoxLayout:
+                default_size: dp(200), dp(48)
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+    
+    MDSeparator:
+    

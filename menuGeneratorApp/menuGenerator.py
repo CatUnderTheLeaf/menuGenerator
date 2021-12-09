@@ -33,7 +33,8 @@ for rule in rules:
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
 # rules[16] = {'rule': 'On Sunday discard Lunch'}
 # rules.store({'rule': 'At Dinner serve only '})
-
+tags = menu.db.getTags()
+print(tags)
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
     
