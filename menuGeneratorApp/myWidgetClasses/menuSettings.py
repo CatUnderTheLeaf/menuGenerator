@@ -91,6 +91,9 @@ class MenuSettings(MDGridLayout):
             for period in self.changedRules['meal_discard_day']:
                 days, id = self.changedRules['meal_discard_day'][period]
                 self.initValues['rules']['meal_discard_day'][copy(period)] = (copy(days), copy(id))
+            for meal in self.changedRules['meal_tag']:
+                tags, id = self.changedRules['meal_tag'][meal]
+                self.initValues['rules']['meal_tag'][copy(meal)] = (copy(tags), copy(id))
             self.changedRules = {}
     
     """

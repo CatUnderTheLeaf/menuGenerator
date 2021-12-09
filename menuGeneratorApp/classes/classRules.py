@@ -133,6 +133,11 @@ class Rules:
                     days, id = rules[cat][meal]
                     rule = 'On ' + ', '.join(days) + ' discard ' + meal
                     updateRules[id] = rule
+            if (cat == 'meal_tag'):
+                for meal in rules[cat]:
+                    tags, id = rules[cat][meal]
+                    rule = 'At ' + meal + ' serve only ' + ', '.join(tags)
+                    updateRules[id] = rule
         print("updated rules are ")
         print(updateRules)
         return updateRules
