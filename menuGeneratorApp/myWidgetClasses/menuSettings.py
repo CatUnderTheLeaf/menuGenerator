@@ -109,8 +109,10 @@ class MenuSettings(MDGridLayout):
         # update meals set in Rules 
         self.ids.settingsRules.ids.rulesDiscardMeal.content.filter = self.meals
         self.ids.settingsRules.ids.rulesDiscardMeal.content.setInitValues()
-        self.screen.ids.rulesTagsMeal.content.filter = self.meals
-        self.screen.ids.rulesTagsMeal.content.setInitValues()
+        self.ids.settingsRules.ids.rulesTagsMeal.content.filter = self.meals
+        self.ids.settingsRules.ids.rulesTagsMeal.content.setInitValues()
+        self.ids.settingsRules.ids.rulesMealNutrients.content.filter = self.meals
+        self.ids.settingsRules.ids.rulesMealNutrients.content.setInitValues()
 
     """
     Check if values were changed
@@ -181,23 +183,29 @@ class RulesWidget(MDGridLayout):
             self.rules['meal_tag'][copy(meal)] = (copy(tags), copy(id))
         
         self.clear_widgets()
-        self.add_widget(MDExpansionPanel(
-                    content = RulesContent(rules=self.rules['meal_nutrient']),
+        rulesMealNutrients = MDExpansionPanel(
+                    content = RulesContent(rules=self.rules['meal_nutrient'], filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Nutritions per meal' rules"
                     )
-                ))
+                )
+        self.add_widget(rulesMealNutrients)        
+        self.ids['rulesMealNutrients'] = rulesMealNutrients
+        
         icons = {
             "short": "clock-time-one-outline",
             "medium": "clock-time-five-outline",
             "long": "clock-time-nine-outline"
-        }    
-        self.add_widget(MDExpansionPanel(
+        } 
+        rulesTimePeriod = MDExpansionPanel(
                     content = RulesDayButtons(rules=self.rules['time_days'], group="rulesTimePeriod", icons=icons),
                     panel_cls=MDExpansionPanelOneLine(
                         text="'Prepare time per day' rules"
                     )
-                ))
+                )   
+        self.add_widget(rulesTimePeriod)
+        self.ids['rulesTimePeriod'] = rulesTimePeriod
+
         icons = {
             "Breakfast": "bowl-mix",
             "Brunch": "food-variant",
@@ -265,10 +273,13 @@ Class for nutritions per day rules in MDExpansionPanel
 class RulesContent(MDGridLayout):
     """ 
     rules: all changes user has made
+    filter: user sees in rules only 
+            meals which are checked in settings.meals
     icons: icons of nutrients
     
     """
     rules = DictProperty()
+    filter = DictProperty(None)
     icons = DictProperty({
         'low_carb': 'leaf',
         'high_carb': 'barley',
@@ -278,13 +289,24 @@ class RulesContent(MDGridLayout):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        for meal_rule in self.rules:
+        self.setInitValues()
+
+    """
+    Set initital values
+    """
+    def setInitValues(self):
+        self.clear_widgets()
+        if self.filter:
+            rules = {x:self.rules[x] for x in self.rules if x in self.filter.values()}
+        else:
+            rules = self.rules
+        for meal_rule in rules:
             self.add_widget(MDLabel(text=f"For {meal_rule} use:"))
             iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
             for nutrient in self.icons:
                 button = IconToggleButton(icon=self.icons[nutrient])
                 button.parentWidget=self
-                nutrients, id = self.rules[meal_rule]
+                nutrients, id = rules[meal_rule]
                 button.value={id: nutrient}                
                 if nutrient in nutrients:
                     button.state = 'down'
@@ -342,8 +364,9 @@ class RulesDayButtons(MDGridLayout):
             button.bind(on_release=self.toggleToggleButton)
             self.ids.rulesToggleButtons.add_widget(button)
         # toggle first button
-        self.ids.rulesToggleButtons.children[-1].state = "down"
-        self.toggleToggleButton(self.ids.rulesToggleButtons.children[-1])
+        if self.ids.rulesToggleButtons.children:
+            self.ids.rulesToggleButtons.children[-1].state = "down"
+            self.toggleToggleButton(self.ids.rulesToggleButtons.children[-1])
 
     """
     toggle timePeriod/meal button in rules,

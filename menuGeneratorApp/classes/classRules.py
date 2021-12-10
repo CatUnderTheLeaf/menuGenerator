@@ -52,7 +52,6 @@ class Rules:
         else:
             print('path to DB is empty')
 
-        print(self.rules)
 
     """ 
     Read a line and add it to rules dictionary
@@ -75,7 +74,11 @@ class Rules:
             self.rules['class_nutrient'][product_class] = nutrients.split(', ')
         elif ' use ' in rule:
             product_class, nutrients = rule.split(' use ')
-            self.rules['meal_nutrient'][product_class[len('For '):]] = (set(nutrients.split(', ')), id)                    
+            meal_nutr = set()
+            if len(nutrients):
+                meal_nutr = set(nutrients.split(', '))
+            self.rules['meal_nutrient'][product_class[len('For '):]] = (meal_nutr, id)
+            
         elif ' ignore ' in rule:
             tag, nutrients = rule.split(' ignore ')
             self.rules['tag_ignore_nutrient'][tag[len('For '):]] = nutrients.split(', ')
@@ -117,8 +120,6 @@ class Rules:
     :return: Dict of string rules for db 
      """
     def formRules(self, rules):
-        print("rules are ")
-        print(rules)
         updateRules = {}
         for cat in rules:
             if (cat == 'meal_nutrient'):
@@ -141,8 +142,6 @@ class Rules:
                     tags, id = rules[cat][meal]
                     rule = 'At ' + meal + ' serve only ' + ', '.join(tags)
                     updateRules[id] = rule
-        print("updated rules are ")
-        print(updateRules)
         return updateRules
 
 

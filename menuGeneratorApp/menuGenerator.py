@@ -26,12 +26,12 @@ menu.update_mpd(meals)
 menu.generateDailyMenu(sdate, edate)
 print(menu)
 rules = menu.db.db.rulesCollection
-# for rule in rules:
-#     print(rule)
+for rule in rules:
+    print(rule)
 # print(rules[1])
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
 # rules[13] = {'rule': 'For Breakfast use low_carb, high_carb, fat, free'}
-# rules.store({'rule': 'At Dinner serve only '})
+# rules.store({'rule': 'For Supper use '})
 tags = menu.db.getTags()
 # print(tags)
 products = menu.db.db.products

@@ -182,7 +182,7 @@ class MenuGeneratorApp(MDApp):
             self.root.ids.settingsScroll.add_widget(MenuSettings(initValues = initValues))
 
     """
-    Show dialog if there were made changes in Settings
+    Show dialog if there were made changes in Settings 
 
     :param settings: MenuSettings object
     """
