@@ -21,20 +21,19 @@ n = 10
 sdate = date.today()
 edate = sdate + timedelta(days=n)
 meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
-# for key in meals:
-#     menu.update_mpd(int(key), meals[key])
+menu.update_mpd(meals)
 
 menu.generateDailyMenu(sdate, edate)
-# print(menu)
+print(menu)
 rules = menu.db.db.rulesCollection
-for rule in rules:
-    print(rule)
+# for rule in rules:
+#     print(rule)
 # print(rules[1])
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
-# rules[16] = {'rule': 'On Sunday discard Lunch'}
+# rules[13] = {'rule': 'For Breakfast use low_carb, high_carb, fat, free'}
 # rules.store({'rule': 'At Dinner serve only '})
 tags = menu.db.getTags()
-print(tags)
+# print(tags)
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
     
@@ -46,7 +45,9 @@ products = menu.db.db.products
 recipes = menu.db.getRecipes()
 # for recipe in recipes:
 #     # menu.db.updateRecipe(recipe)
-#     print(recipe)
+    # print(recipe)
+    # print(recipe.tags)
+    # print(recipe.nutrients)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
 # print(food_class)

@@ -77,7 +77,7 @@ class Menu:
      """
     def getEmptyMenu(self, days):
         prepTimes = self.db.getRules().getPrepTimes(days)
-        self.menu = {day: {'prepTime': prepTimes[day]} for day in days}   
+        self.menu = {day: {'prepTime': prepTimes[day]} for day in days}
         return
 
     """ 
@@ -87,11 +87,11 @@ class Menu:
     def discardMeals(self):
         days = self.menu.keys()
         days_meals = self.db.getRules().filterDiscardedMeals(days)
-        
         # discard meals if there are rules
         for (day, meals) in days_meals:
             for meal in meals:
                 self.menu[day][meal] = None
+        
         return
 
     """ 
@@ -111,6 +111,7 @@ class Menu:
                         if availableDay:
                             nextDate, nextMeal = availableDay
                             self.menu[nextDate][nextMeal] = cur_recipe
+        
         return
 
     """ 

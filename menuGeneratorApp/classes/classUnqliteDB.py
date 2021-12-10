@@ -213,9 +213,9 @@ class UnqliteDB:
     """
     def checkRecipe(self, recipePrepareTime, recipeTags, recipeNutrients, tag=None, nutr=None, prep=None):
         good_time = (recipePrepareTime in prep) if ((prep is not None) and prep!=[]) else True
-        has_tags = (not set(tag).isdisjoint(set(recipeTags))) if (tag is not None) else True
+        has_tags = (not set(tag).isdisjoint(set(recipeTags))) if tag else True
         is_subset = (set(recipeNutrients)<=set(nutr)) if (nutr is not None) else True
-
+        
         return has_tags and is_subset and good_time
 
     """ 

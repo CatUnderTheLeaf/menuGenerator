@@ -249,8 +249,6 @@ class RulesWidget(MDGridLayout):
                 changes['meal_discard_day'][period] = self.rules['meal_discard_day'][period]
                 hasChanged = True
         changes['meal_tag'] = {}
-        print(self.initRules['meal_tag'])
-        print(self.rules['meal_tag'])
         for period in self.initRules['meal_tag']:
             if self.initRules['meal_tag'][period] != self.rules['meal_tag'][period]:
                 changes['meal_tag'][period] = self.rules['meal_tag'][period]
@@ -395,8 +393,6 @@ class RulesTagsMeals(MDBoxLayout):
         self.setInitValues()
 
     def setInitValues(self):
-        print(self.filter)
-        print(self.rules)
         self.clear_widgets()
         if self.filter:
             rules = {x:self.rules[x] for x in self.rules if x in self.filter.values()}
@@ -458,7 +454,6 @@ class RulesTagsMealsBox(MDBoxLayout):
                     add_tag_item(tag)            
         else:
             self.ids.rv.data = []
-        print(self.ids.rv.data)
         if self.ids.rv.data:
             self.ids.rv.parent.height = dp(48)
             
@@ -488,7 +483,6 @@ class RulesTagsMealsBox(MDBoxLayout):
             button.ids.lbl_ic.bind(on_release=self.removeRuleTags)
             self.ids.mealTags.add_widget(button)
             
-            print(tags)
     
     def removeRuleTags(self, button):
         tags, id = self.parent.rules[self.meal]

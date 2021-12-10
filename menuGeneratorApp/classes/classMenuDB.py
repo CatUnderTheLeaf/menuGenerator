@@ -107,9 +107,8 @@ class MenuDB:
                         # by tags for this type of meal
                         tag, nutr = self.getRules().filterByMeal(meal)
                         if tag is not None or nutr is not None:
-                            # print("filter with tags or nutrients")
                             sublist = self.filter(tag, nutr, prep)
-                            self.subsets[meal]['recipes'][prep] = set(sublist)
+                            self.subsets[meal]['recipes'][tuple(prep)] = set(sublist)
                             self.subsets[meal]['tag'] = tag
                             self.subsets[meal]['nutr'] = nutr
 
@@ -135,6 +134,7 @@ class MenuDB:
      """
     def chooseRecipe(self, meal, prepTime):
         sub = self.subsets[meal]['recipes']
+        prepTime = tuple(prepTime)
         if prepTime not in sub or len(sub[prepTime]) < 1:
             return None
         else:

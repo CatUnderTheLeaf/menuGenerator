@@ -82,7 +82,10 @@ class Rules:
         elif ' prepareTime on ' in rule:
             times, days = rule.split(' prepareTime on ')
             for day in days.split(', '):
-                self.rules['day_time'][day] = tuple(times.split(', '))
+                if day in self.rules['day_time']:
+                    self.rules['day_time'][day].update(times.split(', '))
+                else:
+                    self.rules['day_time'][day] = set(times.split(', '))
             for time in times.split(', '):
                 if time in self.rules['time_days']:
                     days, id = self.rules['time_days'][time]
@@ -167,7 +170,8 @@ class Rules:
     def filterByTag(self, meal_type):
         if meal_type in self.rules['meal_tag']:
             # print("apply filter by tag from Rules")
-            return self.rules['meal_tag'][meal_type]
+            tags, id = self.rules['meal_tag'][meal_type]
+            return tags
         else:
             # print("there is no such rule in Rules to filter by tag")
             return None
@@ -219,12 +223,11 @@ class Rules:
     :return: tuples (date, meals)
     """
     def filterDiscardedMeals(self, days):
-        # indices = []
-        # for x in days:
-        #     if x.strftime("%a") in self.rules['day_discard_meal']:
-        #         days, id = self.rules['day_discard_meal'][x.strftime("%a")]
-        #         indices.append((x, days))
-        indices = [(x, self.rules['day_discard_meal'][x.strftime("%a")]) for x in days if x.strftime("%a") in self.rules['day_discard_meal']]
+        indices = []
+        for x in days:
+            if x.strftime("%A") in self.rules['day_discard_meal']:
+                meals = self.rules['day_discard_meal'][x.strftime("%A")]
+                indices.append((x, meals))
         return indices
 
     """ 
