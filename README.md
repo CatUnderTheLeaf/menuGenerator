@@ -1,6 +1,14 @@
 # menuGenerator
 An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month.
 
+The app now has almost all important functionality and now I need to create a package for Android: 
+- [ ] install Ubuntu
+- [ ] install kivy, kivymd and their dependencies
+- [ ] install Buildozer 
+- [ ] make a package
+- [ ] install package on Android
+- [ ] test app
+
 My app has a Navigation drawer with only three destinations, first loaded screen is "Menu":
 
 <p align="center">
