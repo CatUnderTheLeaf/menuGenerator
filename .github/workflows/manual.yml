@@ -27,6 +27,7 @@ jobs:
           repository_root: master
           workdir: menuGeneratorApp
           buildozer_version: stable
+          command: buildozer android debug
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
