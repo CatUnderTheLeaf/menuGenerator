@@ -6,29 +6,29 @@ name: Manual workflow
 # or API.
 on:
   workflow_dispatch:
-   
+
+env:
+  buildozer_workdir: menuGeneratorApp
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-android:
-    name: Build for Android
+  android_debug:
+    name: Android (debug)
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          path: master
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
-          repository_root: master
-          buildozer_version: stable
+          workdir: ${{ env.buildozer_workdir }}
+          command: buildozer android debug
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: package
+          name: debug
           path: ${{ steps.buildozer.outputs.filename }}
