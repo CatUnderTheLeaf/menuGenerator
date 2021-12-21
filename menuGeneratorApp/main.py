@@ -2,6 +2,9 @@ from datetime import date, timedelta
 import os
 import yaml
 
+# This needs to be here to display the images on Android
+os.environ['KIVY_IMAGE'] = 'pil,sdl2'
+
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 

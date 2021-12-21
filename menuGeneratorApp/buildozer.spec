@@ -22,7 +22,7 @@ source.include_exts = py,png,jpg,kv,atlas,db,json,yml
 #source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, venv, recipe_helpers, products
+source.exclude_dirs = tests, bin, venv, recipe_helpers, products, pictures
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
