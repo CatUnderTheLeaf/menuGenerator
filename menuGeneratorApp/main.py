@@ -18,6 +18,7 @@ from myWidgetClasses.otherWidgetClasses import *
 
 from kivy.uix.screenmanager import NoTransition
 from kivy.utils import get_color_from_hex, platform
+from kivy.core.window import Window
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -107,6 +108,7 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_start(self):
+        Window.bind(on_keyboard=self.key_input)
         if platform == "android":
             from android.permissions import request_permissions, Permission 
 
@@ -147,15 +149,34 @@ class MenuGeneratorApp(MDApp):
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
     
+    def key_input(self, window, key, scancode, codepoint, modifier):
+        if key == 27:
+            print("Python: back button ")
+            return True  # override the default behaviour
+        else:           # the key now does nothing
+            print("Python: button code", key)
+            return False
+
     """ 
     Save settings to a storage
     
      """
     def on_stop(self):
+        print("Python app is shutting down................... store db and settings")
         self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
+
+    """ 
+    When the user leaves an App, it is automatically paused by Android, 
+    although it gets a few seconds to store data etc. if necessary. 
+    Once paused, there is no guarantee that your app will run again.
+    
+     """
+    def on_pause(self):
+        print("Python app is on pause ...............but returns true")
+        return True
 
     """ 
     Change Screen by name
