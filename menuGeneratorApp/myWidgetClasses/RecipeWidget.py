@@ -13,6 +13,8 @@ from kivy.properties import (
     ObjectProperty
 )
 
+from kivy.utils import platform
+
 from myWidgetClasses.customButtons import ButtonWithCross
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.otherWidgetClasses import dialogItem, BottomCustomSheet, ContentCustomSheet
@@ -202,7 +204,15 @@ class RecipeWidget(MDBoxLayout):
     open FileManager and show images
     '''
     def open_gallery(self):
-        path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
+        if platform == "android":
+            from android.storage import primary_external_storage_path, app_storage_path
+            settings_path = app_storage_path()
+            path = primary_external_storage_path()
+            print("Printing path in menuApp")
+            print(settings_path)
+            print(path)
+        else:
+            path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
         self.file_manager.show(path)  # output manager to the screen
         self.manager_open = True
     

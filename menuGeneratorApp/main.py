@@ -5,6 +5,7 @@ import yaml
 # This needs to be here to display the images on Android
 os.environ['KIVY_IMAGE'] = 'pil,sdl2'
 
+
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
@@ -16,7 +17,8 @@ from myWidgetClasses.RecipeSelectionList import RecipeListItem, RecipeSelectionL
 from myWidgetClasses.otherWidgetClasses import *
 
 from kivy.uix.screenmanager import NoTransition
-from kivy.utils import get_color_from_hex
+from kivy.utils import get_color_from_hex, platform
+
 from kivy.storage.jsonstore import JsonStore
 
 from kivymd.app import MDApp
@@ -105,6 +107,17 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_start(self):
+        if platform == "android":
+            from android.permissions import request_permissions, Permission 
+
+            def callback(permission, results):
+                if all([res for res in results]):
+                    print("Got all permissions")
+                else:
+                    print("Did not get all permissions")
+
+            request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
+
         timePeriod = "day"
         repeatDishes = False
         meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
