@@ -4,6 +4,8 @@ import yaml
 
 # This needs to be here to display the images on Android
 os.environ['KIVY_IMAGE'] = 'pil,sdl2'
+from kivy.config import Config
+Config.set('kivy', 'exit_on_escape', '0')
 
 
 from classes.classMenu import Menu
@@ -175,7 +177,8 @@ class MenuGeneratorApp(MDApp):
      """
     def on_stop(self):
         print("Python app is shutting down................... store db and settings")
-        self.store.put('settings', timePeriod=self.menu.timePeriod, 
+        if self.store:
+            self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
         self.menu.disconnectDB()
@@ -196,6 +199,7 @@ class MenuGeneratorApp(MDApp):
     
      """
     def on_resume(self):
+      print("Python app is resumed ..............load settings")  
       self.load_settings()
 
     """ 
