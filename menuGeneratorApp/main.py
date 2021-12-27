@@ -111,7 +111,9 @@ class MenuGeneratorApp(MDApp):
      """
     def on_start(self):
         Window.bind(on_keyboard=self.key_input)
-        Window.bind(on_request_close=self.on_request_close)
+        
+        self.load_settings()
+
         if platform == "android":
             from android.permissions import request_permissions, Permission 
 
@@ -122,8 +124,6 @@ class MenuGeneratorApp(MDApp):
                     print("Did not get all permissions")
 
             request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
-
-        self.load_settings()
 
         # generate menu for n+1 days applying rules
         self.generateMenuTabs()
@@ -162,22 +162,14 @@ class MenuGeneratorApp(MDApp):
         else:           # the key now does nothing
             print("Python: button code", key)
             return False
-
-    """ 
-    Catch Android closing request
     
-     """
-    def on_request_close(self):
-        print("Python app catch close request")
-        self.on_stop()
-
     """ 
     Save settings to a storage
     
      """
     def on_stop(self):
         print("Python app is shutting down................... store db and settings")
-        if self.store:
+        if hasattr(self, 'store'):
             self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd)
