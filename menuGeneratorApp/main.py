@@ -120,6 +120,12 @@ class MenuGeneratorApp(MDApp):
 
             request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
 
+        self.load_settings()
+
+        # generate menu for n+1 days applying rules
+        self.generateMenuTabs()
+    
+    def load_settings(self):
         timePeriod = "day"
         repeatDishes = False
         meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
@@ -146,9 +152,6 @@ class MenuGeneratorApp(MDApp):
         # set settings in the menu
         self.setSettingsInMenu(timePeriod, repeatDishes, meals)
 
-        # generate menu for n+1 days applying rules
-        self.generateMenuTabs()
-    
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
             print("Python: back button ")
@@ -176,7 +179,15 @@ class MenuGeneratorApp(MDApp):
      """
     def on_pause(self):
         print("Python app is on pause ...............but returns true")
+        self.on_stop()
         return True
+
+    """ 
+    Load db and settings after pause
+    
+     """
+    def on_resume(self):
+      self.load_settings()
 
     """ 
     Change Screen by name
