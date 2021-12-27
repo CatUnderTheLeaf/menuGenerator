@@ -109,6 +109,7 @@ class MenuGeneratorApp(MDApp):
      """
     def on_start(self):
         Window.bind(on_keyboard=self.key_input)
+        Window.bind(on_request_close=self.on_request_close)
         if platform == "android":
             from android.permissions import request_permissions, Permission 
 
@@ -159,6 +160,14 @@ class MenuGeneratorApp(MDApp):
         else:           # the key now does nothing
             print("Python: button code", key)
             return False
+
+    """ 
+    Catch Android closing request
+    
+     """
+    def on_request_close(self):
+        print("Python app catch close request")
+        self.on_stop()
 
     """ 
     Save settings to a storage
