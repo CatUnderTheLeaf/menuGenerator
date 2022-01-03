@@ -124,7 +124,7 @@ class MenuGeneratorApp(MDApp):
                     app_path = app_storage_path()
                     ext_path = primary_external_storage_path()
                     import shutil
-                    srcpath = os.path.join(app_path, 'img')
+                    srcpath = os.path.join(app_path, 'app', 'img')
                     dstpath = os.path.join(ext_path, 'Pictures', 'MenuGenerator')
                     print("Source path========")
                     print(srcpath)
