@@ -120,6 +120,23 @@ class MenuGeneratorApp(MDApp):
             def callback(permission, results):
                 if all([res for res in results]):
                     print("Got all permissions")
+                    from android.storage import primary_external_storage_path, app_storage_path
+                    app_path = app_storage_path()
+                    ext_path = primary_external_storage_path()
+                    import shutil
+                    srcpath = os.path.join(app_path, 'img')
+                    dstpath = os.path.join(ext_path, 'Pictures', 'MenuGenerator')
+                    print("Source path========")
+                    print(srcpath)
+                    print("dst path========")
+                    print(dstpath)
+                    if not os.path.isdir(dstpath):
+                        os.mkdir(dstpath)
+                        #tag each file to the source path to create the file path
+                        for file in os.listdir(srcpath):
+                            srcfile = os.path.join(srcpath, file)
+                            dstfile = os.path.join(dstpath, file)
+                            shutil.move(srcfile, dstfile)
                 else:
                     print("Did not get all permissions")
 
