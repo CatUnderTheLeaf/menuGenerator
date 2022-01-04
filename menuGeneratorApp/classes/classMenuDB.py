@@ -71,7 +71,7 @@ class MenuDB:
   
      """
     def updateRecipeImgPath(self, dstpath):
-        self.db.updateRecipe(dstpath)
+        self.db.updateRecipeImgPath(dstpath)
     """ 
     update rules in the collection
 
