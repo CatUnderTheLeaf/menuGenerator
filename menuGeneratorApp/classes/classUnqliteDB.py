@@ -146,16 +146,15 @@ class UnqliteDB:
 
     """ 
     update recipe image paths in the collection
-    it depends on device primary_external_storage_path
+    for test purposes
 
-    :param dstpath: image dir in primary_external_storage_path
+    :param dstpath: desired image dir
   
      """
     def updateRecipeImgPath(self, dstpath):
         for recipe in self.recipesCollection:
             newRecipe = recipe
-            head, tail = os.path.split(newRecipe['img'])
-            newRecipe['img'] = os.path.join(dstpath, tail)
+            newRecipe['img'] = os.path.join(dstpath, os.path.basename(newRecipe['img']))
             self.recipesCollection.update(newRecipe['__id'], newRecipe)
 
     """ 

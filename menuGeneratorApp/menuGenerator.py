@@ -41,14 +41,16 @@ menu.update_mpd(meals)
     # if rule['food_class']=='cereals,grains,pasta,bread,vegan is high_carb':
         # products[rule['__id']] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': rule['name']}
     # print(rule)
-dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
-# dstpath = '/storage/img'
-menu.db.db.updateRecipeImgPath(dstpath)
-recipes = menu.db.getRecipes()
+# dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
+dstpath = '/storage/img'
+dstpath = ''
+# menu.db.db.updateRecipeImgPath(dstpath)
+# recipes = menu.db.getRecipes()
+recipes = menu.db.db.recipesCollection
 for recipe in recipes:
     # menu.db.updateRecipe(recipe)
     print(recipe)
-    print(recipe.img)
+    # print(recipe.img)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
 # print(food_class)
