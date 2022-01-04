@@ -29,6 +29,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import OneLineListItem
+from kivymd.uix.tab import MDTabs
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.utils.fitimage import FitImage
 
@@ -45,7 +46,17 @@ class MenuGeneratorApp(MDApp):
     delete previous tabs and load content to the first new tab
     
      """
-    def generateMenuTabs(self):        
+    def generateMenuTabs(self):
+        # add MDTabs widget on the first generation
+        if not 'tabs' in self.root.ids:
+            tabs = MDTabs()
+            tabs.bind(on_tab_switch=self.on_tab_switch)
+            self.root.ids.menu.add_widget(tabs)
+            self.root.ids['tabs'] = tabs
+            # delete widget with generate button
+            if 'empty_menu' in self.root.ids:
+                widget = self.root.ids.empty_menu
+                self.root.ids.menu.remove_widget(widget)
         # old tabs to remove if exist 
         # because I can't delete all tabs but one 
         del_tabs = self.root.ids.tabs.get_tab_list()
@@ -143,7 +154,9 @@ class MenuGeneratorApp(MDApp):
             request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
 
         # generate menu for n+1 days applying rules
-        self.generateMenuTabs()
+        # self.generateMenuTabs()
+        
+
     
     def load_settings(self):
         timePeriod = "day"

@@ -19,23 +19,39 @@ MDScreen:
             ScreenManager:
                 id: screen_manager
                 
-                MDScreen:   
+                MDScreen:
                     name: "Menu"
                     
                     MDBoxLayout:
                         orientation: "vertical"
+                        id: menu
 
                         MDToolbar:
-                            id: menu
                             pos_hint: {"top": 1}
                             title: "Menu"
                             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
                             right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
 
-                        MDTabs:
-                            id: tabs
-                            on_tab_switch: app.on_tab_switch(*args)
+                        MDBoxLayout:
+                            id: empty_menu
+                            orientation: "vertical"
+                            spacing: dp(10)
+                            padding: dp(10)
+
+                            Widget:
+
+                            MDLabel:
+                                text: "Menu is not generated yet"
+                                halign: "center"
+
+                            MDIconButton:
+                                icon: "refresh"
+                                pos_hint: {"center_x": .5}
+                                on_release: app.generateMenuTabs()
+
+                            Widget:
+                        
                 
                 MDScreen:
                     name: "Settings"
