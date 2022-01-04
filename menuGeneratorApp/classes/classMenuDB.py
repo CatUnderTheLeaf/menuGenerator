@@ -64,6 +64,15 @@ class MenuDB:
         self.updateTags(recipeObj)
 
     """ 
+    update recipe image paths in the collection
+    it depends on device primary_external_storage_path
+
+    :param dstpath: image dir in primary_external_storage_path
+  
+     """
+    def updateRecipeImgPath(self, dstpath):
+        self.db.updateRecipe(dstpath)
+    """ 
     update rules in the collection
 
     :param rules: rules to update  
