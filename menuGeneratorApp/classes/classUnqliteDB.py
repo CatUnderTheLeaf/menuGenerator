@@ -1,4 +1,5 @@
 from unqlite import UnQLite
+import os
 from sortedcontainers import SortedList
 from classes.classRecipe import Recipe
 from classes.classRules import Rules
@@ -142,7 +143,20 @@ class UnqliteDB:
         recipe['nutrients'] = recipeObj.nutrients
 
         self.recipesCollection.update(id, recipe)
-        
+
+    """ 
+    update recipe image paths in the collection
+    it depends on device primary_external_storage_path
+
+    :param dstpath: image dir in primary_external_storage_path
+  
+     """
+    def updateRecipeImgPath(self, dstpath):
+        for recipe in self.recipesCollection:
+            newRecipe = recipe
+            head, tail = os.path.split(newRecipe['img'])
+            newRecipe['img'] = os.path.join(dstpath, tail)
+            self.recipesCollection.update(newRecipe['__id'], newRecipe)
 
     """ 
     delete recipes from the collection

@@ -148,6 +148,7 @@ class MenuGeneratorApp(MDApp):
                             srcfile = os.path.join(srcpath, file)
                             dstfile = os.path.join(dstpath, file)
                             shutil.move(srcfile, dstfile)
+                        self.menu.db.updateRecipeImgPath(dstpath)
                 else:
                     print("Did not get all permissions")
 

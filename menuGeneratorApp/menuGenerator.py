@@ -23,33 +23,45 @@ edate = sdate + timedelta(days=n)
 meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
 menu.update_mpd(meals)
 
-menu.generateDailyMenu(sdate, edate)
-print(menu)
-rules = menu.db.db.rulesCollection
-for rule in rules:
-    print(rule)
+# menu.generateDailyMenu(sdate, edate)
+# print(menu)
+# rules = menu.db.db.rulesCollection
+# for rule in rules:
+#     print(rule)
 # print(rules[1])
 # rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
 # rules[13] = {'rule': 'For Breakfast use low_carb, high_carb, fat, free'}
 # rules.store({'rule': 'For Supper use '})
-tags = menu.db.getTags()
+# tags = menu.db.getTags()
 # print(tags)
-products = menu.db.db.products
+# products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
     
 # for rule in products:
     # if rule['food_class']=='cereals,grains,pasta,bread,vegan is high_carb':
         # products[rule['__id']] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': rule['name']}
     # print(rule)
-
+dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
+# dstpath = '/storage/img'
+menu.db.db.updateRecipeImgPath(dstpath)
 recipes = menu.db.getRecipes()
-# for recipe in recipes:
-#     # menu.db.updateRecipe(recipe)
-    # print(recipe)
-    # print(recipe.tags)
-    # print(recipe.nutrients)
+for recipe in recipes:
+    # menu.db.updateRecipe(recipe)
+    print(recipe)
+    print(recipe.img)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
 # print(food_class)
 
 menu.disconnectDB()
+
+# import shutil
+# srcpath = "C:/Users/stacy/Pictures/src"
+# dstpath = "C:/Users/stacy/Pictures/dst"
+# os.makedirs(dstpath, exist_ok=True)
+# #tag each file to the source path to create the file path
+# for file in os.listdir(srcpath):
+#     srcfile = os.path.join(srcpath, file)
+#     dstfile = os.path.join(dstpath, file)
+#     shutil.move(srcfile, dstfile)
+# os.rmdir(srcpath)
