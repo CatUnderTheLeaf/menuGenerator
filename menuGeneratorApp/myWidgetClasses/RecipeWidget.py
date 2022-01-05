@@ -38,9 +38,7 @@ class RecipeWidget(MDBoxLayout):
         )
         # Camera manager
         self.camera_manager_open = False
-        self.camera_manager = CameraManager(
-            exit_manager=self.exit_camera_manager
-        )
+        self.camera_manager = None
         # initValues are saved separately
         # so we can check if smth was changed
         if self.parentWidget:
@@ -270,6 +268,10 @@ class RecipeWidget(MDBoxLayout):
         print("camera")
 
         def open_camera():
+            if not self.camera_manager:
+                self.camera_manager = CameraManager(
+                    exit_manager=self.exit_camera_manager
+                )
             self.camera_manager.show()  # output manager to the screen
             self.camera_manager_open = True
 
