@@ -253,11 +253,11 @@ class MenuGeneratorApp(MDApp):
     def saveSettingsDialog(self, settings):
         if not self.dialog:
             self.dialog = MDDialog(
-                title="Apply changes?",
-                text="Settings were changed. In order to save them please click on 'Apply and regenerate' button. Else your changes will not be saved.",
+                title="Accept changes?",
+                text="This will regenerate menu with new settings.",
                 buttons=[
                     MDFlatButton(
-                        text="Apply and regenerate",
+                        text="ACCEPT",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
@@ -270,7 +270,7 @@ class MenuGeneratorApp(MDApp):
                         )
                     ),
                     MDFlatButton(
-                        text="Discard all changes",
+                        text="DISCARD",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
