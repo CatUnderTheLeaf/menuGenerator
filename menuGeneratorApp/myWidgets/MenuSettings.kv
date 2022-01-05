@@ -69,55 +69,35 @@
         spacing: dp(5)
         id: meals                                
 
-        MDChip:
-            text: "Breakfast"                                    
+        MyToggleButton:
+            text: "Breakfast"
             icon: "bowl-mix"
             value: "0"
             on_release: root.updateMeals(self)
-            check: True
-            text_color: 1, 1, 1, 1
-            icon_color: 1, 1, 1, 1
-            icon_check_color: 1, 1, 1, 1  
-
-        MDChip:
+        
+        MyToggleButton:
             text: "Brunch"
             icon: "food-variant"
             value: "1"
             on_release: root.updateMeals(self)
-            check: True
-            text_color: 1, 1, 1, 1
-            icon_color: 1, 1, 1, 1
-            icon_check_color: 1, 1, 1, 1  
-
-        MDChip:
+        
+        MyToggleButton:
             text: "Lunch"
             icon: "pasta"
             value: "2"
             on_release: root.updateMeals(self)
-            check: True
-            text_color: 1, 1, 1, 1
-            icon_color: 1, 1, 1, 1
-            icon_check_color: 1, 1, 1, 1  
         
-        MDChip:
+        MyToggleButton:
             text: "Supper"
             icon: "pot-steam"
             value: "3"
             on_release: root.updateMeals(self)
-            check: True
-            text_color: 1, 1, 1, 1
-            icon_color: 1, 1, 1, 1
-            icon_check_color: 1, 1, 1, 1  
-
-        MDChip:
+        
+        MyToggleButton:
             text: "Dinner"
             icon: "noodles"
             value: "4"
-            on_release: root.updateMeals(self)
-            check: True  
-            text_color: 1, 1, 1, 1 
-            icon_color: 1, 1, 1, 1
-            icon_check_color: 1, 1, 1, 1                             
+            on_release: root.updateMeals(self)                             
     
     MDSeparator:
 

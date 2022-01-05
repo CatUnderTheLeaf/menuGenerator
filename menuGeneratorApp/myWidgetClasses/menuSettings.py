@@ -56,13 +56,8 @@ class MenuSettings(MDGridLayout):
         # Check meal chip as it was saved in settings
         meal_chips = self.ids.meals.children
         for chip in meal_chips:
-            if str(chip.value) in self.meals and not len(chip.ids.box_check.children):
-                chip.ids.box_check.add_widget(MDIcon(
-                            icon="check",
-                            size_hint=(None, None),
-                            size=("26dp", "26dp"),
-                            font_size=sp(20)
-                        ))
+            if str(chip.value) in self.meals:
+                chip.state = 'down'
 
         # add new RulesWidget or load it with initital values
         if not 'settingsRules' in self.ids:
