@@ -27,7 +27,7 @@ KV = '''
 <dialogItem>
     on_release:
         app.dialog.dismiss()
-        app.open_gallery() if root.icon=='image' else app.open_camera()
+        app.open_gallery() if root.icon=='image' else app.get_camera()
 
     IconLeftWidget:
         icon: root.icon
@@ -471,7 +471,7 @@ class Test(MDApp):
         print("gallery")
         self.file_manager_open()
 
-    def open_camera(self):
+    def get_camera(self):
         print("camera")
         # cam = Camera()
 

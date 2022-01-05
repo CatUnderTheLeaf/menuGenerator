@@ -1,0 +1,23 @@
+#:kivy 2.0.0
+<CameraManager>:
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
+
+        MDToolbar:
+            id: toolbar
+            left_action_items: [["chevron-left", lambda x: root.exit_manager(1)]]
+            elevation: 10
+    
+        Camera:
+            id: camera
+            index: 0
+            
+    MDFloatingActionButton:
+        icon: "camera"
+        theme_text_color: "Custom"
+        elevation_normal: 12
+        pos_hint: {'center_x': 0.50, 'center_y': .10}
+        on_release: 
+            root.capture()
+            root.exit_manager(1)

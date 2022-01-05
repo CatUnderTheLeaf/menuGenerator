@@ -18,6 +18,7 @@ from kivy.utils import platform
 from myWidgetClasses.customButtons import ButtonWithCross
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.otherWidgetClasses import dialogItem, BottomCustomSheet, ContentCustomSheet
+from myWidgetClasses.CameraManager import CameraManager
 
 class RecipeWidget(MDBoxLayout):
     recipe = ObjectProperty()
@@ -28,11 +29,17 @@ class RecipeWidget(MDBoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(on_keyboard=self.events)
-        self.manager_open = False
+        # file manager
+        self.file_manager_open = False
         self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager,
+            exit_manager=self.exit_file_manager,
             select_path=self.select_path,
             preview=True
+        )
+        # Camera manager
+        self.camera_manager_open = False
+        self.camera_manager = CameraManager(
+            exit_manager=self.exit_camera_manager
         )
         # initValues are saved separately
         # so we can check if smth was changed
@@ -214,7 +221,7 @@ class RecipeWidget(MDBoxLayout):
         else:
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
         self.file_manager.show(path)  # output manager to the screen
-        self.manager_open = True
+        self.file_manager_open = True
     
     '''
     It will be called when you click on the file name
@@ -224,15 +231,15 @@ class RecipeWidget(MDBoxLayout):
     :param path: path to the selected directory or file;
     '''   
     def select_path(self, path):
-        self.exit_manager()
+        self.exit_file_manager()
         if os.path.isfile(path):
             self.ids.recipeImg.source = path
 
     '''
     Called when the user reaches the root of the directory tree.
     '''
-    def exit_manager(self, *args):
-        self.manager_open = False
+    def exit_file_manager(self, *args):
+        self.file_manager_open = False
         self.file_manager.close()
 
     '''
@@ -240,44 +247,42 @@ class RecipeWidget(MDBoxLayout):
     '''
     def events(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
-            if self.manager_open:
+            if self.file_manager_open:
                 self.file_manager.back()
+            if self.camera_manager_open:
+                self.camera_manager.close()
         return True
     
     '''
+    Called when the user closes camera.
+    '''
+    def exit_camera_manager(self, *args):
+        self.camera_manager_open = False
+        self.camera_manager.close()
+        print(self.camera_manager.photo)
+        if os.path.isfile(self.camera_manager.photo):
+            self.ids.recipeImg.source = self.camera_manager.photo
+
+    '''
     Called when user choose to use camera.
     '''
-    def open_camera(self):
+    def get_camera(self):
         print("camera")
 
-    '''
-        Found out on android.developers that actually for "All files" is needed the permission MANAGE_EXTERNAL_STORAGE.
+        def open_camera():
+            self.camera_manager.show()  # output manager to the screen
+            self.camera_manager_open = True
 
-Just put in buildozer.spec file MANAGE_EXTERNAL_STORAGE also:
+        if platform == "android":
+            from android.permissions import request_permissions, Permission 
 
-(list) Permissions
-android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE No need to put it in the py code as you mnetioned for the other other permissions. they are ok in the code to avoit asking for the permission every time the app is launched.
+            def callback(permission, results):
+                if all([res for res in results]):
+                    print("Got camera permissions")
+                    open_camera()
+                else:
+                    print("Did not get all permissions")
 
-But, after the app is installed you'll have to go on the app permission to all the management of all files allow permission
-
-Worked for me, hope it helps.
-You need to change self.file_manager.show('/') to
-
-self.file_manager.show(primary_ext_storage)
-where primary_ext_storage is the file directory on your android phone. You also need to declare below.
-
-from android.storage import primary_external_storage_path
-primary_ext_storage = primary_external_storage_path()
-primary_external_storage_path() returns Android’s so-called “primary external storage”, often found at /sdcard/ and potentially accessible to any other app. It compares best to the Documents directory on Windows.
-
-On top of that, you need to add the following code in your script to ensure there is permission to access to the storage on the phone.
-
-from android.permissions import request_permissions, Permission
-request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE])
-Do not be confused by the name of primary_ext_storage . It is not referring to your android phone SD card. Instead, it will be pointing to your internal storage.
-
-For external storage on android phone, you can use
-
-from android.storage import secondary_external_storage_path
-secondary_ext_storage = secondary_external_storage_path()
-        '''
+            request_permissions([Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
+        else:
+            open_camera()
