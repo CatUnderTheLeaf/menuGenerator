@@ -1,217 +1,155 @@
-'''
-Camera Example
-==============
-
-This example demonstrates a simple use of the camera. It shows a window with
-a buttoned labelled 'play' to turn the camera on and off. Note that
-not finding a camera, perhaps because gstreamer is not installed, will
-throw an exception during the kv language processing.
-
-'''
-
-# Uncomment these lines to see all the messages
-# from kivy.logger import Logger
-# import logging
-# Logger.setLevel(logging.TRACE)
-
-# from kivymd.app import MDApp
-# from kivy.lang import Builder
-# from kivy.uix.boxlayout import BoxLayout
-# import time
-# Builder.load_string('''
-# <CameraClick>:
-#     orientation: 'vertical'
-#     Camera:
-#         id: camera
-#         resolution: (640, 480)
-#         play: False
-#     ToggleButton:
-#         text: 'Play'
-#         on_press: camera.play = not camera.play
-#         size_hint_y: None
-#         height: '48dp'
-#     Button:
-#         text: 'Capture'
-#         size_hint_y: None
-#         height: '48dp'
-#         on_press: root.capture()
-# ''')
-
-
-# class CameraClick(BoxLayout):
-#     def capture(self):
-#         '''
-#         Function to capture the images and give them the names
-#         according to their captured time and date.
-#         '''
-#         camera = self.ids['camera']
-#         timestr = time.strftime("%Y%m%d_%H%M%S")
-#         camera.export_to_png("IMG_{}.png".format(timestr))
-#         print("Captured")
-
-
-# class TestCamera(App):
-
-#     def build(self):
-#         return CameraClick()
-
-
-# TestCamera().run()
-
-
-from os.path import dirname
+#!/usr/bin/env python
+import os
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivymd.theming import ThemeManager
-from kivy.properties import StringProperty
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivy.properties import (
+    ObjectProperty,
+    StringProperty
+)
+from kivy.uix.modalview import ModalView
 
-import time
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.relativelayout import MDRelativeLayout
 
-Builder.load_string("""
+kv = """
+#:import XCamera kivy_garden.xcamera.XCamera
 
+MDScreen:
 
-<ScreenManagement>:
-    ScreenOne:
-        name: "screen_one"
-    ScreenTwo:
-        name: "screen_two"
-    ScreenThree:
-        name: "screen_three"
-        id: entry
-    ScreenFour:
-        name: "screen_four"
+    MDBoxLayout:
+        orientation: "vertical"
+        
+        MDNavigationLayout:
 
-<ScreenOne>:
-    canvas:
-        Color:
-            rgb: [.30,.50,.99]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    FloatLayout:
-        MDFillRoundFlatButton:
-            color: [1,1,1,1]
-            text: "Перейти к созданию фото"
-            pos_hint: {'center_x':.50, 'center_y':.50}
-            on_press:
-                root.manager.transition.direction = 'up'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_two'
+            ScreenManager:
+                id: screen_manager
+                
+                MDScreen:
+                    name: "Menu"
+                    
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        id: menu
 
-<ScreenTwo>:
-    canvas:
-        Color:
-            rgb: [.30,.50,.99]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    FloatLayout:
-        MDFillRoundFlatButton:
-            color: [1,1,1,1]
-            text: "Выбрать фон"
-            pos_hint: {'center_x':.50, 'center_y':.10}
-            on_press:
-                root.manager.transition.direction = 'up'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_three'
-        MDIconButton:
-            icon: 'chevron-double-right'
-            pos_hint: {'center_x':.95, 'center_y':.10}
-            on_press:
-                root.manager.transition.direction = 'down'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_one'
-
-<ScreenThree>:
-    id: entry
-    canvas:
-        Color:
-            rgb: [.30,.50,.99]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    FloatLayout:
-        Camera:
-            id: camera
-            index: 0
-            resolution: (1280,720)
-            play: True  
-        MDFillRoundFlatButton:
-            text: "take photo"
-            pos_hint: {'center_x': 0.50, 'center_y': .10}
-            on_press:
-                root.capture()   #TAKE PHOTO
-                root.manager.transition.direction = 'up'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_four'    
-        MDIconButton:
-            icon: 'chevron-double-right'
-            pos_hint: {'center_x':.95, 'center_y':.10}
-            on_press:
-                root.manager.transition.direction = 'down'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_two'
-
-<ScreenFour>:
-    canvas:
-        Color:
-            rgb: [.30,.50,.99]
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    FloatLayout:
-        Image:
-            id: img
-
-        MDIconButton:
-            icon: 'chevron-double-right'
-            pos_hint: {'center_x':.95, 'center_y':.10}
-            on_press:
-                root.manager.transition.direction = 'down'
-                root.manager.transition.duration = 1
-                root.manager.current = 'screen_three'
-""")
+                        MDToolbar:
+                            pos_hint: {"top": 1}
+                            title: "Menu"
+                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
 
 
-class ScreenOne(Screen):
-    pass
+                        MDBoxLayout:
+                            id: empty
+                            orientation: "vertical"
+                            spacing: dp(10)
+                            padding: dp(10)
+
+                            Widget:
+
+                            MDLabel:
+                                text: "click to photo"
+                                halign: "center"
+
+                            MDIconButton:
+                                icon: "refresh"
+                                pos_hint: {"center_x": .5}
+                                on_release: app.open_camera()
+
+                            Widget:
 
 
-class ScreenTwo(Screen):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
-    main_widget = None
+<CameraManager>:
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: dp(5)
 
+        MDToolbar:
+            id: toolbar
+            left_action_items: [["chevron-left", lambda x: root.exit_manager(1)]]
+            elevation: 10
+    
+        XCamera:
+            id: xcamera
+            on_picture_taken: 
+                root.picture_taken(*args)
+                root.exit_manager(1)
+       
 
-class ScreenThree(Screen):
-    theme_cls = ThemeManager()
-    theme_cls.primary_palette = 'Blue'
-    main_widget = None
+"""
+
+class CameraManager(ThemableBehavior, MDRelativeLayout):
+    exit_manager = ObjectProperty(lambda x: None)
     photo = StringProperty('')
+    directory = ObjectProperty(None)
 
-    def capture(self):
-        camera = self.ids['camera']
-        self.photo = f"{dirname(__file__)}/IMG_{time.strftime('%Y%m%d_%H%M%S')}.png"
-        camera.export_to_png(self.photo)
-        print("Captured")
+    _window_manager = None
+    _window_manager_open = False
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ids.xcamera.force_landscape()
+        self.ids.xcamera.directory = self.directory
 
-class ScreenFour(Screen):
+    def show(self):
 
-    def on_pre_enter(self, *args):
-        self.ids.img.source = self.manager.ids.entry.photo
+        if not self._window_manager:
+            self._window_manager = ModalView(
+                size_hint=self.size_hint, auto_dismiss=False
+            )
+            
+            self._window_manager.add_widget(self)
+        if not self._window_manager_open:
+            self._window_manager.open()
+            self._window_manager_open = True
 
+    def close(self):
+        """Closes the file manager window."""
 
-class ScreenManagement(ScreenManager):
-    pass
+        self._window_manager.dismiss()
+        self._window_manager_open = False
+    
+    def picture_taken(self, obj, filename):
+        print('Picture taken and saved to {}'.format(filename))
 
+ 
 
-class Interface(MDApp):
+class CameraApp(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.screen = Builder.load_string(kv)
+        self.camera_manager_open = False
+        self.camera_manager = None
 
     def build(self):
-        return ScreenManagement()
+        return self.screen
+    
+    '''
+    Called when the user closes camera.
+    '''
+    def exit_camera_manager(self, *args):
+        self.camera_manager_open = False
+        self.camera_manager.close()
+        print(self.camera_manager.photo)
+        # if os.path.isfile(self.camera_manager.photo):
+        #     self.ids.recipeImg.source = self.camera_manager.photo
+
+    def open_camera(self):
+        if not self.camera_manager:
+                self.camera_manager = CameraManager(
+                    exit_manager=self.exit_camera_manager,
+                    directory=os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
+                )
+        self.camera_manager.show()  # output manager to the screen
+        self.camera_manager_open = True
+
+    def picture_taken(self, obj, filename):
+        print('Picture taken and saved to {}'.format(filename))
 
 
-sample_app = Interface()
-sample_app.run()
+def main():
+    CameraApp().run()
+
+
+if __name__ == '__main__':
+    main()

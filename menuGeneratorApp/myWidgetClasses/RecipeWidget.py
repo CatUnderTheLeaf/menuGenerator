@@ -267,24 +267,18 @@ class RecipeWidget(MDBoxLayout):
     def get_camera(self):
         print("camera")
 
-        def open_camera():
-            if not self.camera_manager:
-                self.camera_manager = CameraManager(
-                    exit_manager=self.exit_camera_manager
-                )
-            self.camera_manager.show()  # output manager to the screen
-            self.camera_manager_open = True
-
         if platform == "android":
-            from android.permissions import request_permissions, Permission 
-
-            def callback(permission, results):
-                if all([res for res in results]):
-                    print("Got camera permissions")
-                    open_camera()
-                else:
-                    print("Did not get all permissions")
-
-            request_permissions([Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
+            from android.storage import primary_external_storage_path
+            dstpath = os.path.join(primary_external_storage_path(), 'Pictures', 'MenuGenerator')
+            if not os.path.isdir(dstpath):
+                os.mkdir(dstpath)
         else:
-            open_camera()
+            dstpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
+
+        if not self.camera_manager:
+                self.camera_manager = CameraManager(
+                    exit_manager=self.exit_camera_manager,
+                    directory=dstpath
+                )
+        self.camera_manager.show()  # output manager to the screen
+        self.camera_manager_open = True

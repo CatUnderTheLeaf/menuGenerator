@@ -13,12 +13,15 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 class CameraManager(ThemableBehavior, MDRelativeLayout):
     exit_manager = ObjectProperty(lambda x: None)
     photo = StringProperty('')
+    directory = ObjectProperty(None)
 
     _window_manager = None
     _window_manager_open = False
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)      
+        super().__init__(**kwargs)
+        self.ids.xcamera.force_landscape()
+        self.ids.xcamera.directory = self.directory
 
     def show(self):
 
@@ -26,6 +29,7 @@ class CameraManager(ThemableBehavior, MDRelativeLayout):
             self._window_manager = ModalView(
                 size_hint=self.size_hint, auto_dismiss=False
             )
+            
             self._window_manager.add_widget(self)
         if not self._window_manager_open:
             self._window_manager.open()
@@ -36,17 +40,7 @@ class CameraManager(ThemableBehavior, MDRelativeLayout):
 
         self._window_manager.dismiss()
         self._window_manager_open = False
-
-    def capture(self):
-        camera = self.ids['camera']
-        if platform == "android":
-            from android.storage import primary_external_storage_path, app_storage_path
-            dstpath = os.path.join(primary_external_storage_path(), 'Pictures', 'MenuGenerator')
-            if not os.path.isdir(dstpath):
-                os.mkdir(dstpath)
-        else:
-            dstpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
-
-        self.photo = os.path.join(dstpath, f"IMG_{time.strftime('%Y%m%d_%H%M%S')}.png")
-        camera.export_to_png(self.photo)
-        print("Captured")
+    
+    def picture_taken(self, obj, filename):
+        print('Picture taken and saved to {}'.format(filename))
+        self.photo = filename

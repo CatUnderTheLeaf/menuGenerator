@@ -3,7 +3,8 @@ import os
 import yaml
 
 # This needs to be here to display the images on Android
-os.environ['KIVY_IMAGE'] = 'pil,sdl2'
+# os.environ['KIVY_IMAGE'] = 'pil,sdl2'
+os.environ['KIVY_IMAGE'] = 'sdl2'
 from kivy.config import Config
 Config.set('kivy', 'exit_on_escape', '0')
 
