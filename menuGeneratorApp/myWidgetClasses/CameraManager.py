@@ -20,7 +20,7 @@ class CameraManager(ThemableBehavior, MDRelativeLayout):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.ids.xcamera.force_landscape()
+        # self.ids.xcamera.force_landscape()
         self.ids.xcamera.directory = self.directory
 
     def show(self):
