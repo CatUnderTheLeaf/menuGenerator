@@ -41,6 +41,10 @@ class RecipeWidget(MDBoxLayout):
         self.camera_manager = None
         # initValues are saved separately
         # so we can check if smth was changed
+
+        print("Size of the button------------")
+        print(self.children[11].size)
+
         if self.parentWidget:
             self.ids.recipeTitle.text = self.recipe.title
             # load new ingredients
