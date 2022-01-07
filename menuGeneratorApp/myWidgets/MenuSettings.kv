@@ -129,7 +129,7 @@
     padding: 0, dp(20), 0, 0
     width: Window.width
 
-<RulesDayButtons>:    
+<RulesDayButtons>:
     cols: 1
     orientation: 'tb-lr'
     adaptive_height: True
@@ -140,12 +140,13 @@
     MDStackLayout:
         adaptive_height: True
         id: rulesToggleButtons
+        spacing: dp(5)
         
     MDStackLayout:
         adaptive_height: True
         id: rulesDays
 
-        TextRoundButton:            
+        TextRoundButton:
             value: "Monday"
             on_release: root.toggleDay(self)
         TextRoundButton:
@@ -174,7 +175,7 @@
     spacing: dp(15)
     width: Window.width    
 
-<RulesTagsMealsBox>:    
+<RulesTagsMealsBox>:
     orientation: 'vertical'
     adaptive_height: True
     spacing: dp(10)
