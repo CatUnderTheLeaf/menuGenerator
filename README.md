@@ -13,9 +13,11 @@ My app has a Navigation drawer with only three destinations, first loaded screen
 In "Settings" user can select time period of generated menu, what meals per day are included and if dishes can be prepared for several days. Rules can be set in Rules section:
 <p align="center">
   <img src="pictures/Settings_v2.jpg" width="350" title="Settings">
-  <img src="pictures/Settings2_v1.jpg" width="350" title="Settings2">
-  <img src="pictures/Settings3_v1.jpg" width="350" title="Settings3">
-  <img src="pictures/Settings4_v2.jpg" width="350" title="Settings4">
+  <img src="pictures/Settings2_v2.jpg" width="350" title="Settings2">
+  <img src="pictures/Settings3_v2.jpg" width="350" title="Settings3">
+  <img src="pictures/Settings4_v1.jpg" width="350" title="Settings4">
+  <img src="pictures/Settings5_v1.jpg" width="350" title="Settings">
+  <img src="pictures/Settings6_v2.jpg" width="350" title="Settings">
 </p>
 
 In "All Recipes" user can view all recipes in a list, on long click can select and delete selected recipes, with a click on "Plus" add a new recipe:
@@ -26,9 +28,9 @@ In "All Recipes" user can view all recipes in a list, on long click can select a
 
 When user wants to edit recipe or create a new one, forth screen opens, here user can add picture, choose ingredients and add existing tags or create new ones:
 <p align="center">
-  <img src="pictures/Add_new_recipe_v2.jpg" width="350" title="Edit/Add new">
+  <img src="pictures/Add_new_recipe_v3.jpg" width="350" title="Edit/Add new">
   <img src="pictures/Set_picture_v2.jpg" width="350" title="Set image">
-  <img src="pictures/Add_ingredients_v1.jpg" width="350" title="Choose ingredients">
+  <img src="pictures/Add_ingredients_v2.jpg" width="350" title="Choose ingredients">
   <img src="pictures/Add_tags_v1.jpg" width="350" title="Add tags">
 </p>
 
