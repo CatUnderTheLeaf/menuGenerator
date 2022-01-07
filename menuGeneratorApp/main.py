@@ -35,7 +35,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.utils.fitimage import FitImage
 
 class MenuGeneratorApp(MDApp):  
-    overlay_color = get_color_from_hex("#6042e4")
+    overlay_color = get_color_from_hex("#4278e4")
     dialog = None
     custom_sheet = None
     # Create Menu object        
