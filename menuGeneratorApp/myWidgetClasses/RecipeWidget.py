@@ -1,6 +1,8 @@
 import os
 import math
 
+from plyer import filechooser
+
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.filemanager import MDFileManager
@@ -31,11 +33,11 @@ class RecipeWidget(MDBoxLayout):
         Window.bind(on_keyboard=self.events)
         # file manager
         self.file_manager_open = False
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_file_manager,
-            select_path=self.select_path,
-            preview=True
-        )
+        # self.file_manager = MDFileManager(
+        #     exit_manager=self.exit_file_manager,
+        #     select_path=self.select_path,
+        #     preview=True
+        # )
         # Camera manager
         self.camera_manager_open = False
         self.camera_manager = None
@@ -222,7 +224,9 @@ class RecipeWidget(MDBoxLayout):
             print(path)
         else:
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
-        self.file_manager.show(path)  # output manager to the screen
+            path = "C:\\my_projects"
+        # self.file_manager.show(path)  # output manager to the screen
+        filechooser.open_file(path=path, on_selection=self.select_path, filters=["*jpg", "*png"], preview=True)
         self.file_manager_open = True
     
     '''
@@ -234,15 +238,15 @@ class RecipeWidget(MDBoxLayout):
     '''   
     def select_path(self, path):
         self.exit_file_manager()
-        if os.path.isfile(path):
-            self.ids.recipeImg.source = path
+        if os.path.isfile(path[0]):
+            self.ids.recipeImg.source = path[0]
 
     '''
     Called when the user reaches the root of the directory tree.
     '''
     def exit_file_manager(self, *args):
         self.file_manager_open = False
-        self.file_manager.close()
+        # self.file_manager.close()
 
     '''
     Called when buttons are pressed on the mobile device.

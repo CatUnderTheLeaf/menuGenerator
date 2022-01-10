@@ -1,155 +1,66 @@
-#!/usr/bin/env python
-import os
-from kivymd.app import MDApp
+'''
+Example of an Android filechooser.
+'''
+
+from textwrap import dedent
+
+from plyer import filechooser
+
+from kivy.app import App
 from kivy.lang import Builder
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivy.properties import (
-    ObjectProperty,
-    StringProperty
-)
-from kivy.uix.modalview import ModalView
-
-from kivymd.theming import ThemableBehavior
-from kivymd.uix.relativelayout import MDRelativeLayout
-
-kv = """
-#:import XCamera kivy_garden.xcamera.XCamera
-
-MDScreen:
-
-    MDBoxLayout:
-        orientation: "vertical"
-        
-        MDNavigationLayout:
-
-            ScreenManager:
-                id: screen_manager
-                
-                MDScreen:
-                    name: "Menu"
-                    
-                    MDBoxLayout:
-                        orientation: "vertical"
-                        id: menu
-
-                        MDToolbar:
-                            pos_hint: {"top": 1}
-                            title: "Menu"
-                            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
+from kivy.properties import ListProperty
+from kivy.uix.button import Button
 
 
-                        MDBoxLayout:
-                            id: empty
-                            orientation: "vertical"
-                            spacing: dp(10)
-                            padding: dp(10)
+class FileChoose(Button):
+    '''
+    Button that triggers 'filechooser.open_file()' and processes
+    the data response from filechooser Activity.
+    '''
 
-                            Widget:
+    selection = ListProperty([])
 
-                            MDLabel:
-                                text: "click to photo"
-                                halign: "center"
+    def choose(self):
+        '''
+        Call plyer filechooser API to run a filechooser Activity.
+        '''
+        filechooser.open_file(on_selection=self.handle_selection)
 
-                            MDIconButton:
-                                icon: "refresh"
-                                pos_hint: {"center_x": .5}
-                                on_release: app.open_camera()
+    def handle_selection(self, selection):
+        '''
+        Callback function for handling the selection response from Activity.
+        '''
+        self.selection = selection
 
-                            Widget:
+    def on_selection(self, *a, **k):
+        '''
+        Update TextInput.text after FileChoose.selection is changed
+        via FileChoose.handle_selection.
+        '''
+        App.get_running_app().root.ids.result.text = str(self.selection)
 
 
-<CameraManager>:
-    MDBoxLayout:
-        orientation: "vertical"
-        spacing: dp(5)
-
-        MDToolbar:
-            id: toolbar
-            left_action_items: [["chevron-left", lambda x: root.exit_manager(1)]]
-            elevation: 10
-    
-        XCamera:
-            id: xcamera
-            on_picture_taken: 
-                root.picture_taken(*args)
-                root.exit_manager(1)
-       
-
-"""
-
-class CameraManager(ThemableBehavior, MDRelativeLayout):
-    exit_manager = ObjectProperty(lambda x: None)
-    photo = StringProperty('')
-    directory = ObjectProperty(None)
-
-    _window_manager = None
-    _window_manager_open = False
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.ids.xcamera.force_landscape()
-        self.ids.xcamera.directory = self.directory
-
-    def show(self):
-
-        if not self._window_manager:
-            self._window_manager = ModalView(
-                size_hint=self.size_hint, auto_dismiss=False
-            )
-            
-            self._window_manager.add_widget(self)
-        if not self._window_manager_open:
-            self._window_manager.open()
-            self._window_manager_open = True
-
-    def close(self):
-        """Closes the file manager window."""
-
-        self._window_manager.dismiss()
-        self._window_manager_open = False
-    
-    def picture_taken(self, obj, filename):
-        print('Picture taken and saved to {}'.format(filename))
-
- 
-
-class CameraApp(MDApp):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.screen = Builder.load_string(kv)
-        self.camera_manager_open = False
-        self.camera_manager = None
+class ChooserApp(App):
+    '''
+    Application class with root built in KV.
+    '''
 
     def build(self):
-        return self.screen
-    
-    '''
-    Called when the user closes camera.
-    '''
-    def exit_camera_manager(self, *args):
-        self.camera_manager_open = False
-        self.camera_manager.close()
-        print(self.camera_manager.photo)
-        # if os.path.isfile(self.camera_manager.photo):
-        #     self.ids.recipeImg.source = self.camera_manager.photo
-
-    def open_camera(self):
-        if not self.camera_manager:
-                self.camera_manager = CameraManager(
-                    exit_manager=self.exit_camera_manager,
-                    directory=os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
-                )
-        self.camera_manager.show()  # output manager to the screen
-        self.camera_manager_open = True
-
-    def picture_taken(self, obj, filename):
-        print('Picture taken and saved to {}'.format(filename))
-
-
-def main():
-    CameraApp().run()
+        return Builder.load_string(dedent('''
+            <FileChoose>:
+            BoxLayout:
+                BoxLayout:
+                    orientation: 'vertical'
+                    TextInput:
+                        id: result
+                        text: ''
+                        hint_text: 'selected path'
+                    FileChoose:
+                        size_hint_y: 0.1
+                        on_release: self.choose()
+                        text: 'Select a file'
+        '''))
 
 
 if __name__ == '__main__':
-    main()
+    ChooserApp().run()
