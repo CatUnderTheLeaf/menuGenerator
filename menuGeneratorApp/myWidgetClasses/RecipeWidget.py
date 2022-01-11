@@ -1,7 +1,8 @@
 import os
 import math
+import datetime
 
-from plyer import filechooser
+from plyer import filechooser, camera
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
@@ -20,7 +21,7 @@ from kivy.utils import platform
 from myWidgetClasses.customButtons import ButtonWithCross
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.otherWidgetClasses import dialogItem, BottomCustomSheet, ContentCustomSheet
-from myWidgetClasses.CameraManager import CameraManager
+# from myWidgetClasses.CameraManager import CameraManager
 
 class RecipeWidget(MDBoxLayout):
     recipe = ObjectProperty()
@@ -40,7 +41,7 @@ class RecipeWidget(MDBoxLayout):
         # )
         # Camera manager
         self.camera_manager_open = False
-        self.camera_manager = None
+        # self.camera_manager = None
         # initValues are saved separately
         # so we can check if smth was changed
 
@@ -239,6 +240,7 @@ class RecipeWidget(MDBoxLayout):
     '''   
     def select_path(self, path):
         self.exit_file_manager()
+        print("the path of an image is........"+str(path))
         if os.path.isfile(path[0]):
             self.ids.recipeImg.source = path[0]
 
@@ -254,21 +256,28 @@ class RecipeWidget(MDBoxLayout):
     '''
     def events(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
-            if self.file_manager_open:
-                self.file_manager.back()
-            if self.camera_manager_open:
-                self.camera_manager.close()
+            print("Buttons were pressed")
+            # if self.file_manager_open:
+            #     self.file_manager.back()
+            # if self.camera_manager_open:
+            #     self.camera_manager.close()
         return True
     
     '''
     Called when the user closes camera.
     '''
-    def exit_camera_manager(self, *args):
+    def exit_camera_manager(self, filepath):
         self.camera_manager_open = False
-        self.camera_manager.close()
-        print(self.camera_manager.photo)
-        if os.path.isfile(self.camera_manager.photo):
-            self.ids.recipeImg.source = self.camera_manager.photo
+        if(os.path.exists(filepath)):
+            print("saved")
+            print("Photo saved to.........." + filepath)
+            self.ids.recipeImg.source = filepath
+        else:
+            print("unable to save.")
+        # self.camera_manager.close()
+        # print(self.camera_manager.photo)
+        # if os.path.isfile(self.camera_manager.photo):
+        #     self.ids.recipeImg.source = self.camera_manager.photo
 
     '''
     Called when user choose to use camera.
@@ -284,10 +293,13 @@ class RecipeWidget(MDBoxLayout):
         else:
             dstpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
 
-        if not self.camera_manager:
-                self.camera_manager = CameraManager(
-                    exit_manager=self.exit_camera_manager,
-                    directory=dstpath
-                )
-        self.camera_manager.show()  # output manager to the screen
+        # if not self.camera_manager:
+        #         self.camera_manager = CameraManager(
+        #             exit_manager=self.exit_camera_manager,
+        #             directory=dstpath
+        #         )
+        # self.camera_manager.show()  # output manager to the screen
+        file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
+        camera.take_picture(filename=os.path.join(dstpath, file_name),
+                         on_complete=self.exit_camera_manager)
         self.camera_manager_open = True
