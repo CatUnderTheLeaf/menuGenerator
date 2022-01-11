@@ -16,7 +16,7 @@ from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelOneLine
 from kivymd.uix.list import OneLineIconListItem
 from kivymd.app import MDApp
 from kivymd.icon_definitions import md_icons
-from kivymd.uix.filemanager import MDFileManager
+# from kivymd.uix.filemanager import MDFileManager
 from kivymd.toast import toast
 from kivymd.uix.bottomsheet import MDListBottomSheet
 from kivymd.uix.dialog import MDDialog
@@ -331,11 +331,11 @@ class Test(MDApp):
         super().__init__(**kwargs)
         Window.bind(on_keyboard=self.events)
         self.manager_open = False
-        self.file_manager = MDFileManager(
-            exit_manager=self.exit_manager,
-            select_path=self.select_path,
-            preview=True
-        )
+        # self.file_manager = MDFileManager(
+        #     exit_manager=self.exit_manager,
+        #     select_path=self.select_path,
+        #     preview=True
+        # )
         self.screen = Builder.load_string(KV)
 
     def file_manager_open(self):

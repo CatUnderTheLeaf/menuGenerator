@@ -5,7 +5,7 @@ from plyer import filechooser
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.filemanager import MDFileManager
+# from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.expansionpanel import MDExpansionPanelOneLine
 
@@ -226,6 +226,7 @@ class RecipeWidget(MDBoxLayout):
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
             path = "C:\\my_projects"
         # self.file_manager.show(path)  # output manager to the screen
+        print("The file_chooser is-----------------------------" + filechooser.__repr__())
         filechooser.open_file(path=path, on_selection=self.select_path, filters=["*jpg", "*png"], preview=True)
         self.file_manager_open = True
     
