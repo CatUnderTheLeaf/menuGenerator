@@ -217,18 +217,16 @@ class RecipeWidget(MDBoxLayout):
     '''
     def open_gallery(self):
         if platform == "android":
-            from android.storage import primary_external_storage_path, app_storage_path
-            settings_path = app_storage_path()
+            from android.storage import primary_external_storage_path 
             path = primary_external_storage_path()
             print("Printing path in menuApp")
-            print(settings_path)
             print(path)
         else:
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
             path = "C:\\my_projects"
         # self.file_manager.show(path)  # output manager to the screen
         print("The file_chooser is-----------------------------" + filechooser.__repr__())
-        filechooser.open_file(path=path, on_selection=self.select_path, filters=["*jpg", "*png"], preview=True)
+        filechooser.open_file(path=path, on_selection=self.select_path, filters=["image", "*jpg", "*png"], preview=True)
         self.file_manager_open = True
     
     '''
@@ -283,8 +281,41 @@ class RecipeWidget(MDBoxLayout):
     Called when user choose to use camera.
     '''
     def get_camera(self):
-        print("camera")
+        print("camera permission check")
 
+        def check_camera_permission():
+            """
+            Android runtime `CAMERA` permission check.
+            """
+            if not platform == 'android':
+                return True
+            from android.permissions import Permission, check_permission
+            permission = Permission.CAMERA
+            return check_permission(permission)
+
+        def check_request_camera_permission(callback=None):
+            """
+            Android runtime `CAMERA` permission check & request.
+            """
+            had_permission = check_camera_permission()
+            if not had_permission:
+                from android.permissions import Permission, request_permissions
+                permissions = [Permission.CAMERA, Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
+                request_permissions(permissions, callback)
+            return had_permission
+
+        def on_permissions_callback(permissions, grant_results):
+            """
+            On camera permission callback calls parent `_on_index()` method.
+            """
+            if all(grant_results):
+                self.take_camera_picture()
+                
+        if check_request_camera_permission(callback=on_permissions_callback):
+            self.take_camera_picture()
+
+    def take_camera_picture(self):        
+        self.camera_manager_open = True
         if platform == "android":
             from android.storage import primary_external_storage_path
             dstpath = os.path.join(primary_external_storage_path(), 'Pictures', 'MenuGenerator')
@@ -300,6 +331,7 @@ class RecipeWidget(MDBoxLayout):
         #         )
         # self.camera_manager.show()  # output manager to the screen
         file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
+        print("The camera facade is-----------------------------" + camera.__repr__())
         camera.take_picture(filename=os.path.join(dstpath, file_name),
                          on_complete=self.exit_camera_manager)
-        self.camera_manager_open = True
+        
