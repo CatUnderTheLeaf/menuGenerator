@@ -22,7 +22,6 @@ from kivy.utils import platform
 from myWidgetClasses.customButtons import ButtonWithCross
 from myWidgetClasses.myExpansionPanel import IngredientsExpansionPanel
 from myWidgetClasses.otherWidgetClasses import dialogItem, BottomCustomSheet, ContentCustomSheet
-# from myWidgetClasses.CameraManager import CameraManager
 
 class RecipeWidget(MDBoxLayout):
     recipe = ObjectProperty()
@@ -42,12 +41,6 @@ class RecipeWidget(MDBoxLayout):
         # )
         # Camera manager
         self.camera_manager_open = False
-        # self.camera_manager = None
-        # initValues are saved separately
-        # so we can check if smth was changed
-
-        print("Size of the button------------")
-        print(self.children[11].size)
 
         if self.parentWidget:
             self.ids.recipeTitle.text = self.recipe.title
@@ -208,7 +201,7 @@ class RecipeWidget(MDBoxLayout):
                 type="simple",
                 items=[
                     dialogItem(text="Choose from gallery", icon='image', parentWidget = self),
-                    dialogItem(text="Take a picture", icon='camera', parentWidget = self)
+                    dialogItem(text="Take a picture (Landscape)", icon='camera', parentWidget = self)
                 ],
             )
         self.dialog.open()
@@ -258,8 +251,6 @@ class RecipeWidget(MDBoxLayout):
             print("Buttons were pressed")
             # if self.file_manager_open:
             #     self.file_manager.back()
-            # if self.camera_manager_open:
-            #     self.camera_manager.close()
         return True
     
     '''
@@ -273,10 +264,6 @@ class RecipeWidget(MDBoxLayout):
             self.ids.recipeImg.source = filepath
         else:
             print("unable to save.")
-        # self.camera_manager.close()
-        # print(self.camera_manager.photo)
-        # if os.path.isfile(self.camera_manager.photo):
-        #     self.ids.recipeImg.source = self.camera_manager.photo
 
     '''
     Called when user choose to use camera.
@@ -325,16 +312,7 @@ class RecipeWidget(MDBoxLayout):
         else:
             dstpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
 
-        # if not self.camera_manager:
-        #         self.camera_manager = CameraManager(
-        #             exit_manager=self.exit_camera_manager,
-        #             directory=dstpath
-        #         )
-        # self.camera_manager.show()  # output manager to the screen
         file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
-        # print("The camera facade is-----------------------------" + camera.__repr__())
-        # camera.take_picture(filename=os.path.join(dstpath, file_name),
-        #                  on_complete=self.exit_camera_manager)
         camera = AndroidCamera()
         print("The camera facade is-----------------------------" + camera.__repr__())
         
