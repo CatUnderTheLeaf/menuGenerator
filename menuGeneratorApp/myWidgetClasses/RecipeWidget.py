@@ -2,7 +2,8 @@ import os
 import math
 import datetime
 
-from plyer import filechooser, camera
+from plyer import filechooser
+from plyerAndroidClasses.camera import AndroidCamera
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
@@ -331,7 +332,10 @@ class RecipeWidget(MDBoxLayout):
         #         )
         # self.camera_manager.show()  # output manager to the screen
         file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
-        print("The camera facade is-----------------------------" + camera.__repr__())
-        camera.take_picture(filename=os.path.join(dstpath, file_name),
+        # print("The camera facade is-----------------------------" + camera.__repr__())
+        # camera.take_picture(filename=os.path.join(dstpath, file_name),
+        #                  on_complete=self.exit_camera_manager)
+        print("The camera facade is-----------------------------" + AndroidCamera.__repr__())
+        AndroidCamera.take_picture(filename=os.path.join(dstpath, file_name),
                          on_complete=self.exit_camera_manager)
         
