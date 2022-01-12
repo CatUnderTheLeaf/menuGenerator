@@ -219,7 +219,7 @@ class RecipeWidget(MDBoxLayout):
     def open_gallery(self):
         if platform == "android":
             from android.storage import primary_external_storage_path 
-            path = primary_external_storage_path()
+            path = os.path.join(primary_external_storage_path(), 'Pictures')
             print("Printing path in menuApp")
             print(path)
         else:
@@ -335,7 +335,9 @@ class RecipeWidget(MDBoxLayout):
         # print("The camera facade is-----------------------------" + camera.__repr__())
         # camera.take_picture(filename=os.path.join(dstpath, file_name),
         #                  on_complete=self.exit_camera_manager)
-        print("The camera facade is-----------------------------" + AndroidCamera.__repr__())
-        AndroidCamera.take_picture(filename=os.path.join(dstpath, file_name),
-                         on_complete=self.exit_camera_manager)
+        camera = AndroidCamera()
+        print("The camera facade is-----------------------------" + camera.__repr__())
         
+        camera.take_picture(filename=os.path.join(dstpath, file_name),
+                         on_complete=self.exit_camera_manager)
+        camera.take_picture()
