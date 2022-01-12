@@ -340,4 +340,3 @@ class RecipeWidget(MDBoxLayout):
         
         camera.take_picture(filename=os.path.join(dstpath, file_name),
                          on_complete=self.exit_camera_manager)
-        camera.take_picture()
