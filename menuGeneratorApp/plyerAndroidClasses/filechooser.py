@@ -126,8 +126,7 @@ class AndroidFileChooser(FileChooser):
 
         .. versionadded:: 1.4.0
         '''
-        print("Kwargs for filechooser.............")
-        print(kwargs)
+        
         # set up selection handler
         # startActivityForResult is async
         # onActivityResult is sync
@@ -148,9 +147,6 @@ class AndroidFileChooser(FileChooser):
         file_intent.addCategory(
             Intent.CATEGORY_OPENABLE
         )
-
-        print("File intent is...............")
-        print(file_intent)
 
         # use putExtra to allow multiple file selection
         if kwargs.get('multiple', self.multiple):
@@ -181,9 +177,7 @@ class AndroidFileChooser(FileChooser):
         if result_code != Activity.RESULT_OK:
             # The action had been cancelled.
             return
-        print("Data on result................")
-        print(data)
-
+        
         selection = []
         # Process multiple URI if multiple files selected
         try:
@@ -348,9 +342,7 @@ class AndroidFileChooser(FileChooser):
 
         .. versionadded:: 1.4.0
         '''
-        print("URI of the file............")
-        print(uri)
-
+        
         uri_authority = uri.getAuthority()
         uri_scheme = uri.getScheme().lower()
 

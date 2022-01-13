@@ -2,15 +2,11 @@ import os
 import math
 import datetime
 
-# from plyer.facades import filechooser
-
-# from plyer import filechooser
 from plyerAndroidClasses.filechooser import AndroidFileChooser
 from plyerAndroidClasses.camera import AndroidCamera
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
-# from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
 from kivymd.uix.expansionpanel import MDExpansionPanelOneLine
 
@@ -37,11 +33,6 @@ class RecipeWidget(MDBoxLayout):
         Window.bind(on_keyboard=self.events)
         # file manager
         self.file_manager_open = False
-        # self.file_manager = MDFileManager(
-        #     exit_manager=self.exit_file_manager,
-        #     select_path=self.select_path,
-        #     preview=True
-        # )
         # Camera manager
         self.camera_manager_open = False
 
@@ -221,8 +212,7 @@ class RecipeWidget(MDBoxLayout):
                 return True
             from android.permissions import Permission, check_permission
             return (check_permission(Permission.WRITE_EXTERNAL_STORAGE) and 
-                    check_permission(Permission.READ_EXTERNAL_STORAGE) and
-                    check_permission("android.permission.ACCESS_ALL_DOWNLOADS"))
+                    check_permission(Permission.READ_EXTERNAL_STORAGE))
 
         def check_request_filechooser_permission(callback=None):
             """
@@ -231,7 +221,7 @@ class RecipeWidget(MDBoxLayout):
             had_permission = check_filechooser_permission()
             if not had_permission:
                 from android.permissions import Permission, request_permissions
-                permissions = [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, "android.permission.ACCESS_ALL_DOWNLOADS"]
+                permissions = [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
                 request_permissions(permissions, callback)
             return had_permission
 
@@ -246,14 +236,10 @@ class RecipeWidget(MDBoxLayout):
         if platform == "android":
             from android.storage import primary_external_storage_path 
             path = os.path.join(primary_external_storage_path(), 'Pictures')
-            print("Printing path in menuApp")
-            print(path)
         else:
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
             path = "C:\\my_projects"
-        # self.file_manager.show(path)  # output manager to the screen
         filechooser = AndroidFileChooser()
-        print("The file_chooser is-----------------------------" + filechooser.__repr__())
         filechooser.open_file(path=path, on_selection=self.select_path, filters=["image", "*jpg", "*png"], preview=True)
         self.file_manager_open = True
     
@@ -266,7 +252,6 @@ class RecipeWidget(MDBoxLayout):
     '''   
     def select_path(self, path):
         self.exit_file_manager()
-        print("the path of an image is........"+str(path))
         if os.path.isfile(path[0]):
             self.ids.recipeImg.source = path[0]
 
@@ -275,7 +260,6 @@ class RecipeWidget(MDBoxLayout):
     '''
     def exit_file_manager(self, *args):
         self.file_manager_open = False
-        # self.file_manager.close()
 
     '''
     Called when buttons are pressed on the mobile device.
@@ -283,8 +267,6 @@ class RecipeWidget(MDBoxLayout):
     def events(self, instance, keyboard, keycode, text, modifiers):
         if keyboard in (1001, 27):
             print("Buttons were pressed")
-            # if self.file_manager_open:
-            #     self.file_manager.back()
         return True
     
     '''
@@ -293,8 +275,6 @@ class RecipeWidget(MDBoxLayout):
     def exit_camera_manager(self, filepath):
         self.camera_manager_open = False
         if(os.path.exists(filepath)):
-            print("saved")
-            print("Photo saved to.........." + filepath)
             if (os.path.getsize(filepath)!=0):
                 self.ids.recipeImg.source = filepath
             else:
@@ -306,7 +286,6 @@ class RecipeWidget(MDBoxLayout):
     Called when user choose to use camera.
     '''
     def get_camera(self):
-        print("camera permission check")
 
         def check_camera_permission():
             """
@@ -348,7 +327,6 @@ class RecipeWidget(MDBoxLayout):
 
         file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
         camera = AndroidCamera()
-        print("The camera facade is-----------------------------" + camera.__repr__())
         
         camera.take_picture(filename=os.path.join(dstpath, file_name),
                          on_complete=self.exit_camera_manager)
