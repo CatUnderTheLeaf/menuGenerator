@@ -2,7 +2,10 @@ import os
 import math
 import datetime
 
-from plyer import filechooser
+# from plyer.facades import filechooser
+
+# from plyer import filechooser
+from plyerAndroidClasses.filechooser import AndroidFileChooser
 from plyerAndroidClasses.camera import AndroidCamera
 
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -210,6 +213,35 @@ class RecipeWidget(MDBoxLayout):
     open FileManager and show images
     '''
     def open_gallery(self):
+        def check_filechooser_permission():
+            """
+            Android runtime `STORAGE` permission check.
+            """
+            if not platform == 'android':
+                return True
+            from android.permissions import Permission, check_permission
+            return (check_permission(Permission.WRITE_EXTERNAL_STORAGE) and 
+                    check_permission(Permission.READ_EXTERNAL_STORAGE))
+
+        def check_request_filechooser_permission(callback=None):
+            """
+            Android runtime `STORAGE` permission check & request.
+            """
+            had_permission = check_filechooser_permission()
+            if not had_permission:
+                from android.permissions import Permission, request_permissions
+                permissions = [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
+                request_permissions(permissions, callback)
+            return had_permission
+
+        def on_permissions_callback(permissions, grant_results):
+            if all(grant_results):
+                self.open_filechooser()
+                
+        if check_request_filechooser_permission(callback=on_permissions_callback):
+            self.open_filechooser()
+
+    def open_filechooser(self):
         if platform == "android":
             from android.storage import primary_external_storage_path 
             path = os.path.join(primary_external_storage_path(), 'Pictures')
@@ -219,6 +251,7 @@ class RecipeWidget(MDBoxLayout):
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
             path = "C:\\my_projects"
         # self.file_manager.show(path)  # output manager to the screen
+        filechooser = AndroidFileChooser()
         print("The file_chooser is-----------------------------" + filechooser.__repr__())
         filechooser.open_file(path=path, on_selection=self.select_path, filters=["image", "*jpg", "*png"], preview=True)
         self.file_manager_open = True
@@ -293,9 +326,6 @@ class RecipeWidget(MDBoxLayout):
             return had_permission
 
         def on_permissions_callback(permissions, grant_results):
-            """
-            On camera permission callback calls parent `_on_index()` method.
-            """
             if all(grant_results):
                 self.take_camera_picture()
                 
