@@ -204,7 +204,7 @@ class RecipeWidget(MDBoxLayout):
                 type="simple",
                 items=[
                     dialogItem(text="Choose from gallery", icon='image', parentWidget = self),
-                    dialogItem(text="Take a picture (Landscape)", icon='camera', parentWidget = self)
+                    dialogItem(text="Take a picture", icon='camera', parentWidget = self)
                 ],
             )
         self.dialog.open()
@@ -221,7 +221,8 @@ class RecipeWidget(MDBoxLayout):
                 return True
             from android.permissions import Permission, check_permission
             return (check_permission(Permission.WRITE_EXTERNAL_STORAGE) and 
-                    check_permission(Permission.READ_EXTERNAL_STORAGE))
+                    check_permission(Permission.READ_EXTERNAL_STORAGE) and
+                    check_permission("android.permission.ACCESS_ALL_DOWNLOADS"))
 
         def check_request_filechooser_permission(callback=None):
             """
@@ -230,7 +231,7 @@ class RecipeWidget(MDBoxLayout):
             had_permission = check_filechooser_permission()
             if not had_permission:
                 from android.permissions import Permission, request_permissions
-                permissions = [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE]
+                permissions = [Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE, "android.permission.ACCESS_ALL_DOWNLOADS"]
                 request_permissions(permissions, callback)
             return had_permission
 
