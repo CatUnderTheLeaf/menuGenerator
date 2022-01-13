@@ -294,7 +294,10 @@ class RecipeWidget(MDBoxLayout):
         if(os.path.exists(filepath)):
             print("saved")
             print("Photo saved to.........." + filepath)
-            self.ids.recipeImg.source = filepath
+            if (os.path.getsize(filepath)!=0):
+                self.ids.recipeImg.source = filepath
+            else:
+                os.remove(filepath)
         else:
             print("unable to save.")
 

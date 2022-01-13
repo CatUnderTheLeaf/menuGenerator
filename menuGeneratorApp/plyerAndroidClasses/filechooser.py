@@ -126,7 +126,8 @@ class AndroidFileChooser(FileChooser):
 
         .. versionadded:: 1.4.0
         '''
-        print("Kwargs for filechooser............."+ kwargs)
+        print("Kwargs for filechooser.............")
+        print(kwargs)
         # set up selection handler
         # startActivityForResult is async
         # onActivityResult is sync
