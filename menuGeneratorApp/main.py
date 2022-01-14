@@ -254,7 +254,7 @@ class MenuGeneratorApp(MDApp):
         if not self.dialog:
             self.dialog = MDDialog(
                 title="Accept changes?",
-                text="This will regenerate menu with new settings.",
+                text="Changes will be applied only after regenerating menu.",
                 buttons=[
                     MDFlatButton(
                         text="ACCEPT",
@@ -265,8 +265,7 @@ class MenuGeneratorApp(MDApp):
                             self.setSettingsInMenu(settings.timePeriod, settings.repeat, settings.meals),
                             self.updateRules(settings.changedRules),
                             settings.updateInitValues(),
-                            self.generateMenuTabs(),
-                            self.changeScreen("Menu")
+                            # self.generateMenuTabs()
                         )
                     ),
                     MDFlatButton(
