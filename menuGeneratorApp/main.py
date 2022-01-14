@@ -46,7 +46,7 @@ class MenuGeneratorApp(MDApp):
     delete previous tabs and load content to the first new tab
     
      """
-    def generateMenuTabs(self):
+    def generateMenuTabs(self, loaded = False):
         # add MDTabs widget on the first generation
         if not 'tabs' in self.root.ids:
             tabs = MDTabs()
@@ -65,10 +65,12 @@ class MenuGeneratorApp(MDApp):
         sdate = date.today()
         n = self.menu.n
         edate = sdate + timedelta(days=n-1)
-        self.menu.generateDailyMenu(sdate, edate)
+        if not loaded:
+            self.menu.generateDailyMenu(sdate, edate)
 
         # add new Tab widgets
-        for day in self.menu.menu:
+        for day_str in self.menu.menu:
+            day = date.fromisoformat(day_str)
             day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
             tab = Tab(title=day_title, day=day)                
             self.root.ids.tabs.add_widget(tab)
@@ -89,7 +91,7 @@ class MenuGeneratorApp(MDApp):
      """
     def fillTabs(self, instance_tab):
         for meal in self.menu.mpd:
-            recipe = self.menu.menu[instance_tab.day][meal]
+            recipe = self.menu.menu[instance_tab.day.isoformat()][meal]
             if (recipe is not None):
                 instance_tab.ids.box.add_widget(
                     OneLineListItem(text=f"{meal}")
@@ -117,24 +119,16 @@ class MenuGeneratorApp(MDApp):
     """ 
     Set transition between Screens
     Load settings
-    Generate Menu
+    Load Menu
     
      """
     def on_start(self):
         Window.bind(on_keyboard=self.key_input)
         
         self.load_settings()
-
-        # if platform == "android":
-        #     from android.permissions import request_permissions, Permission 
-
-        #     def callback(permission, results):
-        #         if all([res for res in results]):
-        #             print("Got all permissions")                    
-        #         else:
-        #             print("Did not get all permissions")
-
-        #     request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
+        
+        if self.menu.menu:
+            self.generateMenuTabs(loaded = True)
 
     """
     Load settings from yml, DB and JsonStore
@@ -143,6 +137,7 @@ class MenuGeneratorApp(MDApp):
         timePeriod = "day"
         repeatDishes = False
         meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
+        genMenu = {}
         
         self.root.ids.screen_manager.transition = NoTransition()
      
@@ -162,9 +157,10 @@ class MenuGeneratorApp(MDApp):
             timePeriod = self.store.get('settings')['timePeriod']            
             repeatDishes = self.store.get('settings')['repeatDishes']
             meals = self.store.get('settings')['meals']
+            genMenu = self.store.get('settings')['genMenu']
         
         # set settings in the menu
-        self.setSettingsInMenu(timePeriod, repeatDishes, meals)
+        self.setSettingsInMenu(timePeriod, repeatDishes, meals, genMenu)
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
@@ -183,7 +179,8 @@ class MenuGeneratorApp(MDApp):
         if hasattr(self, 'store'):
             self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
-                            meals = self.menu._mpd)
+                            meals = self.menu._mpd,
+                            genMenu = self.menu.toJson())
         self.menu.disconnectDB()
 
     """ 
@@ -217,10 +214,11 @@ class MenuGeneratorApp(MDApp):
 
     :param settings: MenuSettings object
     """
-    def setSettingsInMenu(self, timePeriod, repeatDishes, meals):
+    def setSettingsInMenu(self, timePeriod, repeatDishes, meals, genMenu):
         self.set_n_days(timePeriod)
         self.menu.repeatDishes = repeatDishes
         self.menu.update_mpd(meals)
+        self.menu.loadFromJson(genMenu)
 
     """
     update Rules in db 

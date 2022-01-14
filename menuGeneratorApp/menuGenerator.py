@@ -24,11 +24,15 @@ edate = sdate + timedelta(days=n)
 meals = {'4': 'Dinner', '2': 'Lunch', '0': 'Breakfast', '1': 'Brunch', '3': 'Supper'}
 menu.update_mpd(meals)
 
-# menu.generateDailyMenu(sdate, edate)
-# print(menu)
-rules = menu.db.db.rulesCollection
-for rule in rules:
-    print(rule)
+menu.generateDailyMenu(sdate, edate)
+print(menu)
+genMenu = menu.toJson()
+menu.menu = {}
+menu.loadFromJson(genMenu)
+print(menu)
+# rules = menu.db.db.rulesCollection
+# for rule in rules:
+#     print(rule)
 # print(rules[1])
 # rules[18] = {'rule': 'On discard Breakfast'}
 # rules[25] = {'rule': 'For Brunch use low_carb, protein, high_carb, fat, free'}

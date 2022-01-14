@@ -1,4 +1,6 @@
 from datetime import date, timedelta
+from classes.classRecipe import Recipe
+import jsons
 
 from classes.classMenuDB import MenuDB
 """ 
@@ -42,13 +44,40 @@ class Menu:
     def __str__(self):
         menu = []
         menu.append("!!!-----------------generated menu----------------!!!")
-        for day in self.menu:
+        for day_str in self.menu:
+            day = date.fromisoformat(day_str)
             menu.append("\n{}, {}:".format(day, day.strftime("%a")))
             for meal in self.mpd:
-                if meal in self.menu[day]:
-                    menu.append("{} - {}".format(meal, self.menu[day][meal]))
+                if meal in self.menu[day_str]:
+                    menu.append("{} - {}".format(meal, self.menu[day_str][meal]))
         return "\n".join(menu)
     
+    """ 
+    serialize Menu to JSON
+    
+    :return: JSON object
+     """
+    def toJson(self):
+        jsonMenu = jsons.dump(self.menu)
+        return jsonMenu
+
+    """ 
+    deserialize Menu from JSON
+
+    :param genMenu: JSON object
+    
+     """
+    def loadFromJson(self, genMenu):
+        if genMenu:
+            testMenu = {}
+            for day_str in genMenu:
+                testMenu[day_str] = {}
+                testMenu[day_str]['prepTime'] = genMenu[day_str]['prepTime']
+                for meal in self.mpd:
+                    if meal in genMenu[day_str]:
+                        testMenu[day_str][meal] = jsons.load(genMenu[day_str][meal], Recipe) if genMenu[day_str][meal] is not None else None
+            self.menu = testMenu
+
     """ 
     generate Menu for n days
 
@@ -60,7 +89,7 @@ class Menu:
         self.menu = {}
         self.n = (edate - sdate).days + 1
         days = [sdate + timedelta(days=i) for i in range(self.n)]
-
+        
         self.db.generate_subsets(self.mpd)
 
         self.getEmptyMenu(days)
@@ -77,7 +106,7 @@ class Menu:
      """
     def getEmptyMenu(self, days):
         prepTimes = self.db.getRules().getPrepTimes(days)
-        self.menu = {day: {'prepTime': prepTimes[day]} for day in days}
+        self.menu = {day.isoformat(): {'prepTime': prepTimes[day]} for day in days}
         return
 
     """ 

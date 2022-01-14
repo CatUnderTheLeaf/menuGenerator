@@ -1,5 +1,6 @@
 import calendar
 import itertools
+from datetime import date
 
 """ 
 A class that represent rules for generating menu
@@ -223,10 +224,11 @@ class Rules:
     """
     def filterDiscardedMeals(self, days):
         indices = []
-        for x in days:
+        for day in days:
+            x = date.fromisoformat(day)
             if x.strftime("%A") in self.rules['day_discard_meal']:
                 meals = self.rules['day_discard_meal'][x.strftime("%A")]
-                indices.append((x, meals))
+                indices.append((day, meals))
         return indices
 
     """ 
