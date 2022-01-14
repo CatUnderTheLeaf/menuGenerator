@@ -2,9 +2,6 @@ import os
 import math
 import datetime
 
-from plyerAndroidClasses.filechooser import AndroidFileChooser
-from plyerAndroidClasses.camera import AndroidCamera
-
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.bottomsheet import MDCustomBottomSheet
@@ -236,12 +233,14 @@ class RecipeWidget(MDBoxLayout):
         if platform == "android":
             from android.storage import primary_external_storage_path 
             path = os.path.join(primary_external_storage_path(), 'Pictures')
+            from plyerAndroidClasses.filechooser import AndroidFileChooser
+            filechooser = AndroidFileChooser()
+            filechooser.open_file(path=path, on_selection=self.select_path, filters=["image", "*jpg", "*png"], preview=True)
+            self.file_manager_open = True
         else:
             path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
-            path = "C:\\my_projects"
-        filechooser = AndroidFileChooser()
-        filechooser.open_file(path=path, on_selection=self.select_path, filters=["image", "*jpg", "*png"], preview=True)
-        self.file_manager_open = True
+            print("Here should be fileChooser")
+        
     
     '''
     It will be called when you click on the file name
@@ -316,17 +315,21 @@ class RecipeWidget(MDBoxLayout):
             self.take_camera_picture()
 
     def take_camera_picture(self):        
-        self.camera_manager_open = True
         if platform == "android":
             from android.storage import primary_external_storage_path
             dstpath = os.path.join(primary_external_storage_path(), 'Pictures', 'MenuGenerator')
             if not os.path.isdir(dstpath):
                 os.mkdir(dstpath)
+
+            self.camera_manager_open = True
+
+            from plyerAndroidClasses.camera import AndroidCamera
+            file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
+            camera = AndroidCamera()            
+            camera.take_picture(filename=os.path.join(dstpath, file_name),
+                            on_complete=self.exit_camera_manager)       
         else:
             dstpath = os.path.join(os.path.dirname(os.path.dirname(__file__)), "img/")
+            print("Here should be camera opened")
 
-        file_name = datetime.datetime.now().strftime('%Y-%m-%d %H.%M.%S.jpg')
-        camera = AndroidCamera()
         
-        camera.take_picture(filename=os.path.join(dstpath, file_name),
-                         on_complete=self.exit_camera_manager)
