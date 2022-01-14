@@ -1,5 +1,5 @@
 import pytest
-from classes.classRules import Rules
+from ..classes.classRules import Rules
 
 # test initializing Rules with empty db_path
 def test_initRules():
@@ -13,46 +13,46 @@ def test_initRules():
 
 
 lines = [
-    (["At Breakfast serve only breakfast"], 'meal_tag', {'Breakfast': ['breakfast']}),
-    (["At Breakfast, Lunch serve only breakfast"], 'meal_tag', {'Breakfast': ['breakfast'], 'Lunch': ['breakfast']}),
-    (["At Breakfast serve only breakfast, dough food"], 'meal_tag', {'Breakfast': ['breakfast', 'dough food']}),
-    (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], 'day_time', {'Mon': ('short', 'medium'), 'Tue': 
-        ('short', 'medium'), 'Wed': ('short', 'medium'), 'Thu': ('short', 'medium'), 'Fri': ('short', 'medium')}),
-    (["short prepareTime on Mon, Tue, Fri"], 'day_time', {'Mon': ('short', ), 'Tue': 
-        ('short', ), 'Fri': ('short', )}),
-    (["For dough food ignore protein"], 'tag_ignore_nutrient', {'dough food': ['protein']}),
-    (["cereals_grains_pasta_bread_vegan is high_carb"], 'class_nutrient', {'cereals_grains_pasta_bread_vegan': ['high_carb']}),
-    (["dairy is low_carb, protein, fat"], 'class_nutrient', {'dairy': ['low_carb', 'protein', 'fat']}),
-    (["For Breakfast use low_carb, high_carb, fat, free"], 'meal_nutrient', {'Breakfast': ['low_carb', 'high_carb', 'fat', 'free']}),
-    (["On Sun discard Lunch"], 'day_discard_meal', {'Sun': {'Lunch'}}),
-    (["On Sun, Mon discard Lunch, Breakfast", "On Sun discard Dinner"], 'day_discard_meal', {'Sun': {'Lunch', 'Breakfast', 'Dinner'}, 'Mon': {'Lunch', 'Breakfast'}}),
-    pytest.param(["On Sun discarding Lunch"], 'day_discard_meal', {'Sun': ['Lunch']}, marks=pytest.mark.xfail)
+    ([("At Breakfast serve only breakfast", "1")], 'meal_tag', {'Breakfast': ({'breakfast'}, '1')}),
+    ([("At Breakfast, Lunch serve only breakfast", "1")], 'meal_tag', {'Breakfast': ({'breakfast'}, '1'), 'Lunch': ({'breakfast'}, '1')}),
+    ([("At Breakfast serve only breakfast, dough food", "1")], 'meal_tag', {'Breakfast': ({'breakfast', 'dough food'}, '1')}),
+    ([("short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "1")], 'day_time', {'Mon': {'medium', 'short'}, 'Tue': 
+        {'medium', 'short'}, 'Wed': {'medium', 'short'}, 'Thu': {'medium', 'short'}, 'Fri': {'medium', 'short'}}),
+    ([("short prepareTime on Mon, Tue, Fri", "1")], 'day_time', {'Mon': {'short'}, 'Tue': 
+        {'short'}, 'Fri': {'short'}}),
+    ([("For dough food ignore protein", "1")], 'tag_ignore_nutrient', {'dough food': ['protein']}),
+    ([("cereals_grains_pasta_bread_vegan is high_carb", "1")], 'class_nutrient', {'cereals_grains_pasta_bread_vegan': ['high_carb']}),
+    ([("dairy is low_carb, protein, fat", "1")], 'class_nutrient', {'dairy': ['low_carb', 'protein', 'fat']}),
+    ([("For Breakfast use low_carb, high_carb, fat, free", "1")], 'meal_nutrient', {'Breakfast': ({'fat', 'free', 'high_carb', 'low_carb'}, '1')}),
+    ([("On Sun discard Lunch", "1")], 'day_discard_meal', {'Sun': {'Lunch'}}),
+    ([("On Sun, Mon discard Lunch, Breakfast", "1"), ("On Sun discard Dinner", "2")], 'day_discard_meal', {'Sun': {'Lunch', 'Breakfast', 'Dinner'}, 'Mon': {'Lunch', 'Breakfast'}}),
+    pytest.param([("On Sun discarding Lunch", "1")], 'day_discard_meal', {'Sun': ['Lunch']}, marks=pytest.mark.xfail)
 ]
-@pytest.mark.parametrize("lines,key,res", lines)
-def test_readRules(lines, key, res):
+@pytest.mark.parametrize("rules,key,res", lines)
+def test_readRules(rules, key, res):
     r = Rules()
-    for line in lines:
+    for line in rules:
         r.readRules(line)
     assert r.rules[key] == res
 
-meal_tags = [("At Breakfast serve only breakfast", 'Breakfast', ['breakfast']),
-            ("At Breakfast serve only breakfast", 'Lunch', None)]
+meal_tags = [(("At Breakfast serve only breakfast", "1"), 'Breakfast', {'breakfast'}),
+            (("At Breakfast serve only breakfast", "1"), 'Lunch', None)]
 @pytest.mark.parametrize("line,key,res", meal_tags)
 def test_filterByTag(line, key, res):
     r = Rules()
     r.readRules(line)
     assert r.filterByTag(key) == res
 
-meal_nutrients = [("For Breakfast use low_carb, high_carb, fat, free", 'Breakfast', ['low_carb', 'high_carb', 'fat', 'free']),
-                ("For Breakfast use low_carb, high_carb, fat, free", 'Lunch', None)]
+meal_nutrients = [(("For Breakfast use low_carb, high_carb, fat, free", "1"), 'Breakfast', {'low_carb', 'high_carb', 'fat', 'free'}),
+                (("For Breakfast use low_carb, high_carb, fat, free", "1"), 'Lunch', None)]
 @pytest.mark.parametrize("line,key,res", meal_nutrients)
 def test_filterByNutrient(line, key, res):
     r = Rules()
     r.readRules(line)
     assert r.filterByNutrient(key) == res
 
-days_times = [(["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], [('short', 'medium'), None]),
-            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], [('short', 'medium'), ('medium', 'long')])]
+days_times = [([('short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', "1")], [{'short'}, None]),
+            ([('short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', "1"), ('medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday', "2")], [{'medium', 'short'}, {'medium'}])]
 @pytest.mark.parametrize("lines,res", days_times)
 def test_getDayTimes(lines, res):
     r = Rules()
@@ -67,15 +67,15 @@ def getDates(n):
     return days
 
 dates_times = [#1
-    (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri", "medium, long prepareTime on Sat, Sun"], 
-            [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], ('short', 'medium')), (['Sat', 'Sun'], ('medium', 'long'))]),
-            #2
-            (["short, medium prepareTime on Mon, Tue, Wed, Thu, Fri"], 
-            [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], ('short', 'medium')), (['Sat', 'Sun'], None)]),
-            #3
-            (["short prepareTime on Mon, Tue, Thu, Fri", "medium, long prepareTime on Sat, Sun"], 
-            [(['Mon', 'Tue', 'Thu', 'Fri'], ('short', )), (['Sat', 'Sun'], ('medium', 'long')), (['Wed'], None)])
-             ]
+    ([('short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', "1"), ('medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday', "2")], 
+        [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], {'short', 'medium'}), (['Sat', 'Sun'], {'medium'})]),
+    #2
+    ([('short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', "1")], 
+    [(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], {'short'}), (['Sat', 'Sun'], None)]),
+    #3
+    ([('short prepareTime on Friday, Monday, Tuesday, Thursday', "1"), ('medium prepareTime on Saturday, Sunday', "2")], 
+    [(['Mon', 'Tue', 'Thu', 'Fri'], {'short'}), (['Sat', 'Sun'], {'medium'}), (['Wed'], None)])
+        ]
 
 @pytest.mark.parametrize("lines,ress", dates_times)
 def test_getPrepTimes(lines, ress):
@@ -94,12 +94,12 @@ def test_getPrepTimes(lines, ress):
     
     assert r.getPrepTimes(dates) == result
 
-discarded_meals = [(["On Sun discard Lunch"], [(['Sun'], {'Lunch'})]),
-                    (["On Sun discard Lunch, Breakfast"], [(['Sun'], {'Lunch', 'Breakfast'})]),
-                    (["On Sun, Mon discard Lunch, Breakfast"], [(['Sun', 'Mon'], {'Lunch', 'Breakfast'})]),
-                    (["On Sun, Mon discard Lunch"], [(['Sun', 'Mon'], {'Lunch'})]),
-                    (["On Sun, Mon discard Lunch, Breakfast", "On Sun discard Dinner"], [(['Sun'], {'Lunch', 'Breakfast', 'Dinner'}), (['Mon'], {'Lunch', 'Breakfast'})]),
-                    (["On Sun, Mon discard Lunch", "On Sun discard Dinner, Breakfast"], [(['Sun'], {'Lunch', 'Breakfast', 'Dinner'}), (['Mon'], {'Lunch'})])]
+discarded_meals = [([("On Sun discard Lunch", "1")], [(['Sun'], {'Lunch'})]),
+                    ([("On Sun discard Lunch, Breakfast", "1")], [(['Sun'], {'Lunch', 'Breakfast'})]),
+                    ([("On Sun, Mon discard Lunch, Breakfast", "1")], [(['Sun', 'Mon'], {'Lunch', 'Breakfast'})]),
+                    ([("On Sun, Mon discard Lunch", "1")], [(['Sun', 'Mon'], {'Lunch'})]),
+                    ([("On Sun, Mon discard Lunch, Breakfast", "1"), ("On Sun discard Dinner", "2")], [(['Sun'], {'Lunch', 'Breakfast', 'Dinner'}), (['Mon'], {'Lunch', 'Breakfast'})]),
+                    ([("On Sun, Mon discard Lunch", "1"), ("On Sun discard Dinner, Breakfast", "2")], [(['Sun'], {'Lunch', 'Breakfast', 'Dinner'}), (['Mon'], {'Lunch'})])]
 
 @pytest.mark.parametrize("lines, ress", discarded_meals)
 def test_filterDiscardedMeals(lines, ress):
@@ -109,11 +109,11 @@ def test_filterDiscardedMeals(lines, ress):
 
     result = []
     dates = getDates(7)
+    dates = [day.isoformat() for day in dates]
     for date in dates:
         for res in ress:
             days, meals = res
-            day = date.strftime("%a")
-            if day in days:
+            if date in days:
                 result.append((date, meals))
     
     assert r.filterDiscardedMeals(dates) == result

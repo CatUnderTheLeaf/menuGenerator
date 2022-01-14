@@ -1,5 +1,5 @@
 import random
-from classes.classSqliteDB import SqliteDB
+# from classes.classSqliteDB import SqliteDB
 from classes.classUnqliteDB import UnqliteDB
 
 class MenuDB:
