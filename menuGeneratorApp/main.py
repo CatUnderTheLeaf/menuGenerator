@@ -125,16 +125,16 @@ class MenuGeneratorApp(MDApp):
         
         self.load_settings()
 
-        if platform == "android":
-            from android.permissions import request_permissions, Permission 
+        # if platform == "android":
+        #     from android.permissions import request_permissions, Permission 
 
-            def callback(permission, results):
-                if all([res for res in results]):
-                    print("Got all permissions")                    
-                else:
-                    print("Did not get all permissions")
+        #     def callback(permission, results):
+        #         if all([res for res in results]):
+        #             print("Got all permissions")                    
+        #         else:
+        #             print("Did not get all permissions")
 
-            request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
+        #     request_permissions([Permission.WRITE_EXTERNAL_STORAGE, Permission.READ_EXTERNAL_STORAGE], callback)
 
     """
     Load settings from yml, DB and JsonStore
