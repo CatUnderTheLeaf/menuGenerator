@@ -20,18 +20,19 @@ menu.connectDB(db, db_path)
 n = 10
 sdate = date.today()
 edate = sdate + timedelta(days=n)
-meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
+# meals = {"0": "Breakfast", "2": "Lunch", "4": "Dinner"}
+meals = {'4': 'Dinner', '2': 'Lunch', '0': 'Breakfast', '1': 'Brunch', '3': 'Supper'}
 menu.update_mpd(meals)
 
 # menu.generateDailyMenu(sdate, edate)
 # print(menu)
-# rules = menu.db.db.rulesCollection
-# for rule in rules:
-#     print(rule)
+rules = menu.db.db.rulesCollection
+for rule in rules:
+    print(rule)
 # print(rules[1])
-# rules[1] = {'rule': 'long prepareTime on Saturday, Sunday'}
-# rules[13] = {'rule': 'For Breakfast use low_carb, high_carb, fat, free'}
-# rules.store({'rule': 'For Supper use '})
+# rules[18] = {'rule': 'On discard Breakfast'}
+# rules[25] = {'rule': 'For Brunch use low_carb, protein, high_carb, fat, free'}
+# rules.store({'rule': 'On discard Dinner'})
 # tags = menu.db.getTags()
 # print(tags)
 # products = menu.db.db.products
@@ -42,14 +43,14 @@ menu.update_mpd(meals)
         # products[rule['__id']] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': rule['name']}
     # print(rule)
 # dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
-dstpath = '/storage/img'
-dstpath = ''
+# dstpath = '/storage/img'
+# dstpath = ''
 # menu.db.db.updateRecipeImgPath(dstpath)
 # recipes = menu.db.getRecipes()
-recipes = menu.db.db.recipesCollection
-for recipe in recipes:
+# recipes = menu.db.db.recipesCollection
+# for recipe in recipes:
     # menu.db.updateRecipe(recipe)
-    print(recipe)
+    # print(recipe)
     # print(recipe.img)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
