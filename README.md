@@ -1,8 +1,6 @@
 # menuGenerator
 An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month.
 
-> I have just created a package and installed it on my phone, so there are some bugs, like odd buttons and different font style.
-
 My app has a Navigation drawer with only three destinations, first loaded screen is "Menu". In "Menu" user can regenerate the whole menu:
 
 <p align="center">
