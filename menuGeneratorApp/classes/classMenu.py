@@ -140,6 +140,12 @@ class Menu:
                         if availableDay:
                             nextDate, nextMeal = availableDay
                             self.menu[nextDate][nextMeal] = cur_recipe
+                # if recipe is already set delete it from all sets, 
+                # so no two equal dishes in one day 
+                else:
+                    used_recipe = self.menu[date][meal]
+                    if used_recipe is not None:
+                        self.db.deleteRecipeFromSets(used_recipe)
         
         return
 

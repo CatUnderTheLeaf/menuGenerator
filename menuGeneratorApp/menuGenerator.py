@@ -30,9 +30,9 @@ print(menu)
 # menu.menu = {}
 # menu.loadFromJson(genMenu)
 # print(menu)
-rules = menu.db.db.rulesCollection
-for rule in rules:
-    print(rule)
+# rules = menu.db.db.rulesCollection
+# for rule in rules:
+#     print(rule)
 # print(rules[1])
 # rules[18] = {'rule': 'On discard Breakfast'}
 # rules[25] = {'rule': 'For Brunch use low_carb, protein, high_carb, fat, free'}

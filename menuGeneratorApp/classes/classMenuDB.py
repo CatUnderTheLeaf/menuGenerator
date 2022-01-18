@@ -152,12 +152,13 @@ class MenuDB:
     def deleteRecipeFromSets(self, recipe):
         for meal in self.subsets:
             for prepTime in self.subsets[meal]['recipes']:
-                if recipe in self.subsets[meal]['recipes'][prepTime]:
-                    self.subsets[meal]['recipes'][prepTime].discard(recipe)
-                    # if subset is empty get it anew
-                    if len(self.subsets[meal]['recipes'][prepTime]) < 1:
-                        sublist = self.filter(self.subsets[meal]['tag'], self.subsets[meal]['nutr'], prepTime)
-                        self.subsets[meal]['recipes'][prepTime] = set(sublist)
+                for subsetRecipe in self.subsets[meal]['recipes'][prepTime].copy():
+                    if recipe.title == subsetRecipe.title:
+                        self.subsets[meal]['recipes'][prepTime].discard(subsetRecipe)
+                        # if subset is empty get it anew
+                        if len(self.subsets[meal]['recipes'][prepTime]) < 1:
+                            sublist = self.filter(self.subsets[meal]['tag'], self.subsets[meal]['nutr'], prepTime)
+                            self.subsets[meal]['recipes'][prepTime] = set(sublist)
         return
 
 
