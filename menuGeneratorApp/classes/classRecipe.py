@@ -37,9 +37,9 @@ class Recipe:
         self.tags = tags
         self.repeat = repeat
         
-    def __repr__(self):
+    # def __repr__(self):
     #    return (f'{self.title!r}  -  {self.tags!r} - {self.ingredients!r} - {self.food_class!r} - {self.nutrients!r}')
-       return (f'{self.title!r}')
+    #    return (f'{self.title!r}')
 
     def __str__(self):
         # return f'{self.title}  -  {self.tags} - {self.prepareTime} - {self.repeat}'
