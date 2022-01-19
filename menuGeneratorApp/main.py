@@ -30,6 +30,7 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import OneLineListItem
 from kivymd.uix.tab import MDTabs
+from kivymd.uix.chip import MDChip
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.utils.fitimage import FitImage
 
@@ -107,6 +108,11 @@ class MenuGeneratorApp(MDApp):
                 
                 content = DescriptionContent()
                 content.ids.recipe_text.text = recipe.description
+                for ingredient in recipe.ingredients:
+                    content.ids.recipeIngredients.add_widget(MDChip(
+                                            text=ingredient,
+                                            icon='',
+                                            text_color=(1,1,1,1)))
                 instance_tab.ids.box.add_widget(MDExpansionPanel(
                     icon=icon,
                     content = content,

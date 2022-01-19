@@ -16,7 +16,14 @@
     size_hint_y: None
     height: self.minimum_height
     width: Window.width
+    orientation: "vertical"
     
+    MDStackLayout:
+        adaptive_height: True
+        spacing: dp(5)
+        id: recipeIngredients
+        height: 0
+
     MDTextField:
         id: recipe_text
         text: root.text
