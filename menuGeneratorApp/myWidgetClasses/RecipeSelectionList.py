@@ -8,11 +8,17 @@ from kivy.properties import (
     ListProperty,
     DictProperty
 )
+from kivy.metrics import dp
+
 class RecipeListItem(TwoLineAvatarIconListItem):
     text = StringProperty()
     secondary_text = StringProperty()
     img_source = StringProperty()
     recipe = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self._txt_right_pad = dp(5)
 
     '''redraw recipeWidget in the scrollview
     with new recipe info 
@@ -44,6 +50,7 @@ class RecipeSelectionList(MDSelectionList):
         list_item = RecipeListItem(
                         text=f"{recipe}",
                         secondary_text=f"{', '.join(recipe.ingredients)}",
+                        secondary_font_style='Body2',
                         recipe = recipe
                     )
         self.add_widget(list_item)

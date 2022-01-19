@@ -112,7 +112,8 @@ class MenuGeneratorApp(MDApp):
                     content = content,
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingredients)}"
+                        secondary_text=f"{', '.join(recipe.ingredients)}",
+                        secondary_font_style='Body2'
                     )
                 ))
 
