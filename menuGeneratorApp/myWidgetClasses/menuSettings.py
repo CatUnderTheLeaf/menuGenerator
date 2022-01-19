@@ -94,7 +94,7 @@ class MenuSettings(MDGridLayout):
     """
     Update meals dictionary on chip-click
 
-    :param chip: meals MDChip
+    :param chip: meals MyToggleButton
     """
     def updateMeals(self, chip):
         if chip.value in self.meals:
@@ -311,7 +311,7 @@ class RulesContent(MDGridLayout):
     """
     Update rules dictionary on icon-click
 
-    :param chip: meals MDChip
+    :param value: MyToggleButton.value
     """
     def updateNutrientRules(self, value):
         for meal_rule in self.rules:

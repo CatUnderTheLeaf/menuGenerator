@@ -3,7 +3,8 @@
     id: box
     size_hint: None,  None
     height: "26dp"
-    padding: "8dp", 0, 0, 0
+    padding: "15dp", 0, 0, 0
+    text_color: 1, 1, 1, 1
     width:
         self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
         if root.icon != 'close' else self.minimum_width
@@ -31,6 +32,7 @@
         id: lbl_ic
         icon: root.icon
         theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         adaptive_size: True
         pos_hint: {"center_y": .5}
         on_release: root.removeCustomWidget(root.parentId, root)
@@ -78,3 +80,113 @@
         width: self.texture_size[0]
         color: root.text_color if root.text_color else (root.theme_cls.text_color)
         markup: True
+
+<MyChip>:
+    text_color: 1, 1, 1, 1
+    _no_ripple_effect: True
+    icon: ''
+    icon_left: ''
+    icon_right: ''
+
+<updatedMDChip>:
+    size_hint_y: None
+    height: "26dp"
+    spacing: "8dp"
+    adaptive_width: True
+    radius: 12 if self.radius == [0, 0, 0, 0] else self.radius
+    padding:
+        "12dp" if not self.icon_left else "4dp", \
+        0, \
+        "12dp" if not self.icon_right else "8dp", \
+        0
+    md_bg_color:
+        app.theme_cls.primary_dark \
+        if root.active else \
+        app.theme_cls.primary_color        
+
+    canvas.before:
+        Color:
+            rgba:
+                self.line_color \
+                if not self.disabled else \
+                app.theme_cls.disabled_hint_text_color
+        Line:
+            width: 1
+            rounded_rectangle:
+                ( \
+                self.x, \
+                self.y, \
+                self.width, \
+                self.height, \
+                *self.radius, \
+                self.height \
+                )
+
+    MDRelativeLayout:
+        id: relative_box
+        size_hint: None, None
+        size: ("24dp", "24dp") if root.icon_left else (0, 0)
+        pos_hint: {"center_y": .5}
+        radius: self.height / 2
+
+        MDIcon:
+            id: icon_left
+            icon: root.icon_left
+            size_hint: None, None
+            size: ("28dp", "28dp") if root.icon_left else (0, 0)
+            theme_text_color: "Custom"
+            pos_hint: {"center_y": .5}
+            pos: 0, -2
+            text_color:
+                ( \
+                root.icon_left_color \
+                if root.icon_left_color else \
+                root.theme_cls.disabled_hint_text_color \
+                ) \
+                if not self.disabled else app.theme_cls.disabled_hint_text_color
+
+        MDBoxLayout:
+            id: icon_left_box
+            size_hint: None, None
+            radius: self.height / 2
+            size: ("28dp", "28dp") if root.icon_left else (0, 0)
+            pos: 0, -2
+
+        MDIcon:
+            id: check_icon
+            icon: "check"
+            pos_hint: {"center_y": 0.5}
+            size_hint: None, None
+            size: "28dp", "28dp"
+            color: (1, 1, 1, 1) if not root.icon_check_color else root.icon_check_color
+            pos: 2, -2
+
+    MDLabel:
+        id: label
+        text: root.text
+        adaptive_size: True
+        markup: True
+        pos_hint: {"center_y": .5}
+        color:
+            ( \
+            root.text_color \
+            if root.text_color else \
+            root.theme_cls.disabled_hint_text_color \
+            ) \
+            if not self.disabled else app.theme_cls.disabled_hint_text_color
+
+    MDIcon:
+        id: icon_right
+        icon: root.icon_right
+        size_hint: None, None
+        size: ("18dp", "18dp") if root.icon_right else (0, 0)
+        font_size: "18sp" if root.icon_right else 0
+        theme_text_color: "Custom"
+        pos_hint: {"center_y": .5}
+        text_color:
+            ( \
+            root.icon_right_color \
+            if root.icon_right_color else \
+            root.theme_cls.disabled_hint_text_color \
+            ) \
+            if not self.disabled else app.theme_cls.disabled_hint_text_color

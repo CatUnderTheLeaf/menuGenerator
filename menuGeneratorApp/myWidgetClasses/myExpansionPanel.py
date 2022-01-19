@@ -1,13 +1,12 @@
 from kivymd.uix.expansionpanel import MDExpansionPanel
 from kivymd.uix.label import MDIcon
-from kivymd.uix.chip import MDChip
 from kivy.properties import (
     ListProperty,
     ObjectProperty
 )
 from kivy.metrics import sp
 
-from myWidgetClasses.customButtons import ButtonWithCross
+from myWidgetClasses.customButtons import ButtonWithCross, MyChip
 
 class IngredientsExpansionPanel(MDExpansionPanel):
     products = ListProperty()
@@ -19,19 +18,14 @@ class IngredientsExpansionPanel(MDExpansionPanel):
             for button_with_cross in self.ingredientWidget.children:
                 ingredients.append(button_with_cross.text)
             for product in self.products:
-                chip = MDChip(text=product, check=True, icon='')
+                chip = MyChip(text=product)
                 chip.bind(on_release=self.markIngredient)
-                if product in ingredients and not len(chip.ids.box_check.children):
-                    chip.ids.box_check.add_widget(MDIcon(
-                                icon="check",
-                                size_hint=(None, None),
-                                size=("26dp", "26dp"),
-                                font_size=sp(20),
-                            ))
+                if product in ingredients:
+                    chip.active = True
                 self.content.ids.chooseIngredients.add_widget(chip)
     
     def markIngredient(self, instance_chip):
-        if not len(instance_chip.ids.box_check.children):
+        if instance_chip.active:
             self.ingredientWidget.add_widget(ButtonWithCross(
                                             text=instance_chip.text,
                                             parentId=self.ingredientWidget))
