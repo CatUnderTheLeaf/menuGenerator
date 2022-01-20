@@ -131,6 +131,7 @@ class MenuGeneratorApp(MDApp):
      """
     def on_start(self):
         Window.bind(on_keyboard=self.key_input)
+        Window.softinput_mode = 'below_target'
         
         self.load_settings()
         
