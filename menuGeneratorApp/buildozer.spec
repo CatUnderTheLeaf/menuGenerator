@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = MenuGenerator
+title = MAGe
 
 # (str) Package name
-package.name = menugeneratorapp
+package.name = menuautogeneratorapp
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = catundertheleaf
@@ -47,7 +47,7 @@ requirements = python3,pillow,kivy,kivymd,plyer,xcamera,pyyaml,Cython,unqlite,so
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/app_imgs/ic_launcher/res/mipmap-mdpi/ic_launcher.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -89,8 +89,8 @@ fullscreen = 0
 #android.presplash_lottie = "path/to/lottie/file.json"
 
 # (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
-#icon.adaptive_foreground.filename = %(source.dir)s/data/icon_fg.png
-#icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
+icon.adaptive_foreground.filename = %(source.dir)s/app_imgs/ic_launcher/res/mipmap-mdpi/ic_launcher_adaptive_fore.png
+icon.adaptive_background.filename = %(source.dir)s/app_imgs/ic_launcher/res/mipmap-mdpi/ic_launcher_adaptive_back.png
 
 # (list) Permissions
 android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE,CAMERA
