@@ -36,7 +36,7 @@ class RecipeWidget(MDBoxLayout):
         if self.parentWidget:
             self.ids.recipeTitle.text = self.recipe.title
             # load new ingredients
-            for ingredient in self.recipe.ingredients:
+            for ingredient in self.recipe.ingredients.keys():
                 self.ids.recipeIngredients.add_widget(ButtonWithCross(
                                             text=ingredient,
                                             parentId=self.ids.recipeIngredients))
@@ -79,9 +79,10 @@ class RecipeWidget(MDBoxLayout):
         else:
             self.recipe.title = self.ids.recipeTitle.text
             self.recipe.img = self.ids.recipeImg.source
-            self.recipe.ingredients = []
+            self.recipe.ingredients = {}
             for ingredient in self.ids.recipeIngredients.children:
-                self.recipe.ingredients.append(ingredient.text)
+                # TODO!!!!!!! change add amount
+                self.recipe.ingredients[ingredient.text] = ''
             self.recipe.prepareTime = "short"
             for prepareTime in self.ids.recipePrepareTime.children:
                 if prepareTime.state=='down':

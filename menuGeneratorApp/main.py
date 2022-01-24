@@ -108,7 +108,7 @@ class MenuGeneratorApp(MDApp):
                 
                 content = DescriptionContent()
                 content.ids.recipe_text.text = recipe.description
-                for ingredient in recipe.ingredients:
+                for ingredient in recipe.ingredients.keys():
                     content.ids.recipeIngredients.add_widget(MDChip(
                                             text=ingredient,
                                             icon='',
@@ -118,7 +118,7 @@ class MenuGeneratorApp(MDApp):
                     content = content,
                     panel_cls=MDExpansionPanelTwoLine(
                         text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingredients)}",
+                        secondary_text=f"{', '.join(recipe.ingredients.keys())}",
                         secondary_font_style='Body2'
                     )
                 ))

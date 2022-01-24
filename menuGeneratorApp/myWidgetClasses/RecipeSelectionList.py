@@ -29,7 +29,7 @@ class RecipeListItem(TwoLineAvatarIconListItem):
     def redrawRecipeListItem(self, newRecipe):
         self.text=f"{newRecipe}"
         self.img_source = newRecipe.img
-        self.secondary_text=f"{', '.join(newRecipe.ingredients)}"
+        self.secondary_text=f"{', '.join(newRecipe.ingredients.keys())}"
         self.recipe = newRecipe
 
 class RecipeSelectionList(MDSelectionList):
@@ -49,7 +49,7 @@ class RecipeSelectionList(MDSelectionList):
     def addRecipeInList(self, recipe):
         list_item = RecipeListItem(
                         text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingredients)}",
+                        secondary_text=f"{', '.join(recipe.ingredients.keys())}",
                         secondary_font_style='Body2',
                         recipe = recipe
                     )

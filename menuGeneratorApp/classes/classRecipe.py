@@ -9,7 +9,7 @@ class Recipe:
     id: recipe id in db 
     title: name of the Recipe
     img: path to the image
-    ingredients: list of products
+    ingredients: dict of products
     food_class: list of food classes, 'fat', 'fruit', 'cereal', etc
     nutrients: list of nutrients, 'carb', 'protein', etc
     prepareTime: short/middle/long
@@ -17,7 +17,7 @@ class Recipe:
     tags: breakfast/dinner, dough food, etc
     repeat: True/False, if a dish can be prepared for more than one day
      """
-    def __init__(self, id='', title="", img="no_image.png", ingredients=[], food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
+    def __init__(self, id='', title="", img="no_image.png", ingredients={}, food_class=[], nutrients=[], prepareTime="short", text="", tags=[], repeat=False):        
         self.id = id
         self.title = title.capitalize()
         self.img = img

@@ -50,12 +50,20 @@ print(menu)
 # dstpath = '/storage/img'
 # dstpath = ''
 # menu.db.db.updateRecipeImgPath(dstpath)
-# recipes = menu.db.getRecipes()
+recipes = menu.db.getRecipes()
 # recipes = menu.db.db.recipesCollection
-# for recipe in recipes:
+for recipe in recipes:
     # menu.db.updateRecipe(recipe)
-    # print(recipe)
+    print(recipe.ingredients.keys())
     # print(recipe.img)
+    # print(recipe['__id'])
+    # print(recipe['ingredients'])
+# recipe = recipes[26]
+# print("00000000000000")
+# print(recipe['ingredients'])
+# newRecipe = recipe
+# newRecipe['ingredients'] = {'Oat': '200 g', 'Water': '1 Gl'}
+# menu.db.db.recipesCollection.update(newRecipe['__id'], newRecipe)
 
 # food_class = menu.db.identifyFoodClass(['Butter', 'Cheese', 'Sausage', 'Bread'])
 # print(food_class)

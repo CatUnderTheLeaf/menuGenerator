@@ -55,7 +55,7 @@ class MenuDB:
     :param recipeObj: Recipe object to update  
      """
     def updateRecipe(self, recipeObj):
-        recipeObj.food_class = self.identifyFoodClass(recipeObj.ingredients)
+        recipeObj.food_class = self.identifyFoodClass(recipeObj.ingredients.keys())
         recipeObj.nutrients = self.identifyNutrients(recipeObj.food_class, recipeObj.tags)
         if recipeObj.id=='':
             self.db.insertRecipe(recipeObj)
