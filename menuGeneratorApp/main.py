@@ -108,9 +108,10 @@ class MenuGeneratorApp(MDApp):
                 
                 content = DescriptionContent()
                 content.ids.recipe_text.text = recipe.description
-                for ingredient in recipe.ingredients.keys():
+                for ingredient, amount in recipe.ingredients.items():
+                    ing_num = '     ' + amount if amount else ''
                     content.ids.recipeIngredients.add_widget(MDChip(
-                                            text=ingredient,
+                                            text=ingredient + ing_num,
                                             icon='',
                                             text_color=(1,1,1,1)))
                 instance_tab.ids.box.add_widget(MDExpansionPanel(
