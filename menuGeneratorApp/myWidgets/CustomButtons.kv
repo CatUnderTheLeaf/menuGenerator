@@ -17,6 +17,16 @@
             size: self.size
             radius: root.radius
     
+    MDTextField:
+        id: ingredientAmount
+        text: root.amount
+        pos_hint: {"center_y": .5}
+        size_hint_x: None
+        width: "60dp"
+        line_color_normal: 1, 1, 1, 1
+        text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
+        current_hint_text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
+
     MDLabel:
         adaptive_size: True
         -text_size: None, None

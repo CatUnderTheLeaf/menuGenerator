@@ -20,6 +20,7 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     color = ColorProperty(None)
     parentId = ObjectProperty()
     text = StringProperty()
+    amount = StringProperty()
     icon = StringProperty("close")
     text_color = ColorProperty(None)
     radius = ListProperty(

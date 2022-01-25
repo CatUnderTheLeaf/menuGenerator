@@ -61,17 +61,15 @@ KV = '''
         spacing: dp(5)
         id: recipeIngredients
 
-        MDChip:
+        ButtonWithCross:
             text: "Ingredient1"
-            check: True
+            amount: '1 st'
 
-        MDChip:
+        ButtonWithCross:
             text: "Ingredient2"
-            check: True
 
-        MDChip:
+        ButtonWithCross:
             text: "Ingredient3"
-            check: True
     
     MDIconButton:
         icon: "plus"
@@ -221,11 +219,12 @@ KV = '''
         on_release: app.set_item(text_field.text, text_field, root.parent.parent)
             
 
-<ButtonWithCross>:  
+<ButtonWithCross>:
     id: box
     size_hint: None,  None
     height: "26dp"
-    padding: "8dp", 0, 0, 0
+    padding: "15dp", 0, 0, 0
+    text_color: 1, 1, 1, 1
     width:
         self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
         if root.icon != 'close' else self.minimum_width
@@ -238,6 +237,16 @@ KV = '''
             size: self.size
             radius: root.radius
     
+    MDTextField:
+        id: ingredientAmount
+        text: root.amount
+        pos_hint: {"center_y": .5}
+        size_hint_x: None
+        width: "50dp"
+        line_color_normal: 1, 1, 1, 1
+        text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
+        current_hint_text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
+
     MDLabel:
         adaptive_size: True
         -text_size: None, None
@@ -253,9 +262,10 @@ KV = '''
         id: lbl_ic
         icon: root.icon
         theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         adaptive_size: True
         pos_hint: {"center_y": .5}
-        on_release: app.removeCustomWidget(root.parentId, root)    
+        on_release: root.removeCustomWidget(root.parentId, root)  
 
 
 MDScreen
@@ -311,6 +321,7 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     text = StringProperty()
     icon = StringProperty("close")
     text_color = ColorProperty(None)
+    amount = StringProperty()
     radius = ListProperty(
         [
             dp(12),
