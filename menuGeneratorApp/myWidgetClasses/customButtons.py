@@ -1,6 +1,6 @@
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.button import MDFillRoundFlatIconButton, MDIconButton, BaseButton
+from kivymd.uix.button import MDFillRoundFlatIconButton, MDIconButton, BaseButton, MDFlatButton
 from kivymd.uix.behaviors.toggle_behavior import MDToggleButton
 from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
 from kivymd.uix.behaviors import CircularRippleBehavior, RectangularRippleBehavior, FakeRectangularElevationBehavior, TouchBehavior
@@ -21,6 +21,7 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     parentId = ObjectProperty()
     text = StringProperty()
     amount = StringProperty()
+    input = BooleanProperty(False)
     icon = StringProperty("close")
     text_color = ColorProperty(None)
     radius = ListProperty(
@@ -44,6 +45,9 @@ class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+class TextToggleButton(MDFlatButton, MDToggleButton):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 class IconToggleButton(MDIconButton, ToggleButtonBehavior):    
     background_normal = ColorProperty(None)

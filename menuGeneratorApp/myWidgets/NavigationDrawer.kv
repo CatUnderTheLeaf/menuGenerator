@@ -48,6 +48,24 @@
                 cur_screen: "AllRecipes"
                 icon: "nutrition"
                 on_press: app.get_recipes()
+    
+    MDBoxLayout:
+        spacing: dp(10)
+        padding: dp(10)
+        adaptive_height: True
+
+        TextToggleButton:
+            text: "EN"
+            group: "language"
+
+        MDSeparator:
+            orientation: "vertical"
+            height: dp(10)
+        
+        TextToggleButton:
+            text: "RU"
+            group: "language"
+
                
 <ItemDrawer>:
     theme_text_color: "Custom"

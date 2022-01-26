@@ -40,6 +40,7 @@ class RecipeWidget(MDBoxLayout):
                 self.ids.recipeIngredients.add_widget(ButtonWithCross(
                                             text=ingredient,
                                             amount=amount,
+                                            input=True, 
                                             parentId=self.ids.recipeIngredients))
                 
             # set recipe prepare

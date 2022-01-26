@@ -22,7 +22,7 @@
         text: root.amount
         pos_hint: {"center_y": .5}
         size_hint_x: None
-        width: "60dp"
+        width: "60dp" if root.input else 0
         line_color_normal: 1, 1, 1, 1
         text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
         current_hint_text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
@@ -58,6 +58,11 @@
     text_color: 1, 1, 1, 1
     text: " "
     on_release: root.parentWidget.updateNutrientRules(root.value)
+
+<TextToggleButton>:
+    font_color_normal: app.theme_cls.text_color
+    font_color_down: app.theme_cls.primary_color
+    theme_text_color: "Custom"
 
 <TextRoundButton>:
     background_down: app.theme_cls.primary_dark
