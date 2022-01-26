@@ -155,7 +155,8 @@ class MenuGeneratorApp(MDApp):
             data_loaded = yaml.safe_load(stream)
 
         db = data_loaded['DB_TYPE']
-        db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB'])
+        # TODO Change here language
+        db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB_RU'])
         self.menu.connectDB(db, db_path)
 
         settings_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_SETTINGS'])
@@ -223,7 +224,7 @@ class MenuGeneratorApp(MDApp):
 
     :param settings: MenuSettings object
     """
-    def setSettingsInMenu(self, timePeriod, repeatDishes, meals, genMenu):
+    def setSettingsInMenu(self, timePeriod, repeatDishes, meals, genMenu=None):
         self.set_n_days(timePeriod)
         self.menu.repeatDishes = repeatDishes
         self.menu.update_mpd(meals)

@@ -4,6 +4,7 @@ DB_TYPE: unqlite
 
 # Path to the corresponding DBs
 MENU_DB: db/menuUnqliteDB.db
+MENU_DB_RU: db/menuUnqliteDB_RU.db
 # MENU_DB: db/menuSqliteDB.db
 
 # Path to the menu settings
