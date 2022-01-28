@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 import os
 import yaml
+from babel.dates import format_datetime
 
 # This needs to be here to display the images on Android
 os.environ['KIVY_IMAGE'] = 'pil,sdl2'
@@ -38,6 +39,7 @@ class MenuGeneratorApp(MDApp):
     overlay_color = get_color_from_hex("#4278e4")
     dialog = None
     custom_sheet = None
+    language = 'EN'
     # Create Menu object        
     menu = Menu()
     
@@ -72,7 +74,7 @@ class MenuGeneratorApp(MDApp):
         # add new Tab widgets
         for day_str in self.menu.menu:
             day = date.fromisoformat(day_str)
-            day_title = "\n{}, {} {}".format(day.strftime("%A"), day.day, day.strftime("%b"))
+            day_title = format_datetime(day, "EEEE, d MMM", locale=self.language)
             tab = Tab(title=day_title, day=day)                
             self.root.ids.tabs.add_widget(tab)
 
@@ -155,12 +157,16 @@ class MenuGeneratorApp(MDApp):
             data_loaded = yaml.safe_load(stream)
 
         db = data_loaded['DB_TYPE']
-        # TODO Change here language
         db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB_RU'])
         self.menu.connectDB(db, db_path)
 
         settings_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_SETTINGS'])
         self.store = JsonStore(settings_path)
+
+        # load and set interface language
+        if self.store.exists('language'):
+            self.language = self.store.get('language')['language']
+        self.setLanguage()
 
         # load settings from the storage
         if self.store.exists('settings'):
@@ -171,6 +177,15 @@ class MenuGeneratorApp(MDApp):
         
         # set settings in the menu
         self.setSettingsInMenu(timePeriod, repeatDishes, meals, genMenu)
+
+    """ 
+    Set language in the app widget
+    
+     """   
+    def setLanguage(self):
+        for widget in self.root.ids.content_navigation_drawer.ids.languageButtons.children:
+            if hasattr(widget, 'text') and widget.text==self.language:
+                widget.state = 'down'
 
     def key_input(self, window, key, scancode, codepoint, modifier):
         if key == 27:
@@ -187,6 +202,7 @@ class MenuGeneratorApp(MDApp):
     def on_stop(self):
         print("Python app is shutting down................... store db and settings")
         if hasattr(self, 'store'):
+            self.store.put('language', language=self.language)
             self.store.put('settings', timePeriod=self.menu.timePeriod, 
                             repeatDishes=self.menu.repeatDishes,
                             meals = self.menu._mpd,
