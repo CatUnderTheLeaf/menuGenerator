@@ -14,12 +14,19 @@
         Image:
             id: avatar
             size_hint: None, None
-            size: "56dp", "56dp"
-            source: "data/logo/kivy-icon-256.png"
+            size: "128dp", "128dp"
+            source: "app_imgs/ic_launcher3/res/mipmap-xxxhdpi/ic_launcher.png"
 
     MDLabel:
-        text: "Menu Generator"
-        font_style: "Button"
+        text: "M.A.Ge"
+        font_style: "H4"
+        theme_text_color: "Custom"
+        text_color: app.theme_cls.primary_dark
+        adaptive_height: True
+    
+    MDLabel:
+        text: "Your automated menu generator"
+        font_style: "Body2"
         adaptive_height: True
 
     ScrollView:
@@ -53,10 +60,14 @@
         spacing: dp(10)
         padding: dp(10)
         adaptive_height: True
+        id: languageButtons
 
         TextToggleButton:
             text: "EN"
             group: "language"
+            on_press:
+                self.onToggle()
+                app.language=self.text
 
         MDSeparator:
             orientation: "vertical"
@@ -65,6 +76,9 @@
         TextToggleButton:
             text: "RU"
             group: "language"
+            on_press:
+                self.onToggle()
+                app.language=self.text
 
                
 <ItemDrawer>:

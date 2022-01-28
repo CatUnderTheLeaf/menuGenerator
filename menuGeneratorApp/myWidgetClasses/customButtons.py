@@ -48,6 +48,10 @@ class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
 class TextToggleButton(MDFlatButton, MDToggleButton):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+    
+    def onToggle(self):
+        if self.state=='normal':
+            self.state = 'down'
 
 class IconToggleButton(MDIconButton, ToggleButtonBehavior):    
     background_normal = ColorProperty(None)
