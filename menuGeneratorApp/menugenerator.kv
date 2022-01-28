@@ -1,4 +1,6 @@
 #:kivy 2.0.0
+
+#:import tr classes.classLang.tr
 #:include myWidgets/NavigationDrawer.kv
 #:include myWidgets/CustomButtons.kv
 #:include myWidgets/AddTagsField.kv
@@ -28,9 +30,9 @@ MDScreen:
 
                         MDToolbar:
                             pos_hint: {"top": 1}
-                            title: "Menu"
+                            title: tr._("Menu")
                             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), "reGenerate Menu"]]
+                            right_action_items: [["refresh", lambda x: app.generateMenuTabs(), tr._("reGenerate Menu")]]
 
 
                         MDBoxLayout:
@@ -42,7 +44,7 @@ MDScreen:
                             Widget:
 
                             MDLabel:
-                                text: "Menu is not generated yet"
+                                text: tr._("Menu is not generated yet")
                                 halign: "center"
 
                             MDIconButton:
@@ -64,7 +66,7 @@ MDScreen:
                         MDToolbar:
                             id: settings
                             pos_hint: {"top": 1}
-                            title: "Settings"
+                            title: tr._("Settings")
                             left_action_items: [["menu", lambda x: app.saveSettingsDialog(settingsScroll.children[0]) if settingsScroll.children[0].hasChanged() else nav_drawer.set_state("open")]]
 
                         # MenuSettings:
@@ -80,7 +82,7 @@ MDScreen:
                         MDToolbar:
                             id: recipeListToolbar
                             pos_hint: {"top": 1} 
-                            title: "All recipes"
+                            title: tr._("All recipes")
                             left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
                             
 
@@ -107,9 +109,9 @@ MDScreen:
                         MDToolbar:
                             id: editRecipeBar
                             pos_hint: {"top": 1} 
-                            title: "Edit recipe"
+                            title: tr._("Edit recipe")
                             left_action_items: [["arrow-left", lambda x: app.changeScreen("AllRecipes")]]
-                            right_action_items: [["check", lambda x: app.saveRecipe(editRecipeScroll.children[0]), "save"]]
+                            right_action_items: [["check", lambda x: app.saveRecipe(editRecipeScroll.children[0]), tr._("save")]]
 
 
                         ScrollView:

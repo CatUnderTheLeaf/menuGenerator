@@ -1,3 +1,4 @@
+from classes.classLang import tr
 from copy import copy
 from kivymd.uix import button
 from kivymd.uix.gridlayout import MDGridLayout
@@ -50,7 +51,7 @@ class MenuSettings(MDGridLayout):
         # Check timePeriod chip as it was saved in settings
         chips = self.ids.timePeriod.children
         for chip in chips:
-            if chip.text==self.timePeriod:
+            if chip.value==self.timePeriod:
                 chip.state = 'down'
 
         # Check meal chip as it was saved in settings
@@ -100,7 +101,7 @@ class MenuSettings(MDGridLayout):
         if chip.value in self.meals:
             del self.meals[chip.value]
         else:
-            self.meals[chip.value] = chip.text
+            self.meals[chip.value] = chip.name
         # update meals set in Rules 
         self.ids.settingsRules.ids.rulesDiscardMeal.content.filter = self.meals
         self.ids.settingsRules.ids.rulesDiscardMeal.content.setInitValues()
@@ -181,7 +182,7 @@ class RulesWidget(MDGridLayout):
         rulesMealNutrients = MDExpansionPanel(
                     content = RulesContent(rules=self.rules['meal_nutrient'], filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
-                        text="'Nutritions per meal' rules"
+                        text=tr._("'Nutrients per meal' rules")
                     )
                 )
         self.add_widget(rulesMealNutrients)        
@@ -195,7 +196,7 @@ class RulesWidget(MDGridLayout):
         rulesTimePeriod = MDExpansionPanel(
                     content = RulesDayButtons(rules=self.rules['time_days'], group="rulesTimePeriod", icons=icons),
                     panel_cls=MDExpansionPanelOneLine(
-                        text="'Prepare time per day' rules"
+                        text=tr._("'Prepare time per day' rules")
                     )
                 )   
         self.add_widget(rulesTimePeriod)
@@ -211,7 +212,7 @@ class RulesWidget(MDGridLayout):
         rulesDiscardMeal = MDExpansionPanel(
                     content = RulesDayButtons(rules=self.rules['meal_discard_day'], group="rulesDiscardMeal", icons=icons, filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
-                        text="'Discarded meal per day' rules"
+                        text=tr._("'Discarded meal per day' rules")
                     )
                 )
 
@@ -221,7 +222,7 @@ class RulesWidget(MDGridLayout):
         rulesTagsMeal = MDExpansionPanel(
                     content = RulesTagsMeals(rules=self.rules['meal_tag'], filter=self.meals, allTags=self.tags),
                     panel_cls=MDExpansionPanelOneLine(
-                        text="'Tags per meal' rules"
+                        text=tr._("'Tags per meal' rules")
                     )
                 )
 

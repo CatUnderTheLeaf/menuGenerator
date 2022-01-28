@@ -7,7 +7,7 @@
     adaptive_height: True
     
     MDLabel:
-        text: "Time period"
+        text: tr._("Time period")
         theme_text_color: "Custom"
         text_color: app.theme_cls.primary_dark
         font_style: 'H6'
@@ -22,22 +22,25 @@
         id: timePeriod
 
         MyToggleButton:
-            text: "day"
+            text: tr._("day")
+            value: "day"
             icon: "calendar-today"
             group: "timePeriod"
-            on_release: root.timePeriod = self.text
+            on_release: root.timePeriod = self.value
         
         MyToggleButton:
-            text: "week"
+            text: tr._("week")
+            value: "week"
             icon: "calendar-week"
             group: "timePeriod"
-            on_release: root.timePeriod = self.text
+            on_release: root.timePeriod = self.value
         
         MyToggleButton:
-            text: "month"
+            text: tr._("month")
+            value: "month"
             icon: "calendar-month"
             group: "timePeriod"
-            on_release: root.timePeriod = self.text
+            on_release: root.timePeriod = self.value
     
     MDSeparator:
     
@@ -46,7 +49,7 @@
         adaptive_height: True                            
 
         MDLabel:
-            text: "Repeat dishes"
+            text: tr._("Repeat dishes")
             theme_text_color: "Custom"
             text_color: app.theme_cls.primary_dark
             font_style: 'H6'
@@ -63,7 +66,7 @@
         height: dp(5)
 
     MDLabel:
-        text: "Meals"
+        text: tr._("Meals")
         theme_text_color: "Custom"
         text_color: app.theme_cls.primary_dark
         font_style: 'H6'
@@ -79,31 +82,36 @@
         id: meals                                
 
         MyToggleButton:
-            text: "Breakfast"
+            text: tr._("Breakfast")
+            name: "Breakfast"
             icon: "bowl-mix"
             value: "0"
             on_release: root.updateMeals(self)
         
         MyToggleButton:
-            text: "Brunch"
+            text: tr._("Brunch")
+            name: "Brunch"
             icon: "food-variant"
             value: "1"
             on_release: root.updateMeals(self)
         
         MyToggleButton:
-            text: "Lunch"
+            text: tr._("Lunch")
+            name: "Lunch"
             icon: "pasta"
             value: "2"
             on_release: root.updateMeals(self)
         
         MyToggleButton:
-            text: "Supper"
+            text: tr._("Supper")
+            name: "Supper"
             icon: "pot-steam"
             value: "3"
             on_release: root.updateMeals(self)
         
         MyToggleButton:
-            text: "Dinner"
+            text: tr._("Dinner")
+            name: "Dinner"
             icon: "noodles"
             value: "4"
             on_release: root.updateMeals(self)                             
@@ -115,7 +123,7 @@
         height: dp(5)
 
     MDLabel:
-        text: "Rules"
+        text: tr._("Rules")
         theme_text_color: "Custom"
         text_color: app.theme_cls.primary_dark
         font_style: 'H6'
@@ -207,7 +215,7 @@
             id: click_text_field
             size_hint_x: None
             width: "200dp"
-            hint_text: "Add new tag"
+            hint_text: tr._("Add new tag")
 
     MDBoxLayout:
         orientation: 'vertical'

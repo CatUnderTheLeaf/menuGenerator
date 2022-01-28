@@ -25,7 +25,7 @@
         adaptive_height: True
     
     MDLabel:
-        text: "Your automated menu generator"
+        text: tr._("Your automated menu generator")
         font_style: "Body2"
         adaptive_height: True
 
@@ -39,19 +39,19 @@
             nav_drawer: root.nav_drawer
             
             ItemDrawer:
-                text: "Menu"
+                text: tr._("Menu")
                 text_color: app.theme_cls.primary_color
                 cur_screen: "Menu"
                 icon: "book-open-variant"
 
             ItemDrawer:
-                text: "Settings"
+                text: tr._("Settings")
                 cur_screen: "Settings"
                 icon: "cog"
                 on_press: app.add_settingsWidget()
 
             ItemDrawer:
-                text: "Recipes"
+                text: tr._("Recipes")
                 cur_screen: "AllRecipes"
                 icon: "nutrition"
                 on_press: app.get_recipes()
@@ -67,7 +67,7 @@
             group: "language"
             on_press:
                 self.onToggle()
-                app.language=self.text
+                app.language = self.text
 
         MDSeparator:
             orientation: "vertical"
@@ -78,7 +78,7 @@
             group: "language"
             on_press:
                 self.onToggle()
-                app.language=self.text
+                app.language = self.text
 
                
 <ItemDrawer>:

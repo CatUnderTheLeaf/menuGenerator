@@ -1,0 +1,187 @@
+# Russian translations for M.A.Ge.
+# Copyright (C) 2022 cat_under_the_leaf
+# This file is distributed under the same license as the M.A.Ge project.
+# Stacy <54534633+CatUnderTheLeaf@users.noreply.github.com>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: M.A.Ge 1.0\n"
+"Report-Msgid-Bugs-To: 54534633+CatUnderTheLeaf@users.noreply.github.com\n"
+"POT-Creation-Date: 2022-01-28 17:03+0100\n"
+"PO-Revision-Date: 2022-01-28 13:33+0100\n"
+"Last-Translator: FULL NAME "
+"<54534633+CatUnderTheLeaf@users.noreply.github.com>\n"
+"Language: ru\n"
+"Language-Team: ru <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/main.py:425
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:111
+msgid "Edit recipe"
+msgstr "Редактировать рецепт"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/main.py:428
+msgid "Add new recipe"
+msgstr "Добавить рецепт"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/main.py:471
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:84
+msgid "All recipes"
+msgstr "Все рецепты"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:32
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/NavigationDrawer.kv:42
+msgid "Menu"
+msgstr "Меню"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:34
+msgid "reGenerate Menu"
+msgstr "сгенерировать меню"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:46
+msgid "Menu is not generated yet"
+msgstr "Меню еще не было сгенерировано"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:68
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/NavigationDrawer.kv:48
+msgid "Settings"
+msgstr "Настройки"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/menugenerator.kv:113
+msgid "save"
+msgstr "сохранить"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/RecipeWidget.py:194
+msgid "Set recipe image"
+msgstr "Выбрать изображение"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/RecipeWidget.py:197
+msgid "Choose from gallery"
+msgstr "Из галлереи"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/RecipeWidget.py:198
+msgid "Take a picture"
+msgstr "Сделать снимок"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/menuSettings.py:185
+msgid "'Nutrients per meal' rules"
+msgstr "'Нутриенты на прием пищи'"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/menuSettings.py:199
+msgid "'Prepare time per day' rules"
+msgstr "'Время готовки на день'"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/menuSettings.py:215
+msgid "'Discarded meal per day' rules"
+msgstr "'Исключенные приемы пищи на день'"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgetClasses/menuSettings.py:225
+msgid "'Tags per meal' rules"
+msgstr "'Теги на прием пищи'"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:10
+msgid "Time period"
+msgstr "Временной период"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:25
+msgid "day"
+msgstr "день"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:32
+msgid "week"
+msgstr "неделя"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:39
+msgid "month"
+msgstr "месяц"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:52
+msgid "Repeat dishes"
+msgstr "Использовать блюда повторно"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:69
+msgid "Meals"
+msgstr "Приемы пищи"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:85
+msgid "Breakfast"
+msgstr "Завтрак"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:92
+msgid "Brunch"
+msgstr "Второй завтрак"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:99
+msgid "Lunch"
+msgstr "Обед"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:106
+msgid "Supper"
+msgstr "Полдник"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:113
+msgid "Dinner"
+msgstr "Ужин"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:126
+msgid "Rules"
+msgstr "Правила"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/MenuSettings.kv:218
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:105
+msgid "Add new tag"
+msgstr "Добавить новый тег"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/NavigationDrawer.kv:28
+msgid "Your automated menu generator"
+msgstr "Ваш автоматический генератор меню "
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/NavigationDrawer.kv:54
+msgid "Recipes"
+msgstr "Рецепты"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:19
+msgid "Title"
+msgstr "Название"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:22
+msgid "This field is required"
+msgstr "Это поле обязательно"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:25
+msgid "Ingredients"
+msgstr "Ингредиенты"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:44
+msgid "Prepare time"
+msgstr "Время готовки"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:52
+msgid "short"
+msgstr "быстро"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:58
+msgid "medium"
+msgstr "средне"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:64
+msgid "long"
+msgstr "долго"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:76
+msgid "Repeat dish?"
+msgstr "Использовать повторно?"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:86
+msgid "Prepare instructions"
+msgstr "Приготовление"
+
+#: C:/my_projects/menuGenerator/menuGeneratorApp/myWidgets/Recipe.kv:89
+msgid "Tags"
+msgstr "Теги"
+

@@ -1,6 +1,7 @@
 import os
 import math
 import datetime
+from classes.classLang import tr
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dialog import MDDialog
@@ -65,7 +66,7 @@ class RecipeWidget(MDBoxLayout):
     def setChooseChip(self, id, value):
         chips = id.children
         for chip in chips:
-            if chip.text==value:
+            if chip.value==value:
                 chip.state = 'down'
 
     '''Save all recipe info 
@@ -190,11 +191,11 @@ class RecipeWidget(MDBoxLayout):
     def show_set_image_dialog(self):
         if not self.dialog:
             self.dialog = MDDialog(
-                title="Set recipe image",
+                title=tr._("Set recipe image"),
                 type="simple",
                 items=[
-                    dialogItem(text="Choose from gallery", icon='image', parentWidget = self),
-                    dialogItem(text="Take a picture", icon='camera', parentWidget = self)
+                    dialogItem(text=tr._("Choose from gallery"), icon='image', parentWidget = self),
+                    dialogItem(text=tr._("Take a picture"), icon='camera', parentWidget = self)
                 ],
             )
         self.dialog.open()

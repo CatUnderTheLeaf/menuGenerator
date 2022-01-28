@@ -2,6 +2,55 @@ from datetime import date, timedelta
 import os
 import yaml
 from babel.dates import format_datetime
+from classes.classLang import tr
+# import gettext
+
+# from kivy.lang import Observable
+
+# # internationalization made with the help of
+# # https://github.com/tito/kivy-gettext-example
+# class Lang(Observable):
+#     observers = []
+#     lang = None
+
+#     def __init__(self, defaultlang):
+#         super(Lang, self).__init__()
+#         self.ugettext = None
+#         self.lang = defaultlang
+#         self.switch_lang(self.lang)
+
+#     def _(self, text):
+#         return self.ugettext(text)
+
+#     def fbind(self, name, func, args, **kwargs):
+#         if name == "_":
+#             self.observers.append((func, args, kwargs))
+#         else:
+#             return super(Lang, self).fbind(name, func, *args, **kwargs)
+
+#     def funbind(self, name, func, args, **kwargs):
+#         if name == "_":
+#             key = (func, args, kwargs)
+#             if key in self.observers:
+#                 self.observers.remove(key)
+#         else:
+#             return super(Lang, self).funbind(name, func, *args, **kwargs)
+
+#     def switch_lang(self, lang):
+#         # get the right locales directory, and instanciate a gettext
+#         locale_dir = os.path.join(os.path.dirname(__file__), "localisation")
+#         locales = gettext.translation('messages', locale_dir, languages=[lang])
+#         self.ugettext = locales.gettext
+#         self.lang = lang
+
+#         # update all the kv rules attached to this text
+#         for func, largs, kwargs in self.observers:
+#             func(largs, None, None)
+
+
+# tr = Lang("EN")
+# import weakref
+# tr = weakref.proxy(tr)
 
 # This needs to be here to display the images on Android
 os.environ['KIVY_IMAGE'] = 'pil,sdl2'
@@ -12,7 +61,6 @@ Config.set('kivy', 'exit_on_escape', '0')
 from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
-
 from myWidgetClasses.customButtons import *
 from myWidgetClasses.menuSettings import MenuSettings
 from myWidgetClasses.RecipeWidget import RecipeWidget
@@ -22,6 +70,7 @@ from myWidgetClasses.otherWidgetClasses import *
 from kivy.uix.screenmanager import NoTransition
 from kivy.utils import get_color_from_hex, platform
 from kivy.core.window import Window
+from kivy.properties import StringProperty
 
 from kivy.storage.jsonstore import JsonStore
 
@@ -39,10 +88,13 @@ class MenuGeneratorApp(MDApp):
     overlay_color = get_color_from_hex("#4278e4")
     dialog = None
     custom_sheet = None
-    language = 'EN'
+    language = StringProperty('EN')
     # Create Menu object        
     menu = Menu()
-    
+
+    def on_language(self, instance, language):
+        print(language)
+        tr.switch_lang(language)    
 
     """ 
     Generate Menu tabs for n days
@@ -373,10 +425,10 @@ class MenuGeneratorApp(MDApp):
         self.root.ids.editRecipeScroll.clear_widgets()
         # form new recipe
         if instance:
-            self.root.ids.editRecipeBar.title = "Edit recipe"
+            self.root.ids.editRecipeBar.title = tr._("Edit recipe")
             recipeWidget = RecipeWidget(recipe = instance.recipe, parentWidget=instance, recipe_scroll=self.root.ids.recipe_scroll)           
         else:
-            self.root.ids.editRecipeBar.title = "Add new recipe"
+            self.root.ids.editRecipeBar.title = tr._("Add new recipe")
             recipeWidget = RecipeWidget(recipe = Recipe(), recipe_scroll=self.root.ids.recipe_scroll)
 
         # add recipeWidget
@@ -419,7 +471,7 @@ class MenuGeneratorApp(MDApp):
             md_bg_color = (0, 0, 0, 1)
             left_action_items = [["menu", lambda x: self.root.ids.nav_drawer.set_state("open")]]
             right_action_items = []
-            self.root.ids.recipeListToolbar.title = "All recipes"
+            self.root.ids.recipeListToolbar.title = tr._("All recipes")
 
         self.root.ids.recipeListToolbar.left_action_items = left_action_items
         self.root.ids.recipeListToolbar.right_action_items = right_action_items
