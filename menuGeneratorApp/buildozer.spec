@@ -13,7 +13,7 @@ package.domain = catundertheleaf
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas,db,json,yml
+source.include_exts = py,png,jpg,kv,atlas,db,json,yml,mo
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -48,7 +48,7 @@ requirements = python3,pillow,kivy,kivymd,plyer,xcamera,pyyaml,Babel,Cython,unql
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher.png
+icon.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait
@@ -90,8 +90,8 @@ fullscreen = 0
 #android.presplash_lottie = "path/to/lottie/file.json"
 
 # (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
-icon.adaptive_foreground.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher_adaptive_fore.png
-icon.adaptive_background.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher_adaptive_back.png
+icon.adaptive_foreground.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher_adaptive_fore.png
+icon.adaptive_background.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher_adaptive_back.png
 
 # (list) Permissions
 android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE,CAMERA
