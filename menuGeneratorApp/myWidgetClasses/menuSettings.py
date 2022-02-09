@@ -182,7 +182,8 @@ class RulesWidget(MDGridLayout):
         rulesMealNutrients = MDExpansionPanel(
                     content = RulesContent(rules=self.rules['meal_nutrient'], filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
-                        text=tr._("'Nutrients per meal' rules")
+                        text=tr._("'Nutrients per meal' rules"),                        
+                        font_style='Subtitle2'
                     )
                 )
         self.add_widget(rulesMealNutrients)        
@@ -196,7 +197,8 @@ class RulesWidget(MDGridLayout):
         rulesTimePeriod = MDExpansionPanel(
                     content = RulesDayButtons(rules=self.rules['time_days'], group="rulesTimePeriod", icons=icons),
                     panel_cls=MDExpansionPanelOneLine(
-                        text=tr._("'Prepare time per day' rules")
+                        text=tr._("'Prepare time per day' rules"),                        
+                        font_style='Subtitle2'
                     )
                 )   
         self.add_widget(rulesTimePeriod)
@@ -212,7 +214,8 @@ class RulesWidget(MDGridLayout):
         rulesDiscardMeal = MDExpansionPanel(
                     content = RulesDayButtons(rules=self.rules['meal_discard_day'], group="rulesDiscardMeal", icons=icons, filter=self.meals),
                     panel_cls=MDExpansionPanelOneLine(
-                        text=tr._("'Discarded meal per day' rules")
+                        text=tr._("'Discarded meal per day' rules"),                        
+                        font_style='Subtitle2'
                     )
                 )
 
@@ -222,7 +225,8 @@ class RulesWidget(MDGridLayout):
         rulesTagsMeal = MDExpansionPanel(
                     content = RulesTagsMeals(rules=self.rules['meal_tag'], filter=self.meals, allTags=self.tags),
                     panel_cls=MDExpansionPanelOneLine(
-                        text=tr._("'Tags per meal' rules")
+                        text=tr._("'Tags per meal' rules"),                        
+                        font_style='Subtitle2'
                     )
                 )
 
@@ -297,7 +301,10 @@ class RulesContent(MDGridLayout):
         else:
             rules = self.rules
         for meal_rule in rules:
-            self.add_widget(MDLabel(text=f"For {meal_rule} use:"))
+            lbl_text = tr._("For ") \
+            + tr._(f"{meal_rule}") \
+            + tr._(" use:")
+            self.add_widget(MDLabel(text=lbl_text))
             iconsStack = MDStackLayout(adaptive_height=True, spacing=dp(5))
             for nutrient in self.icons:
                 button = IconToggleButton(icon=self.icons[nutrient])
@@ -356,7 +363,7 @@ class RulesDayButtons(MDGridLayout):
         else:
             icons = self.icons
         for text in icons:
-            button = MyToggleButton(text=text, icon=icons[text], group=self.group)
+            button = MyToggleButton(name=text, text=tr._(f"{text}"), icon=icons[text], group=self.group)
             button.bind(on_release=self.toggleToggleButton)
             self.ids.rulesToggleButtons.add_widget(button)
         # toggle first button
@@ -371,9 +378,10 @@ class RulesDayButtons(MDGridLayout):
     :param widget: button which was toggled
     """
     def toggleToggleButton(self, widget):
-        buttons = self.ids.rulesDays.children            
-        if widget.text in self.rules:
-            days, id = self.rules[widget.text]
+        buttons = self.ids.rulesDays.children  
+        if widget.name in self.rules:
+
+            days, id = self.rules[widget.name]
             for button in buttons:
                 if button.value in days:
                     button.state = "down"
@@ -390,10 +398,10 @@ class RulesDayButtons(MDGridLayout):
     :param button: button which was toggled
     """
     def toggleDay(self, button):
-        selectedPeriod = self.ids.rulesToggleButtons.children[-1].text
+        selectedPeriod = self.ids.rulesToggleButtons.children[-1].name
         for period in self.ids.rulesToggleButtons.children:
             if period.state == "down":
-                selectedPeriod = period.text
+                selectedPeriod = period.name
         if selectedPeriod not in self.rules:
                 self.rules[selectedPeriod] = (set(), None)
         days, id = self.rules[selectedPeriod]
@@ -432,7 +440,9 @@ class RulesTagsMealsBox(MDBoxLayout):
         self.setInitValues()
 
     def setInitValues(self):
-        self.text = f"For {self.meal} serve only with these tags:"
+        self.text = tr._("For ") \
+        + tr._(f"{self.meal}") \
+        + tr._(" serve only with these tags:")
         for tag in self.tags:
             self.ids.mealTags.add_widget(ButtonWithCross(
                                             text=tag,
