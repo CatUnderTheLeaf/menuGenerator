@@ -1,7 +1,7 @@
 from datetime import date, timedelta
 import os
 import yaml
-from babel.dates import format_datetime
+from babel.dates import format_date
 from classes.classLang import tr
 
 # This needs to be here to display the images on Android
@@ -78,7 +78,7 @@ class MenuGeneratorApp(MDApp):
         # add new Tab widgets
         for day_str in self.menu.menu:
             day = date.fromisoformat(day_str)
-            day_title = format_datetime(day, "EEEE, d MMM", locale=self.language)
+            day_title = format_date(day, "EEEE, d MMM", locale=self.language)
             tab = Tab(title=day_title, day=day)                
             self.root.ids.tabs.add_widget(tab)
 
