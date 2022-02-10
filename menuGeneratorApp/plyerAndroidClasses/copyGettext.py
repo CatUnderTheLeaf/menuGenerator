@@ -472,7 +472,15 @@ class GNUTranslations(NullTranslations):
 
 # Locate a .mo file using the gettext strategy
 def find(domain, localedir=None, languages=None, all=False):
+    print(domain)
+    print(localedir)
+    print(languages)
+    
     # Get some reasonable defaults for arguments that were not supplied
+    print('files in localisation dir')
+    print(os.listdir(localedir))
+    print('files in localisation\messages dir')
+    print(os.listdir(os.path.join(localedir, languages[0], 'LC_MESSAGES')))
     if localedir is None:
         localedir = _default_localedir
     if languages is None:
@@ -495,11 +503,17 @@ def find(domain, localedir=None, languages=None, all=False):
         result = []
     else:
         result = None
+    print('nelangs')
+    print(nelangs)
     for lang in nelangs:
         if lang == 'C':
             break
         mofile = os.path.join(localedir, lang, 'LC_MESSAGES', '%s.mo' % domain)
+        print('path to file is...')
+        print(mofile)
         if os.path.exists(mofile):
+            print('file exists')            
+            print(mofile)
             if all:
                 result.append(mofile)
             else:
@@ -515,9 +529,6 @@ def translation(domain, localedir=None, languages=None,
                 class_=None, fallback=False, codeset=None):
     if class_ is None:
         class_ = GNUTranslations
-    print(domain)
-    print(localedir)
-    print(languages)
     mofiles = find(domain, localedir, languages, all=True)
     print(mofiles)
     if not mofiles:
