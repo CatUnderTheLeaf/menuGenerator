@@ -1,8 +1,10 @@
 import os
-import gettext
+# import gettext
 
 from kivy.lang import Observable
 from kivy.utils import platform
+
+import plyerAndroidClasses.copyGettext as gettext
 
 # internationalization made with the help of
 # https://github.com/tito/kivy-gettext-example
@@ -41,8 +43,6 @@ class Lang(Observable):
             app_path = app_storage_path()
             locale_dir = os.path.join(app_path, 'app', 'localisation')
             
-        print(locale_dir)
-        print(lang)
         locales = gettext.translation('messages', locale_dir, languages=[lang])
         self.ugettext = locales.gettext
         self.lang = lang
