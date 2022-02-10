@@ -52,4 +52,4 @@ class Lang(Observable):
             func(largs, None, None)
 
 
-tr = Lang("EN")
+tr = Lang("en")

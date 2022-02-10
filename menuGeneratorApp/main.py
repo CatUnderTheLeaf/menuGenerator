@@ -40,7 +40,7 @@ class MenuGeneratorApp(MDApp):
     overlay_color = get_color_from_hex("#4278e4")
     dialog = None
     custom_sheet = None
-    language = StringProperty('EN')
+    language = StringProperty('en')
     # Create Menu object        
     menu = Menu()
 
