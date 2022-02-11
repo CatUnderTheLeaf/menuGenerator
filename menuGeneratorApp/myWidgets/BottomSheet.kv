@@ -14,23 +14,17 @@
         
 <ContentCustomSheet>:
     orientation: "vertical"
-    padding: dp(20), dp(20), dp(20), 0
+    padding: dp(5), dp(20), dp(5), 0
     adaptive_height: True
     width: Window.width
         
-    # MDGridLayout:
-    #     cols: 2
-    #     orientation: 'tb-lr'
-    #     adaptive_height: True
-    #     height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
-    #     width: root.width
-    #     spacing: dp(5)
-    #     id: chooseIngredients
-    
-    MDStackLayout:
-        orientation: 'lr-tb'
+    MDGridLayout:
+        cols: 2
+        orientation: 'tb-lr'
         adaptive_height: True
-        # height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
+        # height of the updatedMDChip*number of rows + spacing between them
+        height: dp(36)*root.rows + self.spacing[0]*(root.rows-1)
         width: root.width
         spacing: dp(5)
         id: chooseIngredients
+    

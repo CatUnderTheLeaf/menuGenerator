@@ -70,11 +70,11 @@ products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
     
 for rule in products:
-#     if rule['food_class']=='fat_nuts':
-#         products[rule['__id']] = {'food_class': 'fat,nuts', 'name': rule['name']}
-    # if ' – ' in rule['name']:
+    # if rule['name']=='Заправка для салата':
+    #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': 'Салатная заправка'}
+    # if ' ' in rule['name']:
     #     st = rule['name'].split(' – ')
-    #     print(st)
+        # print(st)
     #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': st[0]}
     print(rule)
 # dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'

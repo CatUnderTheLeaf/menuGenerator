@@ -18,7 +18,7 @@ class IngredientsExpansionPanel(MDExpansionPanel):
             for button_with_cross in self.ingredientWidget.children:
                 ingredients.append(button_with_cross.text)
             for product in self.products:
-                chip = MyChip(text=product)
+                chip = MyChip(text=product.replace(" ", "\n"))
                 chip.bind(on_release=self.markIngredient)
                 if product in ingredients:
                     chip.active = True
