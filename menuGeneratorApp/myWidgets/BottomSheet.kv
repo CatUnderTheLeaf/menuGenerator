@@ -18,11 +18,19 @@
     adaptive_height: True
     width: Window.width
         
-    MDGridLayout:
-        cols: 2
-        orientation: 'tb-lr'
+    # MDGridLayout:
+    #     cols: 2
+    #     orientation: 'tb-lr'
+    #     adaptive_height: True
+    #     height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
+    #     width: root.width
+    #     spacing: dp(5)
+    #     id: chooseIngredients
+    
+    MDStackLayout:
+        orientation: 'lr-tb'
         adaptive_height: True
-        height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
+        # height: dp(26)*root.rows + self.spacing[0]*(root.rows-1)
         width: root.width
         spacing: dp(5)
         id: chooseIngredients
