@@ -1,10 +1,8 @@
 import os
-# import gettext
+import gettext
 
 from kivy.lang import Observable
 from kivy.utils import platform
-
-import plyerAndroidClasses.copyGettext as gettext
 
 # internationalization made with the help of
 # https://github.com/tito/kivy-gettext-example
