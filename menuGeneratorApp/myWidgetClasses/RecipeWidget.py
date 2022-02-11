@@ -168,11 +168,11 @@ class RecipeWidget(MDBoxLayout):
         for category in products:
             cat_text = ''
             if ',' in category:
-                cat_text = ', '.join(w[0].upper() + w[1:] for w in category.split(','))
+                cat_text = ', '.join(tr._(w).capitalize() for w in category.split(','))
             elif '_' in category:
-                cat_text = ' '.join(category.split('_')).capitalize()
+                cat_text = tr._(' '.join(category.split('_'))).capitalize()
             else:
-                cat_text = category.capitalize()
+                cat_text = tr._(category).capitalize()
             panel = IngredientsExpansionPanel(
                         products=products[category],
                         ingredientWidget=ingredientWidget,

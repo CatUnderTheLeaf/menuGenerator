@@ -44,8 +44,8 @@ menu.update_mpd(meals)
 
 
 
-menu.generateDailyMenu(sdate, edate)
-print(menu)
+# menu.generateDailyMenu(sdate, edate)
+# print(menu)
 # genMenu = menu.toJson()
 # menu.menu = {}
 # menu.loadFromJson(genMenu)
@@ -69,20 +69,23 @@ rules = menu.db.db.rulesCollection
 products = menu.db.db.products
 # products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
     
-# for rule in products:
+for rule in products:
 #     if rule['food_class']=='fat_nuts':
 #         products[rule['__id']] = {'food_class': 'fat,nuts', 'name': rule['name']}
-#     print(rule)
+    # if ' – ' in rule['name']:
+    #     st = rule['name'].split(' – ')
+    #     print(st)
+    #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': st[0]}
+    print(rule)
 # dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
 # dstpath = '/storage/img'
 # dstpath = ''
 # menu.db.db.updateRecipeImgPath(dstpath)
 
 # import json
-import jsons
 # # recipes = menu.db.getRecipes()
-settings_path = os.path.join(os.path.dirname(__file__), 'test2.json')
-store = JsonStore(settings_path)
+
+
 # # rec = store.get('recipes')
 # rec = None
 # with open(os.path.join(os.path.dirname(__file__), 'test.json'), encoding='cp1251') as f:
@@ -131,29 +134,35 @@ store = JsonStore(settings_path)
 # os.rmdir(srcpath)
 
 
+# !!!!!!!!!!! recipes from .yml to .db !!!!!!!!!!!!!!!!!!!!!!!!!!!
+# import jsons
+# settings_path = os.path.join(os.path.dirname(__file__), 'test2.json')
+# store = JsonStore(settings_path)
+# import yaml
 
-import yaml
+# with open(os.path.join(os.path.dirname(__file__), "test.yml"), 'r', encoding='cp1251') as stream:
+#     data_loaded = yaml.safe_load(stream)
+#     # print(data_loaded)
+#     store.put('recipes', recipes=data_loaded)
 
-with open(os.path.join(os.path.dirname(__file__), "test.yml"), 'r', encoding='cp1251') as stream:
-    data_loaded = yaml.safe_load(stream)
-    # print(data_loaded)
-    store.put('recipes', recipes=data_loaded)
+# data_get = store.get('recipes')
+# # print(data_get['recipes'])
+# for r in data_get['recipes']:
+#     h = jsons.load(r, Recipe)
+#     # menu.db.updateRecipe(h)
+#     # print(h.food_class)
 
-data_get = store.get('recipes')
-# print(data_get['recipes'])
-for r in data_get['recipes']:
-    h = jsons.load(r, Recipe)
-    # menu.db.updateRecipe(h)
-    # print(h.food_class)
-
-recipes = menu.db.db.recipesCollection
-for recipe in recipes:
-    print(recipe['__id'])
-    print(recipe['title'])
-    print(recipe['description'])
-    print(recipe['nutrients'])
+# recipes = menu.db.db.recipesCollection
+# for recipe in recipes:
+#     print(recipe['__id'])
+#     print(recipe['title'])
+#     print(recipe['description'])
+#     print(recipe['nutrients'])
 
 menu.disconnectDB()
+
+
+
 # -
 #   title: 
 #   description: >

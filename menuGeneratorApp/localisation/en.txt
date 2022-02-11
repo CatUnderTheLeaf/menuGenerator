@@ -237,3 +237,52 @@ msgstr ""
 msgid "Tags"
 msgstr ""
 
+msgid "dairy"
+msgstr ""
+
+msgid "cereals"
+msgstr ""
+
+msgid "grains"
+msgstr ""
+
+msgid "pasta"
+msgstr ""
+
+msgid "bread"
+msgstr ""
+
+msgid "vegan"
+msgstr ""
+
+msgid "dried beans"
+msgstr ""
+
+msgid "fat"
+msgstr ""
+
+msgid "nuts"
+msgstr ""
+
+msgid "fruits"
+msgstr ""
+
+msgid "high carb veggies"
+msgstr ""
+
+msgid "low carb veggies"
+msgstr ""
+
+msgid "meat"
+msgstr ""
+
+msgid "fish"
+msgstr ""
+msgid "cheese"
+msgstr ""
+
+msgid "eggs"
+msgstr ""
+
+msgid "other seasoning"
+msgstr ""

@@ -240,3 +240,53 @@ msgstr "Приготовление"
 msgid "Tags"
 msgstr "Теги"
 
+msgid "dairy"
+msgstr "молочка"
+
+msgid "cereals"
+msgstr "хлопья"
+
+msgid "grains"
+msgstr "крупы"
+
+msgid "pasta"
+msgstr "паста"
+
+msgid "bread"
+msgstr "хлеб"
+
+msgid "vegan"
+msgstr "растительное"
+
+msgid "dried beans"
+msgstr "сухие бобы"
+
+msgid "fat"
+msgstr "жиры"
+
+msgid "nuts"
+msgstr "орехи"
+
+msgid "fruits"
+msgstr "фрукты"
+
+msgid "high carb veggies"
+msgstr "высокоуглеводные овощи"
+
+msgid "low carb veggies"
+msgstr "низкоуглеводные овощи"
+
+msgid "meat"
+msgstr "мясо"
+
+msgid "fish"
+msgstr "рыба"
+
+msgid "cheese"
+msgstr "сыр"
+
+msgid "eggs"
+msgstr "яйца"
+
+msgid "other seasoning"
+msgstr "приправы"
