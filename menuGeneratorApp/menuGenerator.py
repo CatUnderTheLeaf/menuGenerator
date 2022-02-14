@@ -135,29 +135,29 @@ for rule in products:
 
 
 # !!!!!!!!!!! recipes from .yml to .db !!!!!!!!!!!!!!!!!!!!!!!!!!!
-# import jsons
-# settings_path = os.path.join(os.path.dirname(__file__), 'test2.json')
-# store = JsonStore(settings_path)
-# import yaml
+import jsons
+settings_path = os.path.join(os.path.dirname(__file__), 'test2.json')
+store = JsonStore(settings_path)
+import yaml
 
-# with open(os.path.join(os.path.dirname(__file__), "test.yml"), 'r', encoding='cp1251') as stream:
-#     data_loaded = yaml.safe_load(stream)
-#     # print(data_loaded)
-#     store.put('recipes', recipes=data_loaded)
+with open(os.path.join(os.path.dirname(__file__), "test.yml"), 'r', encoding='cp1251') as stream:
+    data_loaded = yaml.safe_load(stream)
+    # print(data_loaded)
+    store.put('recipes', recipes=data_loaded)
 
-# data_get = store.get('recipes')
-# # print(data_get['recipes'])
-# for r in data_get['recipes']:
-#     h = jsons.load(r, Recipe)
-#     # menu.db.updateRecipe(h)
-#     # print(h.food_class)
+data_get = store.get('recipes')
+# print(data_get['recipes'])
+for r in data_get['recipes']:
+    h = jsons.load(r, Recipe)
+    # menu.db.updateRecipe(h)
+    # print(h.food_class)
 
-# recipes = menu.db.db.recipesCollection
-# for recipe in recipes:
-#     print(recipe['__id'])
-#     print(recipe['title'])
-#     print(recipe['description'])
-#     print(recipe['nutrients'])
+recipes = menu.db.db.recipesCollection
+for recipe in recipes:
+    print(recipe['__id'])
+    print(recipe['title'])
+    print(recipe['description'])
+    print(recipe['nutrients'])
 
 menu.disconnectDB()
 
