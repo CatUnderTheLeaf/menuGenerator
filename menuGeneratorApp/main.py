@@ -170,7 +170,28 @@ class MenuGeneratorApp(MDApp):
         # load and set interface language
         if self.store.exists('language'):
             self.language = self.store.get('language')['language']
-        self.setLanguage()
+            self.setLanguage()
+        else:            
+            if not self.dialog:
+                def setInitialLanguage(language):
+                    self.language = language
+                    self.setLanguage()
+               
+                self.dialog = MDDialog(
+                    type="simple",
+                    items=[
+                        dialogItem(text="English", on_release=lambda x: (
+                                self.dialog.dismiss(), 
+                                setInitialLanguage('en')
+                                )),
+                        dialogItem(text="Русский", on_release=lambda x: (
+                                self.dialog.dismiss(), 
+                                setInitialLanguage('ru')
+                                ))
+                    ],
+                )
+            self.dialog.open()
+        
 
         # load settings from the storage
         if self.store.exists('settings'):

@@ -194,8 +194,14 @@ class RecipeWidget(MDBoxLayout):
                 title=tr._("Set recipe image"),
                 type="simple",
                 items=[
-                    dialogItem(text=tr._("Choose from gallery"), icon='image', parentWidget = self),
-                    dialogItem(text=tr._("Take a picture"), icon='camera', parentWidget = self)
+                    dialogItem(text=tr._("Choose from gallery"), icon='image', on_release=lambda x: (
+                                self.dialog.dismiss(), 
+                                self.open_gallery()
+                                )),
+                    dialogItem(text=tr._("Take a picture"), icon='camera', on_release=lambda x: (
+                                self.dialog.dismiss(), 
+                                self.get_camera()
+                                )),
                 ],
             )
         self.dialog.open()

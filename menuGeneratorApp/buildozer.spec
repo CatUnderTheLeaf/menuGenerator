@@ -89,8 +89,8 @@ fullscreen = 0
 #android.presplash_lottie = "path/to/lottie/file.json"
 
 # (str) Adaptive icon of the application (used if Android API level is 26+ at runtime)
-icon.adaptive_foreground.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher_adaptive_fore.png
-icon.adaptive_background.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher_adaptive_back.png
+icon.adaptive_foreground.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher_adaptive_fore.png
+icon.adaptive_background.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher_adaptive_back.png
 
 # (list) Permissions
 android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE,CAMERA
