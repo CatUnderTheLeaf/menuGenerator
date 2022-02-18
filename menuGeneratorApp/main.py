@@ -176,15 +176,20 @@ class MenuGeneratorApp(MDApp):
                 def setInitialLanguage(language):
                     self.language = language
                     self.setLanguage()
+                    self.dialog = None
                
                 self.dialog = MDDialog(
                     type="simple",
                     items=[
-                        dialogItem(text="English", on_release=lambda x: (
+                        dialogItem(text="English", 
+                            font_style='H6',
+                            on_release=lambda x: (
                                 self.dialog.dismiss(), 
                                 setInitialLanguage('en')
                                 )),
-                        dialogItem(text="Русский", on_release=lambda x: (
+                        dialogItem(text="Русский", 
+                            font_style='H6',
+                            on_release=lambda x: (
                                 self.dialog.dismiss(), 
                                 setInitialLanguage('ru')
                                 ))
