@@ -51,7 +51,7 @@
   - завтрак
   ingredients:
     Творог: 2п
-    Яйца: 2шт
+    Яйцо: 2шт
     Сахар: 1/2ст
     Ванильный сахар: 1п
 -
@@ -74,7 +74,7 @@
   tags: 
   - завтрак
   ingredients:
-    Яйца: 1шт
+    Яйцо: 1шт
     Сахар: 1ст.л
     Мука: 1,5ст
     Молоко: 1,5ст
@@ -85,7 +85,7 @@
   description: >
     Взбить яйца с сахаром и солью.
 
-    Добавить кислое молоко, перемешать.
+    Добавить пахту, перемешать.
 
     Добавить муку, перемешать.
 
@@ -96,10 +96,10 @@
   tags: 
   - завтрак
   ingredients:
-    Яйца: 1шт
+    Яйцо: 1шт
     Сахар: 1ст.л
     Мука: 1ст
-    Кислое молоко: 1ст
+    Пахта: 1ст
     Соль: ''
 -
   title: Омлет
@@ -115,7 +115,7 @@
   tags: 
   - завтрак
   ingredients:
-    Яйца: ''
+    Яйцо: ''
     Соль: ''
     Молотый перец: ''
 -
@@ -134,7 +134,7 @@
   tags: 
   - завтрак
   ingredients:
-    Яйца: ''
+    Яйцо: ''
     Соль: ''
     Молотый перец: ''
 -
@@ -149,7 +149,7 @@
   tags: 
   - завтрак
   ingredients:
-    Яйца: ''
+    Яйцо: ''
 -
   title: Бутерброды
   description: >
@@ -287,7 +287,7 @@
   img: PXL_20220217_185604186.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -328,7 +328,7 @@
   img: PXL_20211011_111024195.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Гречневая крупа: 1/2ст
     Лук: 1шт
@@ -366,7 +366,7 @@
   img: chicken-soup-g813531cae_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Макароны: 1/2ст
     Лук: 1шт
@@ -403,7 +403,7 @@
   img: pork-bone-soup-g63f41fd20_1920.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -439,14 +439,14 @@
   img: IMG-20220121-WA0003.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
     Курица: 300г
     Картофель: 4шт
     Мука: 2-3ст.л
-    Яйца: 1шт
+    Яйцо: 1шт
     Соль: ''
     Молотый перец: ''
     Масло: ''
@@ -483,7 +483,7 @@
   img: goulash-g75552bc68_1920.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -512,7 +512,7 @@
   img: miso-gcf8a0e224_1280.jpg
   prepareTime: short
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Рыба: 200г
     Водоросли: 5г
@@ -543,7 +543,7 @@
   img: negative-space-red-lentil-soup.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Чечевица: 1/2ст
     Лук: 1шт
@@ -580,7 +580,7 @@
   img: IMG-20220121-WA0002.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -617,7 +617,7 @@
   img: soup-ga1f2fca3e_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -648,10 +648,10 @@
   img: IMG_20210213_155824__01.jpg
   prepareTime: long
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Мука: 500г
-    Яйца: 1шт
+    Яйцо: 1шт
     Соль: ''
     Вода: ''
 -
@@ -677,7 +677,7 @@
   img: negative-space-fresh-sushi-yam-california-rolls-jakub-kapusnak-thumb-1.jpg
   prepareTime: long
   repeat: false
-  tags: 
+  tags: []
   ingredients: 
     Рис: 2ст
     Вода: 2ст
@@ -685,7 +685,7 @@
     Уксус: 1/2ст
     Сахар: 1/4ст
     Нори: ''
-    Яйца: 3шт
+    Яйцо: 3шт
     Соевый соус: 1ч.л
 -
   title: Макароны с томатным соусом и сыром
@@ -700,7 +700,7 @@
   img: PIXNIO-347497-4014x2838.jpg
   prepareTime: short
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Макароны: 63г
     Томатный соус: ''
@@ -720,7 +720,7 @@
   img: spaghetti-g9c51070b9_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Спагетти: 63г
     Томатный соус: ''
@@ -740,7 +740,7 @@
   img: PIXNIO-253235-1945x1296.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Листы лазаньи: ''
     Томатный соус: 1л
@@ -761,12 +761,12 @@
   img: PXL_20220221_175144579.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Цветная капуста: ''
     Сыр: ''
     Сливки: 200г
-    Яйца: 1шт
+    Яйцо: 1шт
     Мускатный орех: ''
 -
   title: Оладьи из цукини/кабачков
@@ -781,10 +781,10 @@
   img: PXL_20220217_124206135.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Цукини: 2шт
-    Яйца: 1шт
+    Яйцо: 1шт
     Мука: 1ст
     Соль: ''
 -
@@ -798,7 +798,7 @@
   img: normandy-gb8c517f2c_1280.jpg
   prepareTime: short
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Камамбер: 1шт
     Багет: 1шт
@@ -819,7 +819,7 @@
   img: PIXNIO-347575-3355x2477.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Фарш: 150г
     Булка: 1шт
@@ -847,7 +847,7 @@
   img: soup-g24a7929f6_1920.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients: 
     Лук: 1шт
     Морковь: 1шт
@@ -875,7 +875,7 @@
   img: ratatouille-g603a70187_1280.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Кабачок: 1шт
     Баклажан: 1шт
@@ -895,7 +895,7 @@
   img: PXL_20220210_174823685.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Сыр: ''
     Зелень: ''
@@ -914,7 +914,7 @@
   img: healthy-food-g675618a6f_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Картофель: ''
     Рыба: ''
@@ -927,10 +927,9 @@
   img: kwasnica-gdf6522db0_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Картофель: ''
-    Рыба: ''
 -
   title: Картофель пюре с зернистым творогом
   description: >
@@ -942,7 +941,7 @@
   img: potato-pancakes-g9ca345bca_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Картофель: ''
     Творог: ''
@@ -955,7 +954,7 @@
   img: bangers-gbb69b2890_1920.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Картофель: ''
     Сосиски: ''
@@ -972,7 +971,7 @@
   img: food-g0062df949_1280.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 2шт
@@ -1018,13 +1017,13 @@
   img: PXL_20220101_103529302.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 2шт
     Картофель: 4шт
     Свекла: 2шт
-    Яйца: 4шт
+    Яйцо: 4шт
     Соленая селедка: 250г
     Майонез: ''
 -
@@ -1036,7 +1035,7 @@
   img: IMG-20220126-WA0000.jpg
   prepareTime: short
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Сыр: ''
     Зелень: ''
@@ -1060,12 +1059,12 @@
   img: PXL_20211231_144727379.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Зеленый лук: 1шт
     Морковь: 2шт
     Картофель: 4шт
-    Яйца: 4шт
+    Яйцо: 4шт
     Колбаса: 300г
     Горошек консервированный: 1/2п
     Соленый огурец: 4шт
@@ -1097,11 +1096,11 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1133,11 +1132,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1169,11 +1169,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1205,11 +1206,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1241,11 +1243,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1278,11 +1281,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 6шт
+    Яйцо: 6шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1314,11 +1318,12 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: 
+  tags:
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1348,11 +1353,11 @@
   img: PIXNIO-2623010-4032x3024.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
-    Яйца: 2шт
+    Яйцо: 2шт
     Мука: 530г
     Сахар: 2ст.л
     Масло: 75г
@@ -1382,7 +1387,7 @@
   img: IMG-20220126-WA0003.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Лук: 1шт
     Морковь: 1шт
@@ -1402,7 +1407,7 @@
   img: IMG_1111.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Лук: ''
     Морковь: ''
@@ -1425,7 +1430,7 @@
   img: IMG-20220121-WA0012.jpg
   prepareTime: short
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Рыба: ''
     Соль: ''
@@ -1441,7 +1446,7 @@
   img: IMG-20220122-WA0003.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Курица: ''
     Соль: ''
@@ -1457,7 +1462,7 @@
   img: meat-g7495af1e0_1280.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Утка: ''
     Соль: ''
@@ -1483,12 +1488,12 @@
   img: schnitzel-g6a8603cf9_1920.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Курица: 400г
     Соль: ''
     Молотый перец: ''
-    Яйца: 2шт
+    Яйцо: 2шт
     Панировочные сухари: ''
     Масло: ''
 -
@@ -1506,13 +1511,13 @@
   img: PXL_20220129_124300598.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Фарш: 500г
     Соль: ''
     Молотый перец: ''
     Зелень: ''
-    Яйца: 2шт
+    Яйцо: 2шт
     Панировочные сухари: ''
     Масло: ''
 -
@@ -1534,7 +1539,7 @@
   img: IMG-20220121-WA0008.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Фарш: 500г
     Соль: ''
@@ -1559,12 +1564,12 @@
   img: PXL_20220129_182024259.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Рыба: ''
     Соль: ''
     Молотый перец: ''
-    Яйца: 1шт
+    Яйцо: 1шт
     Мука: 1ст
     Масло: ''
 -
@@ -1578,7 +1583,7 @@
   img: PIXNIO-6623-1000x750.jpg
   prepareTime: medium
   repeat: false
-  tags: 
+  tags: []
   ingredients:
     Креветки: ''
     Соль: ''
@@ -1604,7 +1609,7 @@
   img: chicken-g2e561d193_1920.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Курица: 500г
     Лук: 1шт
@@ -1635,7 +1640,7 @@
   img: chicken-g00ef96a82_1280.jpg
   prepareTime: medium
   repeat: true
-  tags: 
+  tags: []
   ingredients:
     Курица: 500г
     Лук: 1шт

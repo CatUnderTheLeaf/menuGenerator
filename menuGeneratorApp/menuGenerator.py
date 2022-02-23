@@ -67,7 +67,10 @@ rules = menu.db.db.rulesCollection
 # tags = menu.db.getTags()
 # print(tags)
 products = menu.db.db.products
-# products[0] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Cereals'}
+# products[40] = {'food_class': 'dairy', 'name': 'Сливки'}
+
+# products.store({'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Гречневая крупа'})
+
     
 for rule in products:
     # if rule['name']=='Заправка для салата':
@@ -81,6 +84,7 @@ for rule in products:
 # dstpath = '/storage/img'
 # dstpath = ''
 # menu.db.db.updateRecipeImgPath(dstpath)
+
 
 # import json
 # # recipes = menu.db.getRecipes()
@@ -149,10 +153,11 @@ data_get = store.get('recipes')
 # print(data_get['recipes'])
 for r in data_get['recipes']:
     h = jsons.load(r, Recipe)
-    # menu.db.updateRecipe(h)
+    menu.db.updateRecipe(h)
     # print(h.food_class)
 
 recipes = menu.db.db.recipesCollection
+# recipes.drop()
 for recipe in recipes:
     print(recipe['__id'])
     print(recipe['title'])
