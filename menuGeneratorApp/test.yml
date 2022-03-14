@@ -73,6 +73,7 @@
   repeat: false
   tags: 
   - завтрак
+  - ignoreProtein
   ingredients:
     Яйцо: 1шт
     Сахар: 1ст.л
@@ -95,6 +96,7 @@
   repeat: false
   tags: 
   - завтрак
+  - ignoreProtein
   ingredients:
     Яйцо: 1шт
     Сахар: 1ст.л
@@ -298,7 +300,6 @@
     Капуста: 1/4шт
     Масло: ''
     Зелень: ''
-    Сметана: ''
 -
   title: Гречневый суп
   description: >
@@ -1096,7 +1097,8 @@
   img: IMG_20200530_200448.jpg
   prepareTime: long
   repeat: true
-  tags: []
+  tags: 
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
@@ -1353,7 +1355,8 @@
   img: PIXNIO-2623010-4032x3024.jpg
   prepareTime: medium
   repeat: false
-  tags: []
+  tags: 
+  - выпечка
   ingredients:
     Молоко: 1ст
     Дрожжи: 2шт
