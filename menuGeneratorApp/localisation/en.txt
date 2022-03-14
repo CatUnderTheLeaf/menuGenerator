@@ -286,3 +286,35 @@ msgstr ""
 
 msgid "other seasoning"
 msgstr ""
+
+#: menuGeneratorApp/main.py:341
+msgid "Help"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:14
+msgid "Low carb products"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:20
+msgid "High carb products"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:26
+msgid "Fat products"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:32
+msgid "Protein products"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:38
+msgid "Nutrient-free products"
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:44
+msgid "Add tags "
+msgstr ""
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:44
+msgid " to the recipe if you want to ignore these nutrients"
+msgstr ""

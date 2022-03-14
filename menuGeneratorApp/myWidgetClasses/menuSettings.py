@@ -516,3 +516,6 @@ class RulesTagsMealsBox(MDBoxLayout):
     def removeRuleTags(self, button):
         tags, id = self.parent.rules[self.meal]
         tags.remove(button.parent.text)
+
+class HelpContentDialog(MDGridLayout):
+    pass

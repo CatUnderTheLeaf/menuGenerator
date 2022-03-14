@@ -14,7 +14,7 @@ from classes.classMenu import Menu
 from classes.classRecipe import Recipe
 
 from myWidgetClasses.customButtons import *
-from myWidgetClasses.menuSettings import MenuSettings
+from myWidgetClasses.menuSettings import MenuSettings, HelpContentDialog
 from myWidgetClasses.RecipeWidget import RecipeWidget
 from myWidgetClasses.RecipeSelectionList import RecipeListItem, RecipeSelectionList
 from myWidgetClasses.otherWidgetClasses import *
@@ -331,6 +331,25 @@ class MenuGeneratorApp(MDApp):
                             settings.setInitialValues()
                             )
                     ),
+                ],
+            )
+        self.dialog.open()
+
+    def openHelp(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title=tr._("Help"),
+                type="custom",
+                content_cls=HelpContentDialog(),
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release=lambda x: (
+                            self.dialog.dismiss()
+                        )
+                    )
                 ],
             )
         self.dialog.open()
