@@ -41,6 +41,16 @@ class ButtonWithCross(MDBoxLayout, ThemableBehavior):
     def removeCustomWidget(self, parentId, instance):
         parentId.remove_widget(instance)
 
+class IconLabel(MDBoxLayout, ThemableBehavior):    
+    color = ColorProperty(None)
+    text = StringProperty()
+    icon = StringProperty("close")
+    text_color = ColorProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
 class MyToggleButton(MDFillRoundFlatIconButton, MDToggleButton):
     value = StringProperty()
     name = StringProperty()

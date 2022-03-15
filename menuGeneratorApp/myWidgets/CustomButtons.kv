@@ -47,6 +47,36 @@
         pos_hint: {"center_y": .5}
         on_release: root.removeCustomWidget(root.parentId, root)
 
+<IconLabel>:
+    id: box
+    size_hint: None,  None
+    height: "26dp"
+    padding: "15dp", 0, 0, 0
+    spacing: "10dp"
+    text_color: 0, 0, 0, 1
+    width:
+        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
+        if root.icon != 'close' else self.minimum_width
+
+    MDIcon:
+        id: lbl_ic
+        icon: root.icon
+        theme_text_color: "Custom"
+        text_color: 0, 0, 0, 1
+        adaptive_size: True
+        pos_hint: {"center_y": .5}
+
+    MDLabel:
+        adaptive_size: True
+        -text_size: None, None
+        pos_hint: {"center_y": .5}
+        id: label
+        text: root.text
+        size_hint_x: None
+        width: self.texture_size[0]
+        color: root.text_color if root.text_color else (root.theme_cls.text_color)
+        markup: True
+
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
 
