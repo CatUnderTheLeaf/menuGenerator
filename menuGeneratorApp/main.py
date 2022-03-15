@@ -339,9 +339,14 @@ class MenuGeneratorApp(MDApp):
     def openHelp(self):
         if not self.helpDialog:
             self.helpDialog = MDDialog(
-                title=tr._("Help"),
-                type="custom",
-                content_cls=HelpContentDialog(),
+                type="simple",
+                items=[
+                    dialogItem(text=tr._("Low carb products"), icon="leaf"),
+                    dialogItem(text=tr._("High carb products"), icon="barley"),
+                    dialogItem(text=tr._("Fat products"), icon="peanut"),
+                    dialogItem(text=tr._("Protein products"), icon="fish"),
+                    dialogItem(text=tr._("Nutrient-free products"), icon="shaker"),
+                ],
                 buttons=[
                     MDFlatButton(
                         text="OK",
@@ -352,7 +357,22 @@ class MenuGeneratorApp(MDApp):
                         )
                     )
                 ],
-            )
+                )
+            # self.helpDialog = MDDialog(
+            #     title=tr._("Help"),
+            #     type="custom",
+            #     content_cls=HelpContentDialog(),
+            #     buttons=[
+            #         MDFlatButton(
+            #             text="OK",
+            #             theme_text_color="Custom",
+            #             text_color=self.theme_cls.primary_color,
+            #             on_release=lambda x: (
+            #                 self.helpDialog.dismiss()
+            #             )
+            #         )
+            #     ],
+            # )
         self.helpDialog.open()
 
     """ 
