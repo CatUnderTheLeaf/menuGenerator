@@ -47,7 +47,7 @@ requirements = python3,pillow,kivy,kivymd,plyer,xcamera,pyyaml,Babel,Cython,unql
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-icon.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xxhdpi/ic_launcher.png
+icon.filename = %(source.dir)s/app_imgs/ic_launcher3/res/mipmap-xhdpi/ic_launcher.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = portrait

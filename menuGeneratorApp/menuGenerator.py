@@ -50,13 +50,13 @@ menu.update_mpd(meals)
 # menu.menu = {}
 # menu.loadFromJson(genMenu)
 # print(menu)
-rules = menu.db.db.rulesCollection
+# rules = menu.db.db.rulesCollection
 # arr = ['short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', 'long prepareTime on Saturday, Sunday', 'At Breakfast serve only breakfast', 'For dough food ignore protein', 'cereals,grains,pasta,bread,vegan is high_carb', 'dried_beans is high_carb', 'fat,nuts is fat', 'fruits is high_carb', 'high_carb_veggies is high_carb', 'low_carb_veggies is low_carb', 'meat,fish,cheese,eggs is protein', 'dairy is low_carb, protein, fat', 'other_seasoning is free', 'For Breakfast use low_carb, high_carb, fat, free', 'For Lunch use low_carb, high_carb, protein, fat, free', 'For Dinner use protein, fat, free, low_carb', 'On Sunday discard Lunch', 'medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday', 'On discard Breakfast', 'On discard Brunch', 'On discard Supper', 'At Lunch serve only ', 'At Brunch serve only ', 'At Supper serve only ', 'At Dinner serve only ', 'For Brunch use low_carb, protein, high_carb, fat, free', 'For Supper use low_carb, protein, high_carb, fat, free', 'On discard Dinner']
-for a in rules:
+# for a in rules:
     # newRule = {
     #     'rule': a
     # }
-    print(a)
+    # print(a)
     # rules.store(newRule)
     # arr.append(rule['rule'])
 # print(arr)
@@ -126,10 +126,10 @@ products = menu.db.db.products
 
 recipes = menu.db.db.recipesCollection
 # recipes.drop()
-# for recipe in recipes:
-#     print(recipe['__id'])
-#     print(recipe['title'])
-#     print(recipe['nutrients'])
+for recipe in recipes:
+    print(recipe['__id'])
+    print(recipe['title'])
+    print(recipe['img'])
 #     print(recipe['tags'])
 
 # menu.disconnectDB()
