@@ -36,9 +36,10 @@ from kivymd.uix.chip import MDChip
 from kivymd.uix.expansionpanel import MDExpansionPanel, MDExpansionPanelTwoLine
 from kivymd.utils.fitimage import FitImage
 
-class MenuGeneratorApp(MDApp):  
+class MenuGeneratorApp(MDApp):
     overlay_color = get_color_from_hex("#4278e4")
     dialog = None
+    helpDialog = None
     custom_sheet = None
     language = StringProperty('en')
     # Create Menu object        
@@ -336,8 +337,8 @@ class MenuGeneratorApp(MDApp):
         self.dialog.open()
 
     def openHelp(self):
-        if not self.dialog:
-            self.dialog = MDDialog(
+        if not self.helpDialog:
+            self.helpDialog = MDDialog(
                 title=tr._("Help"),
                 type="custom",
                 content_cls=HelpContentDialog(),
@@ -347,12 +348,12 @@ class MenuGeneratorApp(MDApp):
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
                         on_release=lambda x: (
-                            self.dialog.dismiss()
+                            self.helpDialog.dismiss()
                         )
                     )
                 ],
             )
-        self.dialog.open()
+        self.helpDialog.open()
 
     """ 
     Load all recipes to the Recipe list scroll

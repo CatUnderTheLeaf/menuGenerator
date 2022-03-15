@@ -6,39 +6,92 @@
 
 <HelpContentDialog>: 
     spacing: dp(10)
+    padding: dp(20)
     cols: 1
     adaptive_height: True
 
-    MDList:
-        OneLineIconListItem:
-            text: tr._("Low carb products")
+    MDRectangleFlatIconButton:
+        theme_text_color: "Custom"
+        # text_color: 0, 0, 1, 1
+        line_color: app.theme_cls.bg_normal
+        text: tr._("Low carb products")
+        icon: "leaf"
+        # disabled: True
+        # multiline: True
+        # width: root.width
+    
+    MDRectangleFlatIconButton:
+        theme_text_color: "Custom"
+        # text_color: 0, 0, 1, 1
+        line_color: app.theme_cls.bg_normal
+        text: tr._("High carb products")
+        icon: "barley"
+        # disabled: True
+        # multiline: True
+        # width: root.width
+    
+    MDRectangleFlatIconButton:
+        theme_text_color: "Custom"
+        # text_color: 0, 0, 1, 1
+        line_color: app.theme_cls.bg_normal
+        text: tr._("Fat products")
+        icon: "peanut"
+        # disabled: True
+        # multiline: True
+        # width: root.width
+    
+    MDRectangleFlatIconButton:
+        theme_text_color: "Custom"
+        # text_color: 0, 0, 1, 1
+        line_color: app.theme_cls.bg_normal
+        text: tr._("Protein products")
+        icon: "fish"
+        # disabled: True
+        # multiline: True
+        # width: root.width
+    
+    MDRectangleFlatIconButton:
+        theme_text_color: "Custom"
+        # text_color: 0, 0, 1, 1
+        text: tr._("Nutrient-free products")
+        line_color: app.theme_cls.bg_normal
+        icon: "shaker"
+        # disabled: True
+        # multiline: True
+        # width: root.width
+    
+    
+    
+    # MDList:
+    #     OneLineIconListItem:
+    #         text: tr._("Low carb products")
 
-            IconLeftWidget:
-                icon: "leaf"
+    #         IconLeftWidget:
+    #             icon: "leaf"
 
-        OneLineIconListItem:
-            text: tr._("High carb products")
+    #     OneLineIconListItem:
+    #         text: tr._("High carb products")
 
-            IconLeftWidget:
-                icon: "barley"
+    #         IconLeftWidget:
+    #             icon: "barley"
 
-        OneLineIconListItem:
-            text: tr._("Fat products")
+    #     OneLineIconListItem:
+    #         text: tr._("Fat products")
 
-            IconLeftWidget:
-                icon: "peanut"
+    #         IconLeftWidget:
+    #             icon: "peanut"
 
-        OneLineIconListItem:
-            text: tr._("Protein products")
+    #     OneLineIconListItem:
+    #         text: tr._("Protein products")
 
-            IconLeftWidget:
-                icon: "fish"
+    #         IconLeftWidget:
+    #             icon: "fish"
 
-        OneLineIconListItem:
-            text: tr._("Nutrient-free products")
+    #     OneLineIconListItem:
+    #         text: tr._("Nutrient-free products")
 
-            IconLeftWidget:
-                icon: "shaker"
+    #         IconLeftWidget:
+    #             icon: "shaker"
 
     MDTextField:
         text: tr._("Add tags ") + "'ignoreProtein', 'ignoreHighCarb', 'ignoreLowCarb', 'ignoreFat'" + tr._(" to the recipe if you want to ignore these nutrients")
