@@ -8,7 +8,9 @@
     spacing: dp(10)
     padding: 0, dp(20), 0, 0
     cols: 1
-    adaptive_height: True
+    # adaptive_height: True
+    height: self.minimum_height + dp(40)
+    size_hint_y: None
 
     IconLabel:
         text: tr._("Low carb products")
