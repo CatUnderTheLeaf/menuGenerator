@@ -32,8 +32,8 @@ class Menu:
         self.timePeriod = "day"
         self.repeatDishes = True
 
-    def connectDB(self, db_type, db_path):
-        self.db = MenuDB(db_type, db_path)
+    def connectDB(self, db_path):
+        self.db = MenuDB(db_path)
 
     def disconnectDB(self):
         self.db.disconnect()

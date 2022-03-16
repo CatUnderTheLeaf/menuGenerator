@@ -7,16 +7,12 @@ from classes.classRecipe import Recipe
 from kivy.storage.jsonstore import JsonStore
 # Create Menu object
 
-import yaml
-with open(os.path.join(os.path.dirname(__file__), "app_settings.yml"), 'r') as stream:
-    data_loaded = yaml.safe_load(stream)
 
-db = data_loaded['DB_TYPE']
-db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB_RU'])
+db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB_RU.db')
 
 menu = Menu()
 
-menu.connectDB(db, db_path)
+menu.connectDB(db_path)
 
 # generate menu for n+1 days applying rules
 n = 10

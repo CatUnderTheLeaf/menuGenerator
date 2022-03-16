@@ -1,14 +1,10 @@
 import random
-# from classes.classSqliteDB import SqliteDB
 from classes.classUnqliteDB import UnqliteDB
 
 class MenuDB:
         
-    def __init__(self, type, path):
-        if type=='sqlite':
-            self.db = SqliteDB(path)
-        if type=='unqlite':
-            self.db = UnqliteDB(path)
+    def __init__(self, path):
+        self.db = UnqliteDB(path)
         # subsets of recipes for each mealtype
         self.subsets = {}
     

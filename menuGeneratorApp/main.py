@@ -1,6 +1,5 @@
 from datetime import date, timedelta
-import os
-import yaml
+import os, shutil
 from babel.dates import format_date
 from classes.classLang import tr
 
@@ -155,16 +154,36 @@ class MenuGeneratorApp(MDApp):
         genMenu = {}
         
         self.root.ids.screen_manager.transition = NoTransition()
-     
-        # load db_type and db_path
-        with open(os.path.join(os.path.dirname(__file__), "app_settings.yml"), 'r') as stream:
-            data_loaded = yaml.safe_load(stream)
 
-        db = data_loaded['DB_TYPE']
-        db_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_DB_RU'])
-        self.menu.connectDB(db, db_path)
+        # default path in case storage_permission on android is not granted
+        db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB_RU.db')        
+        settings_path = os.path.join(os.path.dirname(__file__), 'menu_settings.json')
 
-        settings_path = os.path.join(os.path.dirname(__file__), data_loaded['MENU_SETTINGS'])
+        if platform == "android":
+            from android.permissions import Permission, check_permission
+
+            has_permission = (check_permission(Permission.WRITE_EXTERNAL_STORAGE) and 
+                    check_permission(Permission.READ_EXTERNAL_STORAGE))
+
+            # if there is a permisson then primary_external_storage_path is used, 
+            # so in case of app reinstall or update all changes to the db and settings were saved
+            if has_permission:                
+                from android.storage import primary_external_storage_path
+
+                android_db_path = os.path.join(primary_external_storage_path(), 'MenuGenerator', 'menuUnqliteDB_RU.db')
+                if not (os.path.exists(android_db_path)):                    
+                    os.makedirs(os.path.join(primary_external_storage_path(), 'MenuGenerator'), exist_ok=True)
+                    shutil.copy(db_path, android_db_path)
+                db_path = android_db_path
+
+                android_settings_path = os.path.join(primary_external_storage_path(), 'MenuGenerator', 'menu_settings.json')
+                if not (os.path.exists(android_settings_path)):
+                    os.makedirs(os.path.join(primary_external_storage_path(), 'MenuGenerator'), exist_ok=True)
+                    shutil.copy(settings_path, android_settings_path)
+                settings_path = android_settings_path
+
+        self.menu.connectDB(db_path)
+
         self.store = JsonStore(settings_path)
 
         # load and set interface language
