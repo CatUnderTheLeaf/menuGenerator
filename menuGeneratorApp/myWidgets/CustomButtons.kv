@@ -51,12 +51,10 @@
     id: box
     size_hint: None,  None
     height: "26dp"
-    padding: "15dp", 0, 0, 0
     spacing: "10dp"
     text_color: 0, 0, 0, 1
     width:
-        self.minimum_width - (dp(10) if DEVICE_TYPE == "desktop" else dp(20)) \
-        if root.icon != 'close' else self.minimum_width
+        self.minimum_width
 
     MDIcon:
         id: lbl_ic
@@ -66,16 +64,15 @@
         adaptive_size: True
         pos_hint: {"center_y": .5}
 
-    MDLabel:
-        adaptive_size: True
-        -text_size: None, None
-        pos_hint: {"center_y": .5}
+    MDTextField:
         id: label
         text: root.text
+        pos_hint: {"center_y": .5}    
+        multiline: True    
+        disabled: True
         size_hint_x: None
-        width: self.texture_size[0]
-        color: root.text_color if root.text_color else (root.theme_cls.text_color)
-        markup: True
+        width: dp(200)
+        text_color: root.text_color if root.text_color else (root.theme_cls.text_color)
 
 <MyToggleButton>:
     background_down: app.theme_cls.primary_dark
