@@ -28,6 +28,7 @@ class IngredientsExpansionPanel(MDExpansionPanel):
         if instance_chip.active:
             self.ingredientWidget.add_widget(ButtonWithCross(
                                             text=instance_chip.text,
+                                            input=True, 
                                             parentId=self.ingredientWidget))
         else:
             for button_with_cross in self.ingredientWidget.children:
