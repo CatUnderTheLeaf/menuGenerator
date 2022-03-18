@@ -85,11 +85,12 @@ class MenuGeneratorApp(MDApp):
         all_tabs = self.root.ids.tabs.get_tab_list()
         
         # remove old tabs from previous if exist
-        for i in range(len(del_tabs)):            
-            self.root.ids.tabs.remove_widget(all_tabs[i])
-
-        # first tab is already filled with content
-
+        if (len(del_tabs)):
+            for i in range(len(del_tabs)):            
+                self.root.ids.tabs.remove_widget(all_tabs[i])
+            # fill first tab with content
+            self.fillTabs(self.root.ids.tabs.get_tab_list()[0].tab)
+      
     """ 
     Fill the content of a tab
 
