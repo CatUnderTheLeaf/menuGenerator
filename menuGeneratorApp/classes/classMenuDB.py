@@ -66,6 +66,8 @@ class MenuDB:
      """
     def updateRules(self, rules):
         self.db.updateRules(rules)
+        # delete subsets based on old rules
+        self.subsets = {}
 
     """ 
     update tags in the db
