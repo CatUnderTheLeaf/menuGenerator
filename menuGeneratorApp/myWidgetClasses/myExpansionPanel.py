@@ -27,11 +27,11 @@ class IngredientsExpansionPanel(MDExpansionPanel):
     def markIngredient(self, instance_chip):
         if instance_chip.active:
             self.ingredientWidget.add_widget(ButtonWithCross(
-                                            text=instance_chip.text,
+                                            text=instance_chip.text.replace("\n", " "),
                                             input=True, 
                                             parentId=self.ingredientWidget))
         else:
             for button_with_cross in self.ingredientWidget.children:
-                if button_with_cross.text==instance_chip.text:
+                if button_with_cross.text==instance_chip.text.replace("\n", " "):
                     self.ingredientWidget.remove_widget(button_with_cross)
         
