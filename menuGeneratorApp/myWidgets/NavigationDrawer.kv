@@ -56,29 +56,30 @@
                 icon: "nutrition"
                 on_press: app.get_recipes()
     
-    MDBoxLayout:
-        spacing: dp(10)
-        padding: dp(10)
-        adaptive_height: True
-        id: languageButtons
+    # TODO fix weakly referenced object error
+    # MDBoxLayout:
+    #     spacing: dp(10)
+    #     padding: dp(10)
+    #     adaptive_height: True
+    #     id: languageButtons
 
-        TextToggleButton:
-            text: "en"
-            group: "language"
-            on_press:
-                self.onToggle()
-                app.language = self.text
+    #     TextToggleButton:
+    #         text: "en"
+    #         group: "language"
+    #         on_press:
+    #             self.onToggle()
+    #             app.language = self.text
 
-        MDSeparator:
-            orientation: "vertical"
-            height: dp(10)
+    #     MDSeparator:
+    #         orientation: "vertical"
+    #         height: dp(10)
         
-        TextToggleButton:
-            text: "ru"
-            group: "language"
-            on_press:
-                self.onToggle()
-                app.language = self.text
+    #     TextToggleButton:
+    #         text: "ru"
+    #         group: "language"
+    #         on_press:
+    #             self.onToggle()
+    #             app.language = self.text
 
                
 <ItemDrawer>:

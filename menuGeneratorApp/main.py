@@ -190,12 +190,14 @@ class MenuGeneratorApp(MDApp):
         # load and set interface language
         if self.store.exists('language'):
             self.language = self.store.get('language')['language']
-            self.setLanguage()
+            # TODO fix weakly referenced object error
+            # self.setLanguage()
         else:            
             if not self.dialog:
                 def setInitialLanguage(language):
                     self.language = language
-                    self.setLanguage()
+                    # TODO fix weakly referenced object error
+                    # self.setLanguage()
                     self.dialog = None
                
                 self.dialog = MDDialog(
