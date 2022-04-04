@@ -97,38 +97,39 @@ class MenuGeneratorApp(MDApp):
     :param instance_tab: <__main__.Tab object>    
      """
     def fillTabs(self, instance_tab):
-        for meal in self.menu.mpd:
-            recipe = self.menu.menu[instance_tab.day.isoformat()][meal]
-            if (recipe is not None):
-                instance_tab.ids.box.add_widget(
-                    OneLineListItem(text=tr._(f"{meal}"))
-                )
-                img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
-                img_box.add_widget(FitImage(source=recipe.img))
-                instance_tab.ids.box.add_widget(img_box)
-                icon = "clock-time-one-outline"
-                if recipe.prepareTime=="medium":
-                    icon = "clock-time-five-outline"
-                elif recipe.prepareTime=="long":
-                    icon = "clock-time-nine-outline"
-                
-                content = DescriptionContent()
-                content.ids.recipe_text.text = recipe.description
-                for ingredient, amount in recipe.ingredients.items():
-                    ing_num = '     ' + amount if amount else ''
-                    content.ids.recipeIngredients.add_widget(MDChip(
-                                            text=ingredient + ing_num,
-                                            icon='',
-                                            text_color=(1,1,1,1)))
-                instance_tab.ids.box.add_widget(MDExpansionPanel(
-                    icon=icon,
-                    content = content,
-                    panel_cls=MDExpansionPanelTwoLine(
-                        text=f"{recipe}",
-                        secondary_text=f"{', '.join(recipe.ingredients.keys())}",
-                        secondary_font_style='Body2'
+        if (instance_tab.day.isoformat() in self.menu.menu):
+            for meal in self.menu.mpd:
+                recipe = self.menu.menu[instance_tab.day.isoformat()][meal]
+                if (recipe is not None):
+                    instance_tab.ids.box.add_widget(
+                        OneLineListItem(text=tr._(f"{meal}"))
                     )
-                ))
+                    img_box = MDBoxLayout(size_hint_y=None, height="200dp", orientation='vertical')
+                    img_box.add_widget(FitImage(source=recipe.img))
+                    instance_tab.ids.box.add_widget(img_box)
+                    icon = "clock-time-one-outline"
+                    if recipe.prepareTime=="medium":
+                        icon = "clock-time-five-outline"
+                    elif recipe.prepareTime=="long":
+                        icon = "clock-time-nine-outline"
+                    
+                    content = DescriptionContent()
+                    content.ids.recipe_text.text = recipe.description
+                    for ingredient, amount in recipe.ingredients.items():
+                        ing_num = '     ' + amount if amount else ''
+                        content.ids.recipeIngredients.add_widget(MDChip(
+                                                text=ingredient + ing_num,
+                                                icon='',
+                                                text_color=(1,1,1,1)))
+                    instance_tab.ids.box.add_widget(MDExpansionPanel(
+                        icon=icon,
+                        content = content,
+                        panel_cls=MDExpansionPanelTwoLine(
+                            text=f"{recipe}",
+                            secondary_text=f"{', '.join(recipe.ingredients.keys())}",
+                            secondary_font_style='Body2'
+                        )
+                    ))
 
     """ 
     Set transition between Screens
