@@ -10,9 +10,9 @@
     Vegetable milk: ''
     Muesli: ''
 -
-  title: Lazy Dumplings
+  title: Syrnyky / Lazy Dumplings
   description: >
-    Mix the cottage cheese with the egg, sugar and salt.
+    Mix the curd cheese with the egg, sugar and salt.
   
     Stir in the flour until it forms a stiff dough.
     
@@ -21,13 +21,15 @@
     Cut each sausage into slices.
     
     Cook in salted boiling water for 5-7 minutes after popping or fry/bake until crispy.
+
+    Serve with sour cream or melted butter.
   img: IMG_20201206_094328__01__01.jpg
   prepareTime: medium
   repeat: false
   tags: 
   - breakfast
   ingredients:
-    Cottage cheese: 250g
+    Curd cheese: 250g
     Egg: 1pc
     Sugar: 1tbsp
     Flour: ''
@@ -37,7 +39,7 @@
   description: >
     Separate the eggs into whites and yolks.
 
-    Mix the cottage cheese, sugars and yolks.
+    Mix the curd cheese, sugars and yolks.
 
     Whisk the egg whites with a pinch of salt.
 
@@ -50,7 +52,7 @@
   tags: 
   - breakfast
   ingredients:
-    Cottage cheese: 2p
+    Curd cheese: 2p
     Egg: 2pc
     Sugar: 1/2cup
     Vanilla sugar: 1p
@@ -59,7 +61,7 @@
   description: >
     Beat eggs with sugar and salt.
 
-    Add 1 tbsp milk, mix.
+    Add 1 cup of milk, mix.
 
     Add flour to form a thick batter.
 
@@ -142,7 +144,7 @@
 -
   title: Boiled Eggs
   description: >
-    Boil the eggs until just set (poached, hard-boiled).
+    Boil the eggs until the desired condition (poached, hard-boiled).
  
     Serve with bread, salad, mayonnaise.
   img: PIXNIO-1185954-4059x2701.jpg
@@ -166,7 +168,7 @@
   ingredients:
     Bread: ''
 -
-  title: Oatmeal
+  title: Oatmeal porridge
   description: >
     Pour the oats into a pot.
 
@@ -203,7 +205,7 @@
     Sugar: 1/2tbsp
     Vanilla sugar: 1/4p
 -
-  Title: Rice porridge with milk
+  title: Rice porridge with milk
   description: >
     Add rice to milk.
  
@@ -211,7 +213,7 @@
     
     Stir in sugar and vanilla sugar.
     
-    Allow to proof for 10 minutes.
+    Leave for 10 minutes.
   img: rice-pudding-ge50310e86_1920.jpg
   prepareTime: medium
   repeat: false
@@ -223,7 +225,7 @@
     Sugar: 1/2tbsp
     Vanilla sugar: 1/4p
 -
-  title: Cottage cheese
+  title: Curd cheese
   description: >
     Add tomatoes and herbs to the curd
  
@@ -236,7 +238,7 @@
   tags: 
   - breakfast
   ingredients:
-    Cottage cheese: ''
+    Curd cheese: ''
 -
   title: Yoghurt
   description: >
@@ -251,7 +253,7 @@
 -
   title: Lavash rolls
   description: >
-    Spread the pita bread with pesto.
+    Spread the Lavash with pesto or spread.
  
     Put cheese and vegetables on top.
     
@@ -268,10 +270,9 @@
     Greens: ''
     Tomato: ''
     Onion: ''
-    Carrots: ''
-    Salad: ''
+    Carrot: ''
 -
-  title: Lenten Borscht
+  title: Lenten Borshch
   description: >
     Fry chopped onion and garlic in oil.
  
@@ -296,7 +297,7 @@
     Garlic: 2ts
     Beetroot: 1pc
     Tomato paste: 1p
-    Potatoes: 4pc
+    Potato: 4pc
     Cabbage: 1/4pc
     Oil: ''
     Greens: ''
@@ -331,12 +332,12 @@
   repeat: true
   tags: []
   ingredients:
-    Buckwheat Grits: 1/2cup
+    Buckwheat: 1/2cup
     Onion: 1pc
     Carrot: 1pc
     Garlic: 2pc
-    Potatoes: 4pc
-    Laurel leaf: 3pc
+    Potato: 4pc
+    Bay leaf: 3pc
     Salt: ''
     Ground pepper: ''
     Oil: ''
@@ -373,7 +374,7 @@
     Onion: 1pc
     Carrot: 1pc
     Chicken: 300g
-    Potatoes: 4pc
+    Potato: 4pc
     Salt: ''
     Ground pepper: ''
     Oil: ''
@@ -392,7 +393,7 @@
     
     Add potatoes. Pour water on them. Season with salt.
     
-    Shape meatballs or meatballs into meatballs, adding rice and onion.
+    Shape meatballs or meatballs mixed with rice and onion.
     
     When the stock starts to boil, add meatballs. 
     
@@ -408,13 +409,13 @@
   ingredients:
     Onion: 1pc
     Carrot: 1pc
-    Potatoes: 4pc
-    Stuffing: 300g
+    Potato: 4pc
+    Ground meat: 300g
     Salt: ''
     Ground pepper: ''
     Oil: ''
 -
-  title: Soup with galushkas
+  title: Soup with dumplings (Halu?ky)
   description: >
     Boil the chicken (simmer for 1 hour).
 
@@ -432,7 +433,7 @@
     
     Add potatoes. 
     
-    Make galushki: mix egg and flour, salt.
+    Make dumplings: mix egg and flour, salt.
     
     When potatoes are half raw, put them in with a spoon. Add meat.
 
@@ -445,7 +446,7 @@
     Onion: 1pc
     Carrot: 1pc
     Chicken: 300g
-    Potatoes: 4pc
+    Potato: 4pc
     Flour: 2-3tbsp
     Egg: 1pc
     Salt: ''
@@ -476,7 +477,7 @@
 
     Add potatoes. Pour 2-2.5 litres of water. 
 
-    Bring to the boil. Add Ground Pepper. 
+    Bring to the boil. Add Ground pepper. 
 
     Cook for 5-7 minutes. Add the tomatoes. Add the garlic.
 
@@ -488,10 +489,10 @@
   ingredients:
     Onion: 1pc
     Carrot: 1pc
-    Potatoes: 4pc
+    Potato: 4pc
     Beef: 350g
     Tomato: 1pc
-    Pepper: 1pc
+    Capsicum: 1pc
     Garlic: 2ts.
     Caraway seed: 1tsp
     Paprika: 1tbsp
@@ -549,8 +550,8 @@
     Lentils: 1/2cup
     Onion: 1pc
     Carrot: 1pc
-    Potatoes: 4pc
-    Laurel leaf: 3pc
+    Potato: 4pc
+    Bay leaf: 3pc
     Salt: ''
     Ground pepper: ''
     Oil: ''
@@ -586,7 +587,7 @@
     Onion: 1pc
     Carrot: 1pc
     Pumpkin: 500g
-    Laurel leaf: 3pc
+    Bay leaf: 3pc
     Cream: 200g
     Croutons: ''
     Pumpkin seeds: ''
@@ -622,16 +623,16 @@
   ingredients:
     Onion: 1pc
     Carrot: 1pc
-    Potatoes: 4pc
-    Parsnips: 500ã
-    Laurel leaf: 3pc
+    Potato: 4pc
+    Parsnip: 500ã
+    Bay leaf: 3pc
     Croutons: ''
     Greens: ''
     Salt: ''
     Ground pepper: ''
     Oil: ''
 -
-  title: Dumplings
+  title: Dumplings (Varenyky)
   description: >
     Add the egg and salt to the flour.
  
@@ -689,7 +690,7 @@
     Egg: 3pc
     Soy sauce: 1tsp
 -
-  title: Macaroni with Tomato Sauce and Cheese
+  title: Pasta with Tomato Sauce and Cheese
   description: >
     Boil the pasta in salted water for about 10 minutes.
 
@@ -723,9 +724,9 @@
   repeat: false
   tags: []
   ingredients:
-    Spaghetti: 63g
+    Pasta: 63g
     Tomato sauce: ''
-    Stuffing: 100g
+    Ground meat: 100g
     Water: ''
     Salt: ''
 -
@@ -733,9 +734,9 @@
   description: >
     Fry the minced meat in a pan and add the tomato sauce.
 
-    Make a b?chamel sauce from the milk, flour and butter: melt the butter, add the flour, stir, add the milk little by little, stirring constantly with a whisk to prevent lumps.
+    Make a B?chamel sauce from the milk, flour and butter: melt the butter, add the flour, stir, add the milk little by little, stirring constantly with a whisk to prevent lumps.
 
-    Place in layers on the baking tray until the filling is done: lasagne sheet, minced meat in tomato sauce, b?chamel.
+    Place in layers on the baking tray until the filling is done: lasagne sheet, minced meat in tomato sauce, B?chamel sauce.
 
     Sprinkle grated cheese on top and bake in oven until crispy at 200 degrees.
   img: PIXNIO-253235-1945x1296.jpg
@@ -745,7 +746,7 @@
   ingredients:
     Lasagne sheets: ''
     Tomato sauce: 1l
-    Stuffing: 1kg
+    Ground meat: 1kg
     Milk: 1/2l
     Butter: 50g
     Flour: ''
@@ -772,7 +773,7 @@
 -
   title: Zucchini Fritters
   description: >
-    Grate zucchini or courgettes with a coarse grater. Sprinkle with salt.
+    Grate zucchini with a coarse grater. Sprinkle with salt.
 
     Stir in egg.
 
@@ -806,7 +807,7 @@
 -
   title: Homemade Burger
   description: >
-    Pepper the stuffing and form into flat patties. Fry on both sides until cooked through.
+    Pepper the ground meat and form into flat patties. Fry on both sides until cooked through.
  
     Cut the bun in half and pat dry in the oven or in a pan.
     
@@ -822,11 +823,11 @@
   repeat: false
   tags: []
   ingredients:
-    Stuffing: 150g
+    Ground meat: 150g
     Bun: 1pc
     Ketchup: ''
     Mustard: ''
-    Salad: ''
+    Greens: ''
     Cheese: ''
     Cucumber: ''
 -
@@ -854,11 +855,11 @@
     Carrot: 1pc
     Garlic: 2ts
     Tomato paste: 1p
-    Potatoes: 4pc
+    Potato: 4pc
     Cauliflower: 1/4pc
-    Courgette: 1pc
-    Aubergine: 1pc
-    Pepper: 1pc
+    Zucchini: 1pc
+    Eggplant: 1pc
+    Capsicum: 1pc
     Sour cream: ''
     Butter: ''
 -
@@ -866,7 +867,7 @@
   description: >
     Pour the tomato sauce into a baking dish.
  
-    Cut the courgette, aubergine and tomato into equal slices.
+    Cut the courgette, eggplant and tomato into equal slices.
     
     Put the sliced vegetables alternately in the dish.
     
@@ -878,8 +879,8 @@
   repeat: true
   tags: []
   ingredients:
-    Courgette: 1pc
-    Aubergine: 1pc
+    Zucchini: 1pc
+    Eggplant: 1pc
     Tomato: ''
     Tomato sauce: ''
     Garlic: 2ts
@@ -902,7 +903,6 @@
     Greens: ''
     Tomato: ''
     Garlic: ''
-    Salad: ''
     Ground pepper: ''
     Salt: ''
     Oil: ''
@@ -917,7 +917,7 @@
   repeat: false
   tags: []
   ingredients:
-    Potatoes: ''
+    Potato: ''
     Fish: ''
 -
   title: Mashed potatoes with sauerkraut
@@ -930,22 +930,23 @@
   repeat: false
   tags: []
   ingredients:
-    Potatoes: ''
+    Potato: ''
+    Sauerkraut: ''
 -
-  title: Mashed potatoes with grainy curd
+  title: Mashed potatoes with Cottage cheese
   description: >
     Peel the potatoes, boil them in salted water and mash with a bit of butter, you can add a little milk.
 
     You can make potato pancakes by adding egg and flour.
 
-    Serve with granulated cottage cheese and top with a light salad.
+    Serve with Cottage cheese and top with a light salad.
   img: potato-pancakes-g9ca345bca_1920.jpg
   prepareTime: medium
   repeat: false
   tags: []
   ingredients:
-    Potatoes: ''
-    Cheese curd: ''
+    Potato: ''
+    Cottage cheese: ''
 -
   title: Mashed potatoes with fried sausages
   description: >
@@ -957,14 +958,14 @@
   repeat: false
   tags: []
   ingredients:
-    Potatoes: ''
-    Sausages: ''
+    Potato: ''
+    Sausage: ''
 -
   title: Vinaigrette
   description: >
     Boil the carrots, potatoes and beetroot.
 
-    Dice all the vegetables.
+    Dice all the vegetables. Add canned peas.
 
     Season with salt and pepper, then mix in oil.
 
@@ -976,15 +977,15 @@
   ingredients:
     Onion: 1pc
     Carrot: 2pc
-    Potatoes: 4pc
+    Potato: 4pc
     Beetroot: 2pc
-    Canned peas: 1/2p
-    Salted cucumber: 4pc
+    Peas: 1/2p
+    Pickled cucumber: 4pc
     Ground pepper: ''
     Salt: ''
     Oil: ''
 -
-  title: Shuba
+  title: Dressed herring
   description: >
     Boil the carrots, potatoes, eggs and beetroot.
 
@@ -1022,7 +1023,7 @@
   ingredients:
     Onion: 1pc
     Carrot: 2pc
-    Potatoes: 4pc
+    Potato: 4pc
     Beetroot: 2pc
     Egg: 4pc
     Salted herring: 250g
@@ -1043,16 +1044,15 @@
     Tomato: ''
     Onion: ''
     Cucumber: ''
-    Salad: ''
     Ground pepper: ''
     Salt: ''
     Oil: ''
 -
-  title: Olivier
+  title: Olivier salad
   description: >
     Boil the carrots, potatoes and eggs.
 
-    Dice all the vegetables and the sausage.
+    Dice all the vegetables and the sausage. Add canned peas.
 
     Season with salt and pepper, season with mayonnaise and mix together.
 
@@ -1064,16 +1064,16 @@
   ingredients:
     Green onion: 1pc
     Carrot: 2pc
-    Potatoes: 4pc
+    Potato: 4pc
     Egg: 4pc
     Sausage: 300g
-    Canned peas: 1/2p
+    Peas: 1/2p
     Pickled cucumber: 4pc
     Ground pepper: ''
     Salt: ''
     Mayonnaise: ''
 -
-  title: Meat Tarts
+  title: Meat buns
   description: >
     Knead in the yeast dough:
  
@@ -1107,10 +1107,10 @@
     Sugar: 2tbsp
     Butter: 75g
     Salt: 8g
-    Stuffing: ''
+    Ground meat: ''
     Onion: ''
 -
-  title: Mashed potato patties with meat/fish
+  title: Buns with mashed potato and meat/fish
   description: >
     Knead in the yeast dough:
  
@@ -1147,7 +1147,7 @@
     Fish: ''
     Onion: ''
 -
-  title: Pea Tarts
+  title: Pea buns
   description: >
     Knead in the yeast dough:
  
@@ -1184,7 +1184,7 @@
     Peas: 200g
     Onion: ''
 -
-  title: Buckwheat Patties
+  title: Buckwheat buns
   description: >
     Knead in the yeast dough:
  
@@ -1221,7 +1221,7 @@
     Buckwheat: 1/2cup
     Onion: ''
 -
-  title: Cabbage Pies
+  title: Cabbage buns
   description: >
     Knead in the yeast dough:
  
@@ -1256,10 +1256,10 @@
     Butter: 75g
     Salt: 8g
     Cabbage: ''
-    Carrots: ''
+    Carrot: ''
     Onion: ''
 -
-  title: Rice and egg patties
+  title: Rice and egg buns
   description: >
     Knead in the yeast dough:
  
@@ -1296,7 +1296,7 @@
     Rice: 1/2cup
     Green onion: ''
 -
-  title: Berry Patties
+  title: Berry buns
   description: >
     Knead in the yeast dough:
  
@@ -1412,14 +1412,14 @@
   repeat: false
   tags: []
   ingredients:
-    Onions: ''
+    Onion: ''
     Carrot: ''
     Garlic: ''
-    Potatoes: ''
+    Potato: ''
     Cauliflower: ''
-    Courgette: ''
-    Aubergine: ''
-    Pepper: ''
+    Zucchini: ''
+    Eggplant: ''
+    Capsicum: ''
     Herbs: ''
     Oil: ''
 -
@@ -1500,7 +1500,7 @@
     Breadcrumbs: ''
     Butter: ''
 -
-  title: Cutlets
+  title: Meatballs
   description: >
     Season with salt and pepper, add the eggs and chopped herbs. Mix thoroughly.
 
@@ -1516,7 +1516,7 @@
   repeat: true
   tags: []
   ingredients:
-    Stuffing: 500g
+    Ground meat: 500g
     Salt: ''
     Ground pepper: ''
     Greens: ''
@@ -1524,7 +1524,7 @@
     Breadcrumbs: ''
     Oil: ''
 -
-  title: Meatballs
+  title: Rice Meatballs
   description: >
     Boil the rice until tender.
  
@@ -1544,14 +1544,14 @@
   repeat: true
   tags: []
   ingredients:
-    Stuffing: 500g
+    Ground meat: 500g
     Salt: ''
     Ground pepper: ''
     Rice: 100g
     Tomato sauce: 350g
     Cream: 350g
 -
-  Title: Fish fried in batter
+  title: Fish fried in batter
   description: >
     Rinse and dry fish fillets and cut into portions.
  
@@ -1650,9 +1650,9 @@
     Carrot: 1pc
     Garlic: 2ts
     Cauliflower: 1/4pc
-    Courgette: 1/2pc
+    Zucchini: 1/2pc
     Green beans: 100g
-    Pepper: 1pc
+    Capsicum: 1pc
     Salt: ''
     Ground pepper: ''
     Oil: ''

@@ -8,7 +8,7 @@ from kivy.storage.jsonstore import JsonStore
 # Create Menu object
 
 
-db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB_RU.db')
+db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB.db')
 
 menu = Menu()
 
@@ -66,9 +66,18 @@ menu.update_mpd(meals)
 # tags = menu.db.getTags()
 # print(tags)
 products = menu.db.db.products
-# products[40] = {'food_class': 'dairy', 'name': 'Сливки'}
+# print(products[8])
+# products[198] = {'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Lavash'}
+# products[168] = {'food_class': 'other_seasoning', 'name': 'Ketchup'}
+# products[200] = {'food_class': 'meat,fish,cheese,eggs', 'name': 'Feta'}
+# products[201] = {'food_class': 'low_carb_veggies', 'name': 'Algae'}
 
-# products.store({'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Гречневая крупа'})
+
+# products.store({'food_class': 'cereals,grains,pasta,bread,vegan', 'name': 'Coconut milk'})
+# products.store({'food_class': 'other_seasoning', 'name': 'Turmeric'})
+# products.store({'food_class': 'low_carb_veggies', 'name': 'Pickled cucumber'})
+# products.store({'food_class': 'meat,fish,cheese,eggs', 'name': 'Salted herring'})
+# products.store({'food_class': 'other_seasoning', 'name': 'Curry paste'})
 
     
 # for rule in products:
@@ -108,7 +117,7 @@ products = menu.db.db.products
 # store = JsonStore(settings_path)
 # import yaml
 
-# with open(os.path.join(os.path.dirname(__file__), "test.yml"), 'r', encoding='cp1251') as stream:
+# with open(os.path.join(os.path.dirname(__file__), "recipe_helpers", "test_english.yml"), 'r', encoding='cp1251') as stream:
 #     data_loaded = yaml.safe_load(stream)
 #     # print(data_loaded)
 #     store.put('recipes', recipes=data_loaded)
@@ -125,9 +134,8 @@ recipes = menu.db.db.recipesCollection
 for recipe in recipes:
     print(recipe['__id'])
     print(recipe['title'])
-    print(recipe['img'])
-#     print(recipe['tags'])
-
+    print(recipe['nutrients'])
+    print(recipe['food_class'])
 # menu.disconnectDB()
 
 
