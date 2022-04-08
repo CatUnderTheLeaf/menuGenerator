@@ -157,8 +157,7 @@ class MenuGeneratorApp(MDApp):
         
         self.root.ids.screen_manager.transition = NoTransition()
 
-        # default path in case storage_permission on android is not granted
-        db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB_RU.db')        
+        # default path in case storage_permission on android is not granted   
         settings_path = os.path.join(os.path.dirname(__file__), 'menu_settings.json')
 
         if platform == "android":
@@ -172,25 +171,45 @@ class MenuGeneratorApp(MDApp):
             if has_permission:                
                 from android.storage import primary_external_storage_path
 
-                android_db_path = os.path.join(primary_external_storage_path(), 'MenuGenerator', 'menuUnqliteDB_RU.db')
-                if not (os.path.exists(android_db_path)):                    
-                    os.makedirs(os.path.join(primary_external_storage_path(), 'MenuGenerator'), exist_ok=True)
-                    shutil.copy(db_path, android_db_path)
-                db_path = android_db_path
-
                 android_settings_path = os.path.join(primary_external_storage_path(), 'MenuGenerator', 'menu_settings.json')
                 if not (os.path.exists(android_settings_path)):
                     os.makedirs(os.path.join(primary_external_storage_path(), 'MenuGenerator'), exist_ok=True)
                     shutil.copy(settings_path, android_settings_path)
                 settings_path = android_settings_path
+    
+        def connectDB(lang):
+            # default path in case storage_permission on android is not granted
+            if lang=='en':
+                db_file = 'menuUnqliteDB.db'
+            else:
+                db_file = 'menuUnqliteDB_RU.db'
+            db_path = os.path.join(os.path.dirname(__file__), 'db', db_file)      
 
-        self.menu.connectDB(db_path)
+            if platform == "android":
+                from android.permissions import Permission, check_permission
+
+                has_permission = (check_permission(Permission.WRITE_EXTERNAL_STORAGE) and 
+                        check_permission(Permission.READ_EXTERNAL_STORAGE))
+
+                # if there is a permisson then primary_external_storage_path is used, 
+                # so in case of app reinstall or update all changes to the db and settings were saved
+                if has_permission:                
+                    from android.storage import primary_external_storage_path
+
+                    android_db_path = os.path.join(primary_external_storage_path(), 'MenuGenerator', db_file)
+                    if not (os.path.exists(android_db_path)):                    
+                        os.makedirs(os.path.join(primary_external_storage_path(), 'MenuGenerator'), exist_ok=True)
+                        shutil.copy(db_path, android_db_path)
+                    db_path = android_db_path
+            
+            self.menu.connectDB(db_path)
 
         self.store = JsonStore(settings_path)
 
         # load and set interface language
         if self.store.exists('language'):
             self.language = self.store.get('language')['language']
+            connectDB(self.language)
             # TODO fix weakly referenced object error
             # self.setLanguage()
         else:            
@@ -208,19 +227,20 @@ class MenuGeneratorApp(MDApp):
                             font_style='H6',
                             on_release=lambda x: (
                                 self.dialog.dismiss(), 
-                                setInitialLanguage('en')
+                                setInitialLanguage('en'),
+                                connectDB('en')
                                 )),
                         dialogItem(text="Русский", 
                             font_style='H6',
                             on_release=lambda x: (
                                 self.dialog.dismiss(), 
-                                setInitialLanguage('ru')
+                                setInitialLanguage('ru'),
+                                connectDB('ru')
                                 ))
                     ],
                 )
             self.dialog.open()
         
-
         # load settings from the storage
         if self.store.exists('settings'):
             timePeriod = self.store.get('settings')['timePeriod']            
