@@ -132,10 +132,12 @@ products = menu.db.db.products
 recipes = menu.db.db.recipesCollection
 # recipes.drop()
 for recipe in recipes:
-    print(recipe['__id'])
+#     print(recipe['__id'])
     print(recipe['title'])
-    print(recipe['nutrients'])
-    print(recipe['food_class'])
+    print(recipe['img'])
+#     print(recipe['nutrients'])
+#     print(recipe['food_class'])
+#     print(recipe['tags'])
 # menu.disconnectDB()
 
 
