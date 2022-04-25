@@ -8,7 +8,7 @@ from kivy.storage.jsonstore import JsonStore
 # Create Menu object
 
 
-db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB.db')
+db_path = os.path.join(os.path.dirname(__file__), 'db/menuUnqliteDB_UA.db')
 
 menu = Menu()
 
@@ -23,19 +23,6 @@ meals = {'4': 'Dinner', '2': 'Lunch', '0': 'Breakfast', '1': 'Brunch', '3': 'Sup
 # meals = {'0': 'Breakfast'}
 menu.update_mpd(meals)
 
-# from pathlib import Path
-# products_table = menu.db.db.products
-# products = {}
-# for p in Path(os.path.join(os.path.dirname(__file__), 'products')).iterdir():
-#     with p.open(encoding='cp1251') as f:
-#         for line in f:
-#             prod = {
-#                 'food_class': p.name,
-#                 'name': line.rsplit(' - ')[0].rstrip()
-#             }
-#             print(prod)
-            # products_table.store(prod)
-        
 
 
 
@@ -46,7 +33,7 @@ menu.update_mpd(meals)
 # menu.menu = {}
 # menu.loadFromJson(genMenu)
 # print(menu)
-# rules = menu.db.db.rulesCollection
+rules = menu.db.db.rulesCollection
 # arr = ['short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', 'long prepareTime on Saturday, Sunday', 'At Breakfast serve only breakfast', 'For dough food ignore protein', 'cereals,grains,pasta,bread,vegan is high_carb', 'dried_beans is high_carb', 'fat,nuts is fat', 'fruits is high_carb', 'high_carb_veggies is high_carb', 'low_carb_veggies is low_carb', 'meat,fish,cheese,eggs is protein', 'dairy is low_carb, protein, fat', 'other_seasoning is free', 'For Breakfast use low_carb, high_carb, fat, free', 'For Lunch use low_carb, high_carb, protein, fat, free', 'For Dinner use protein, fat, free, low_carb', 'On Sunday discard Lunch', 'medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday', 'On discard Breakfast', 'On discard Brunch', 'On discard Supper', 'At Lunch serve only ', 'At Brunch serve only ', 'At Supper serve only ', 'At Dinner serve only ', 'For Brunch use low_carb, protein, high_carb, fat, free', 'For Supper use low_carb, protein, high_carb, fat, free', 'On discard Dinner']
 # for a in rules:
     # newRule = {
@@ -57,7 +44,7 @@ menu.update_mpd(meals)
     # arr.append(rule['rule'])
 # print(arr)
 # print(rules[2])
-# rules[2] = {'rule': 'At Breakfast serve only завтрак'}
+# rules[2] = {'rule': 'At Breakfast serve only сніданок'}
 # rules[25] = {'rule': 'For Brunch use low_carb, protein, high_carb, fat, free'}
 # rules.store({'rule': 'For ignoreProtein ignore protein'})
 # rules.store({'rule': 'For ignoreHighCarb ignore high_carb'})
@@ -79,19 +66,45 @@ products = menu.db.db.products
 # products.store({'food_class': 'meat,fish,cheese,eggs', 'name': 'Salted herring'})
 # products.store({'food_class': 'other_seasoning', 'name': 'Curry paste'})
 
-    
-# for rule in products:
-    # if rule['name']=='Заправка для салата':
+# products.drop()    
+for rule in products:
+#     if rule['food_class']=='other_seasoning':
+    print(rule)
     #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': 'Салатная заправка'}
     # if ' ' in rule['name']:
     #     st = rule['name'].split(' – ')
         # print(st)
     #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': st[0]}
-    # print(rule)
+    # print(rule['name'])
+# del products[211]
+# del products[217]
+# del products[218]
 # dstpath = 'c:\my_projects\menuGenerator\menuGeneratorApp\img'
 # dstpath = '/storage/img'
 # dstpath = ''
 # menu.db.db.updateRecipeImgPath(dstpath)
+
+
+# from pathlib import Path
+# # products_table = menu.db.db.products
+# # products = {}
+# for p in Path(os.path.join(os.path.dirname(__file__), 'products')).iterdir():
+#     with p.open(encoding='cp1251') as f:
+#         for line in f:
+#             na = p.name
+#             if p.name == 'cereals_grains_pasta_bread_vegan':
+#                 na = 'cereals,grains,pasta,bread,vegan'
+#             if p.name == 'meat_fish_cheese_eggs':
+#                 na = 'meat,fish,cheese,eggs'
+#             if p.name == 'fat_nuts':
+#                 na = 'fat,nuts'
+#             prod = {
+#                 'food_class': na,
+#                 'name': line.rsplit(' - ')[0].rstrip()
+#             }
+#             print(prod)
+            # products.store(prod)
+        
 
 
 
@@ -129,12 +142,12 @@ products = menu.db.db.products
 #     menu.db.updateRecipe(h)
 #     # print(h.food_class)
 
-recipes = menu.db.db.recipesCollection
+# recipes = menu.db.db.recipesCollection
 # recipes.drop()
-for recipe in recipes:
+# for recipe in recipes:
 #     print(recipe['__id'])
-    print(recipe['title'])
-    print(recipe['img'])
+    # print(recipe['title'])
+    # print(recipe['img'])
 #     print(recipe['nutrients'])
 #     print(recipe['food_class'])
 #     print(recipe['tags'])
