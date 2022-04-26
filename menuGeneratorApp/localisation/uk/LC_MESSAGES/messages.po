@@ -1,0 +1,324 @@
+# Ukrainian translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-02-09 14:08+0100\n"
+"PO-Revision-Date: 2022-04-26 12:21+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: uk\n"
+"Language-Team: uk <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: menuGeneratorApp/main.py:284
+msgid "Accept changes?"
+msgstr "Прийняти зміни?"
+
+#: menuGeneratorApp/main.py:285
+msgid "Changes will be applied only after regenerating menu."
+msgstr "Зміни будуть застосовані лише після регенерації меню."
+
+#: menuGeneratorApp/main.py:288
+msgid "ACCEPT"
+msgstr "ПРИЙНЯТИ"
+
+#: menuGeneratorApp/main.py:300
+msgid "DISCARD"
+msgstr "ВІДХІЛИТИ"
+
+#: menuGeneratorApp/main.py:380 menuGeneratorApp/menugenerator.kv:112
+msgid "Edit recipe"
+msgstr "Редагувати рецепт"
+
+#: menuGeneratorApp/main.py:383
+msgid "Add new recipe"
+msgstr "Додати новий рецепт"
+
+#: menuGeneratorApp/main.py:426 menuGeneratorApp/menugenerator.kv:85
+msgid "All recipes"
+msgstr "Всі рецепти"
+
+#: menuGeneratorApp/menugenerator.kv:33
+#: menuGeneratorApp/myWidgets/NavigationDrawer.kv:42
+msgid "Menu"
+msgstr "Меню"
+
+#: menuGeneratorApp/menugenerator.kv:35
+msgid "reGenerate Menu"
+msgstr "згенерувати меню"
+
+#: menuGeneratorApp/menugenerator.kv:47
+msgid "Menu is not generated yet"
+msgstr "Меню ще не згенероване"
+
+#: menuGeneratorApp/menugenerator.kv:69
+#: menuGeneratorApp/myWidgets/NavigationDrawer.kv:48
+msgid "Settings"
+msgstr "Налаштування"
+
+#: menuGeneratorApp/menugenerator.kv:114
+msgid "save"
+msgstr "зберегти"
+
+#: menuGeneratorApp/myWidgetClasses/RecipeWidget.py:194
+msgid "Set recipe image"
+msgstr "Вибрати зображення"
+
+#: menuGeneratorApp/myWidgetClasses/RecipeWidget.py:197
+msgid "Choose from gallery"
+msgstr "З галереї"
+
+#: menuGeneratorApp/myWidgetClasses/RecipeWidget.py:198
+msgid "Take a picture"
+msgstr "Зробити знімок"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:185
+msgid "'Nutrients per meal' rules"
+msgstr "'Нутрієнти на прийом їжі'"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:200
+msgid "'Prepare time per day' rules"
+msgstr "'Час готування на день'"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:217
+msgid "'Discarded meal per day' rules"
+msgstr "'Виключені прийоми їжі на день'"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:228
+msgid "'Tags per meal' rules"
+msgstr "'Теги на прийом їжі'"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:304
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:443
+msgid "For "
+msgstr "На "
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:306
+msgid " use:"
+msgstr " використовувати:"
+
+#: menuGeneratorApp/myWidgetClasses/menuSettings.py:445
+msgid " serve only with these tags:"
+msgstr " лише такі теги"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:10
+msgid "Time period"
+msgstr "Часовий проміжок"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:25
+msgid "day"
+msgstr "день"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:32
+msgid "week"
+msgstr "тиждень"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:39
+msgid "month"
+msgstr "місяць"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:52
+msgid "Repeat dishes"
+msgstr "Використовувати страви повторно?"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:69
+msgid "Meals"
+msgstr "Прийоми їжі"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:85
+msgid "Breakfast"
+msgstr "Сніданок"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:92
+msgid "Brunch"
+msgstr "Другий сніданок"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:99
+msgid "Lunch"
+msgstr "Обід"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:106
+msgid "Supper"
+msgstr "Полуденок"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:113
+msgid "Dinner"
+msgstr "Вечеря"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:126
+msgid "Rules"
+msgstr "Правила"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:165
+msgid "Mo"
+msgstr "Пн"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:169
+msgid "Tu"
+msgstr "Вт"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:173
+msgid "We"
+msgstr "Ср"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:177
+msgid "Th"
+msgstr "Чт"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:181
+msgid "Fr"
+msgstr "Пт"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:185
+msgid "Sa"
+msgstr "Сб"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:189
+msgid "Su"
+msgstr "Нд"
+
+#: menuGeneratorApp/myWidgets/MenuSettings.kv:222
+#: menuGeneratorApp/myWidgets/Recipe.kv:105
+msgid "Add new tag"
+msgstr "Додати новий тег"
+
+#: menuGeneratorApp/myWidgets/NavigationDrawer.kv:28
+msgid "Your automated menu generator"
+msgstr "Ваш автоматичний генератор меню"
+
+#: menuGeneratorApp/myWidgets/NavigationDrawer.kv:54
+msgid "Recipes"
+msgstr "Рецепти"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:19
+msgid "Title"
+msgstr "Назва"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:22
+msgid "This field is required"
+msgstr "Це поле обов'язкове"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:25
+msgid "Ingredients"
+msgstr "Інгредієнти"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:44
+msgid "Prepare time"
+msgstr "Час готування"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:52
+msgid "short"
+msgstr "швидко"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:58
+msgid "medium"
+msgstr "середньо"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:64
+msgid "long"
+msgstr "довго"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:76
+msgid "Repeat dish?"
+msgstr "Використовувати повторно?"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:86
+msgid "Prepare instructions"
+msgstr "Приготування"
+
+#: menuGeneratorApp/myWidgets/Recipe.kv:89
+msgid "Tags"
+msgstr "Теги"
+
+msgid "dairy"
+msgstr "молочка"
+
+msgid "cereals"
+msgstr "пластівці"
+
+msgid "grains"
+msgstr "крупи"
+
+msgid "pasta"
+msgstr "паста"
+
+msgid "bread"
+msgstr "хліб"
+
+msgid "vegan"
+msgstr "рослинне"
+
+msgid "dried beans"
+msgstr "сухі боби"
+
+msgid "fat"
+msgstr "жири"
+
+msgid "nuts"
+msgstr "горіхи"
+
+msgid "fruits"
+msgstr "фрукти"
+
+msgid "high carb veggies"
+msgstr "високовуглеводні овочі"
+
+msgid "low carb veggies"
+msgstr "низьковуглеводні овочі"
+
+msgid "meat"
+msgstr "м'ясо"
+
+msgid "fish"
+msgstr "риба"
+
+msgid "cheese"
+msgstr "сир"
+
+msgid "eggs"
+msgstr "яйця"
+
+msgid "other seasoning"
+msgstr "приправи"
+
+#: menuGeneratorApp/main.py:341
+msgid "Help"
+msgstr "Допомога"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:14
+msgid "Low carb products"
+msgstr "Низьковуглеводні продукти"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:20
+msgid "High carb products"
+msgstr "Високовуглеводні продукти"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:26
+msgid "Fat products"
+msgstr "Жирні продукти"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:32
+msgid "Protein products"
+msgstr "Білкові продукти"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:38
+msgid "Nutrient-free products"
+msgstr "Нейтральні продукти"
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:44
+msgid "Add tags "
+msgstr "Додай теги "
+
+#: menuGeneratorApp/myWidgets/Dialogs.kv:44
+msgid " to the recipe if you want to ignore these nutrients"
+msgstr " до рецепту, якщо треба ігнорувати ці нутрієнти"
+
