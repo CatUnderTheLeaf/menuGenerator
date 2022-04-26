@@ -35,11 +35,11 @@ menu.update_mpd(meals)
 # print(menu)
 rules = menu.db.db.rulesCollection
 # arr = ['short prepareTime on Wednesday, Friday, Monday, Tuesday, Thursday', 'long prepareTime on Saturday, Sunday', 'At Breakfast serve only breakfast', 'For dough food ignore protein', 'cereals,grains,pasta,bread,vegan is high_carb', 'dried_beans is high_carb', 'fat,nuts is fat', 'fruits is high_carb', 'high_carb_veggies is high_carb', 'low_carb_veggies is low_carb', 'meat,fish,cheese,eggs is protein', 'dairy is low_carb, protein, fat', 'other_seasoning is free', 'For Breakfast use low_carb, high_carb, fat, free', 'For Lunch use low_carb, high_carb, protein, fat, free', 'For Dinner use protein, fat, free, low_carb', 'On Sunday discard Lunch', 'medium prepareTime on Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday', 'On discard Breakfast', 'On discard Brunch', 'On discard Supper', 'At Lunch serve only ', 'At Brunch serve only ', 'At Supper serve only ', 'At Dinner serve only ', 'For Brunch use low_carb, protein, high_carb, fat, free', 'For Supper use low_carb, protein, high_carb, fat, free', 'On discard Dinner']
-# for a in rules:
+for a in rules:
     # newRule = {
     #     'rule': a
     # }
-    # print(a)
+    print(a)
     # rules.store(newRule)
     # arr.append(rule['rule'])
 # print(arr)
@@ -67,9 +67,9 @@ products = menu.db.db.products
 # products.store({'food_class': 'other_seasoning', 'name': 'Curry paste'})
 
 # products.drop()    
-for rule in products:
+# for rule in products:
 #     if rule['food_class']=='other_seasoning':
-    print(rule)
+    # print(rule)
     #     products[rule['__id']] = {'food_class': rule['food_class'], 'name': 'Салатная заправка'}
     # if ' ' in rule['name']:
     #     st = rule['name'].split(' – ')
@@ -130,7 +130,7 @@ for rule in products:
 # store = JsonStore(settings_path)
 # import yaml
 
-# with open(os.path.join(os.path.dirname(__file__), "recipe_helpers", "test_english.yml"), 'r', encoding='cp1251') as stream:
+# with open(os.path.join(os.path.dirname(__file__), "recipe_helpers", "test_ukr.yml"), 'r', encoding='cp1251') as stream:
 #     data_loaded = yaml.safe_load(stream)
 #     # print(data_loaded)
 #     store.put('recipes', recipes=data_loaded)
@@ -142,12 +142,12 @@ for rule in products:
 #     menu.db.updateRecipe(h)
 #     # print(h.food_class)
 
-# recipes = menu.db.db.recipesCollection
+recipes = menu.db.db.recipesCollection
 # recipes.drop()
 # for recipe in recipes:
 #     print(recipe['__id'])
-    # print(recipe['title'])
-    # print(recipe['img'])
+#     print(recipe['title'])
+#     # print(recipe['img'])
 #     print(recipe['nutrients'])
 #     print(recipe['food_class'])
 #     print(recipe['tags'])
