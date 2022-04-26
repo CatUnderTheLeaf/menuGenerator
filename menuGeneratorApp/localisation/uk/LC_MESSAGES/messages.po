@@ -100,15 +100,15 @@ msgstr "'Теги на прийом їжі'"
 #: menuGeneratorApp/myWidgetClasses/menuSettings.py:304
 #: menuGeneratorApp/myWidgetClasses/menuSettings.py:443
 msgid "For "
-msgstr "На "
+msgstr " "
 
 #: menuGeneratorApp/myWidgetClasses/menuSettings.py:306
 msgid " use:"
-msgstr " використовувати:"
+msgstr " включає:"
 
 #: menuGeneratorApp/myWidgetClasses/menuSettings.py:445
 msgid " serve only with these tags:"
-msgstr " лише такі теги"
+msgstr " має лише такі теги"
 
 #: menuGeneratorApp/myWidgets/MenuSettings.kv:10
 msgid "Time period"

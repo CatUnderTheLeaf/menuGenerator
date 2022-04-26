@@ -181,6 +181,8 @@ class MenuGeneratorApp(MDApp):
             # default path in case storage_permission on android is not granted
             if lang=='en':
                 db_file = 'menuUnqliteDB.db'
+            elif lang=='uk':
+                db_file = 'menuUnqliteDB_UA.db'
             else:
                 db_file = 'menuUnqliteDB_RU.db'
             db_path = os.path.join(os.path.dirname(__file__), 'db', db_file)      
@@ -223,6 +225,13 @@ class MenuGeneratorApp(MDApp):
                 self.dialog = MDDialog(
                     type="simple",
                     items=[
+                        dialogItem(text="Українська", 
+                            font_style='H6',
+                            on_release=lambda x: (
+                                self.dialog.dismiss(), 
+                                setInitialLanguage('uk'),
+                                connectDB('uk')
+                                )),
                         dialogItem(text="English", 
                             font_style='H6',
                             on_release=lambda x: (
