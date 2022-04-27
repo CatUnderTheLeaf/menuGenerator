@@ -1,14 +1,16 @@
 # M.A.Ge - your automated menu generator
+<img align="left" height="100" src="menuGeneratorApp/app_imgs/ic_launcher3/res/mipmap-xxxhdpi/ic_launcher.png"/>
+
 An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month.
 
 Everyday most of us have a problem "What to prepare for breakfast, lunch or dinner?" This app easily helps you to plan a daily/weekly/monthly menu. It is easy to setup, without nutrition plans and calorie counting.
 
 ### "Menu"
-My app has a Navigation drawer with only three destinations, first loaded screen is "Menu". In 'Menu' you can generate a menu based on your settings. It has big images, so you can easily visualise your meal and refresh your memory on the preparation instructions.
+My app has a Navigation drawer with only three destinations, first loaded screen is 'Menu'. In 'Menu' you can generate a menu based on your settings. It has big images, so you can easily visualise your meal and refresh your memory on the preparation instructions.
 
 <p align="center">
-  <img src="pictures/Navigation_Drawer_v1.jpg" width="350" title="Navigation drawer">
-  <img src="pictures/Menu_v2.jpg" width="350" title="Menu">
+  <img src="pictures/Menu.png" width="350" title="Menu">
+  <img src="pictures/Menu_recipe.png" width="350" title="Navigation drawer">
 </p>
 
 ### "Settings"
@@ -19,28 +21,28 @@ In 'Settings' you can set time period, meal types and some rules. There are only
 - You can set tags for each meal type, e.g. for breakfast get only recipes with 'breakfast' tag, so there will be no soup so early
 
 <p align="center">
-  <img src="pictures/Settings_v2.jpg" width="350" title="Settings">
-  <img src="pictures/Settings2_v2.jpg" width="350" title="Settings2">
-  <img src="pictures/Settings3_v2.jpg" width="350" title="Settings3">
-  <img src="pictures/Settings4_v1.jpg" width="350" title="Settings4">
-  <img src="pictures/Settings5_v1.jpg" width="350" title="Settings">
-  <img src="pictures/Settings6_v2.jpg" width="350" title="Settings">
+  <img src="pictures/Navigation_drawer.png" width="350" title="Settings">
+  <img src="pictures/Settings.png" width="350" title="Settings">
+  <img src="pictures/Settings_rules1.png" width="350" title="Settings2">
+  <img src="pictures/Settings_rules2.png" width="350" title="Settings3">
+  <img src="pictures/Settings_rules3.png" width="350" title="Settings4">
+  <img src="pictures/Settings_rules4.png" width="350" title="Settings">
 </p>
 
 ### "Recipes"
 In 'Recipes' you can view, edit, create or delete recipes. 64 basic recipes of Eastern European cuisine are already included.
 <p align="center">
-  <img src="pictures/All_recipes_v2.jpg" width="350" title="All Recipes">
-  <img src="pictures/Delete_recipes_v1.jpg" width="350" title="Delete Recipes">
+  <img src="pictures/All_recipes.png" width="350" title="All Recipes">
+  <img src="pictures/Delete_recipe.png" width="350" title="Delete Recipes">
 </p>
 
 ### "Add/Edit Recipe"
-Images can be taken with camera or chosen from the gallery. For each recipe you can add ingredients and tags, select preparation time and mark recipe for 'repeat', so the recipe can be used on two consecutive days.
+Images can be taken with camera or chosen from the gallery, for this purpose [Plyer](https://github.com/kivy/plyer) is used. For each recipe you can add ingredients and tags, select preparation time and mark recipe for 'repeat', so the recipe can be used on two consecutive days.
 <p align="center">  
-  <img src="pictures/Add_new_recipe_v3.jpg" width="350" title="Edit/Add new">
-  <img src="pictures/Set_picture_v2.jpg" width="350" title="Set image">
-  <img src="pictures/Add_ingredients_v2.jpg" width="350" title="Choose ingredients">
-  <img src="pictures/Add_tags_v1.jpg" width="350" title="Add tags">
+  <img src="pictures/Edit_recipe.png" width="350" title="Edit/Add new">
+  <img src="pictures/Choose_image.png" width="350" title="Set image">
+  <img src="pictures/Add_ingredients.png" width="350" title="Choose ingredients">
+  <img src="pictures/add_tags.png" width="350" title="Add tags">
 </p>
 
 When app is installed it has only these rules:
