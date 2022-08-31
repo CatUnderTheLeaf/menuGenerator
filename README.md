@@ -1,7 +1,7 @@
 # M.A.Ge - your automated menu generator
 <img align="left" height="100" src="menuGeneratorApp/app_imgs/ic_launcher3/res/mipmap-xxxhdpi/ic_launcher.png"/>
 
-An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month.
+An Android app written in python using [Kivy](https://kivy.org/#home) and [KivyMD](https://github.com/kivymd/KivyMD) to generate menu for 1 day/week/month. The app is available on [Amazon Appstore](https://www.amazon.de/gp/product/B09YYXN35D)
 
 Everyday most of us have a problem "What to prepare for breakfast, lunch or dinner?" This app easily helps you to plan a daily/weekly/monthly menu. It is easy to setup, without nutrition plans and calorie counting.
 
